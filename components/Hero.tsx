@@ -2,7 +2,7 @@
 
 export default function Hero() {
   return (
-    <section className="relative w-full overflow-hidden" style={{ height: 'calc(100vh - 136px)', minHeight: '600px' }}>
+    <section className="relative w-full overflow-hidden" style={{ minHeight: '90vh' }}>
 
       {/* Background image */}
       <div
@@ -13,11 +13,11 @@ export default function Hero() {
       {/* Dark overlay */}
       <div
         className="absolute inset-0"
-        style={{ background: 'linear-gradient(to bottom, rgba(13,13,13,0.45) 0%, rgba(13,13,13,0.65) 50%, rgba(13,13,13,0.88) 100%)' }}
+        style={{ background: 'linear-gradient(to bottom, rgba(13,13,13,0.4) 0%, rgba(13,13,13,0.6) 50%, rgba(13,13,13,0.92) 100%)' }}
       />
 
       {/* Content */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 pb-20">
+      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 py-32">
         <p
           className="text-[#c5d000] text-sm uppercase tracking-[0.3em] mb-6"
           style={{ fontFamily: 'var(--font-inter)' }}
@@ -68,97 +68,117 @@ export default function Hero() {
       </div>
 
       {/* Beacon left */}
-      <div className="absolute bottom-[56px] left-12 z-20">
-        <div className="beacon-wrap">
-          <div className="beacon-dot" />
-          <div className="beacon-sweep-left" />
+      <div className="absolute bottom-[56px] left-16 z-20 beacon-container">
+        <div className="beacon-housing">
+          <div className="beacon-lens" />
+          <div className="beacon-rotor" />
         </div>
+        <div className="beacon-cast-left" />
       </div>
 
       {/* Beacon right */}
-      <div className="absolute bottom-[56px] right-12 z-20">
-        <div className="beacon-wrap">
-          <div className="beacon-dot" />
-          <div className="beacon-sweep-right" />
+      <div className="absolute bottom-[56px] right-16 z-20 beacon-container">
+        <div className="beacon-housing">
+          <div className="beacon-lens" />
+          <div className="beacon-rotor beacon-rotor-reverse" />
         </div>
+        <div className="beacon-cast-right" />
       </div>
 
       {/* Hazard tape bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-14 hazard-tape-full z-10" />
+      <div className="absolute bottom-0 left-0 right-0 h-14 z-10" style={{
+        background: 'repeating-linear-gradient(-45deg, #c5d000 0px, #c5d000 18px, #0d0d0d 18px, #0d0d0d 36px, #ffffff 36px, #ffffff 54px, #0d0d0d 54px, #0d0d0d 72px)'
+      }} />
 
       <style>{`
-        .hazard-tape-full {
-          background: repeating-linear-gradient(
-            -45deg,
-            #c5d000 0px,   #c5d000 18px,
-            #0d0d0d 18px,  #0d0d0d 36px,
-            #ffffff 36px,  #ffffff 54px,
-            #0d0d0d 54px,  #0d0d0d 72px
-          );
+        .beacon-container {
+          position: absolute;
         }
 
-        .beacon-wrap {
+        /* Physical beacon housing — amber dome */
+        .beacon-housing {
           position: relative;
-          width: 16px;
-          height: 16px;
+          width: 36px;
+          height: 22px;
+          background: radial-gradient(ellipse at 50% 40%, #fcd34d, #f59e0b 50%, #92400e);
+          border-radius: 50% 50% 40% 40%;
+          box-shadow:
+            0 0 12px 6px rgba(245,158,11,0.5),
+            0 0 30px 10px rgba(245,158,11,0.2);
+          overflow: hidden;
         }
 
-        .beacon-dot {
+        /* Rotating reflector inside the dome */
+        .beacon-rotor {
           position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          background: #f59e0b;
-          box-shadow: 0 0 8px 4px rgba(245,158,11,0.6);
-          z-index: 2;
-        }
-
-        .beacon-sweep-left,
-        .beacon-sweep-right {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 180px;
-          height: 180px;
-          margin-top: -90px;
-          margin-left: -90px;
-          border-radius: 50%;
-          z-index: 1;
-        }
-
-        .beacon-sweep-left {
+          inset: 0;
           background: conic-gradient(
             from 0deg at 50% 50%,
             transparent 0deg,
-            transparent 310deg,
-            rgba(245,158,11,0.0) 310deg,
-            rgba(245,158,11,0.5) 340deg,
-            rgba(245,158,11,0.0) 360deg
+            transparent 140deg,
+            rgba(255,255,255,0.0) 140deg,
+            rgba(255,255,255,0.7) 170deg,
+            rgba(255,255,255,0.0) 200deg,
+            transparent 200deg,
+            transparent 360deg
           );
-          animation: beacon-rotate 5s linear infinite;
+          animation: rotor-spin 1.8s linear infinite;
         }
 
-        .beacon-sweep-right {
-          background: conic-gradient(
-            from 180deg at 50% 50%,
-            transparent 0deg,
-            transparent 310deg,
-            rgba(245,158,11,0.0) 310deg,
-            rgba(245,158,11,0.5) 340deg,
-            rgba(245,158,11,0.0) 360deg
-          );
-          animation: beacon-rotate-reverse 5s linear infinite;
+        .beacon-rotor-reverse {
+          animation-direction: reverse;
         }
 
-        @keyframes beacon-rotate {
+        @keyframes rotor-spin {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
 
-        @keyframes beacon-rotate-reverse {
+        /* Light cast on the scene from the beacon */
+        .beacon-cast-left {
+          position: absolute;
+          bottom: 11px;
+          left: 18px;
+          width: 220px;
+          height: 220px;
+          pointer-events: none;
+          background: conic-gradient(
+            from -10deg at 0% 50%,
+            transparent 0deg,
+            transparent 320deg,
+            rgba(245,158,11,0.0) 320deg,
+            rgba(245,158,11,0.18) 345deg,
+            rgba(245,158,11,0.0) 360deg
+          );
+          animation: cast-spin 1.8s linear infinite;
+          transform-origin: 0% 50%;
+        }
+
+        .beacon-cast-right {
+          position: absolute;
+          bottom: 11px;
+          right: 18px;
+          width: 220px;
+          height: 220px;
+          pointer-events: none;
+          background: conic-gradient(
+            from 170deg at 100% 50%,
+            transparent 0deg,
+            transparent 320deg,
+            rgba(245,158,11,0.0) 320deg,
+            rgba(245,158,11,0.18) 345deg,
+            rgba(245,158,11,0.0) 360deg
+          );
+          animation: cast-spin-reverse 1.8s linear infinite;
+          transform-origin: 100% 50%;
+        }
+
+        @keyframes cast-spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        @keyframes cast-spin-reverse {
           from { transform: rotate(0deg); }
           to { transform: rotate(-360deg); }
         }

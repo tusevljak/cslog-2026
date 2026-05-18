@@ -29,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="sr" suppressHydrationWarning className={`${bebas.variable} ${inter.variable}`}>
-      <body>
+      <body suppressHydrationWarning className="min-h-screen flex flex-col">
         <ThemeProvider>
           <Header />
           <main className="flex-1">{children}</main>

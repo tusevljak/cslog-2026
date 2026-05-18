@@ -18,7 +18,9 @@
       "Bash(git push *)",
       "Bash(node -e \"console.log\\(require\\('./node_modules/next/package.json'\\).version\\)\")",
       "Bash(node -e \"const pkg = require\\('./node_modules/@payloadcms/next/package.json'\\); console.log\\(JSON.stringify\\(Object.keys\\(pkg.exports || {}\\), null, 2\\)\\)\")",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(curl -s \"https://flagcdn.com/rs.svg\" -o \"C:\\\\Users\\\\Korisnik\\\\Desktop\\\\CSLOG 2026\\\\public\\\\flags\\\\sr.svg\")",
+      "Bash(curl -s \"https://flagcdn.com/gb.svg\" -o \"C:\\\\Users\\\\Korisnik\\\\Desktop\\\\CSLOG 2026\\\\public\\\\flags\\\\en.svg\")"
     ]
   }
 }
