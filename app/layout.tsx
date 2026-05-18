@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Bebas_Neue, Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
+import Header from '@/components/Header'
 
 const bebas = Bebas_Neue({
   weight: '400',
@@ -29,7 +30,10 @@ export default function RootLayout({
   return (
     <html lang="sr" suppressHydrationWarning className={`${bebas.variable} ${inter.variable}`}>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+        </ThemeProvider>
       </body>
     </html>
   )
