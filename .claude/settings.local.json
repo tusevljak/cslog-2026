@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:cslog.rs)",
+      "mcp__Claude_in_Chrome__computer",
+      "Bash(npx create-payload-app@latest . --no-deps)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "Bash(npx create-next-app@latest cslog-tmp --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "Bash(Get-ChildItem cslog-tmp *)",
+      "Bash(Move-Item -Destination . -Force)",
+      "Bash(Remove-Item cslog-tmp *)",
+      "PowerShell(Move-Item -Destination \"C:\\\\Users\\\\Korisnik\\\\Desktop\\\\CSLOG 2026\\\\\" -Force)",
+      "Bash(npm install *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git add *)"
+    ]
+  }
+}
