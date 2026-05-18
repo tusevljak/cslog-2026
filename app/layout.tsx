@@ -3,6 +3,7 @@ import { Bebas_Neue, Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 const bebas = Bebas_Neue({
   weight: '400',
@@ -33,6 +34,7 @@ export default function RootLayout({
         <ThemeProvider>
           <Header />
           <main className="flex-1">{children}</main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
