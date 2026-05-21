@@ -140,7 +140,7 @@ export default function ONamaPage() {
             &ldquo;Prvi tim&rdquo;: Boban, Svetlana, Vladimir i Božana — okupljeni oko zajedničke misije da standarde vangabaritnog transporta drže na nivou nauke.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member, i) => (
+            {team.map((member) => (
               <div
                 key={member.name}
                 className="p-8 flex flex-col gap-3"
