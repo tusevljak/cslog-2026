@@ -8,9 +8,9 @@ export const metadata = {
 
 const team = [
   { name: 'Boban Bićanin', role: 'Generalni direktor' },
-  { name: 'Svetlana', role: 'Administracija' },
+  { name: 'Sanja', role: 'Operativni tim' },
   { name: 'Vladimir', role: 'Operativni tim' },
-  { name: 'Božana', role: 'Operativni tim' },
+  { name: 'Božana', role: 'Administracija' },
 ]
 
 const stats = [
@@ -137,7 +137,7 @@ export default function ONamaPage() {
             Tim iza CSLOG-a
           </h2>
           <p className="mb-12 max-w-xl text-base leading-relaxed" style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)' }}>
-            &ldquo;Prvi tim&rdquo;: Boban, Svetlana, Vladimir i Božana — okupljeni oko zajedničke misije da standarde vangabaritnog transporta drže na nivou nauke.
+            &ldquo;Prvi tim&rdquo;: Boban, Sanja, Vladimir i Božana — okupljeni oko zajedničke misije da standarde vangabaritnog transporta drže na nivou nauke.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {team.map((member) => (
