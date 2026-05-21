@@ -20,7 +20,13 @@
       "Bash(node -e \"const pkg = require\\('./node_modules/@payloadcms/next/package.json'\\); console.log\\(JSON.stringify\\(Object.keys\\(pkg.exports || {}\\), null, 2\\)\\)\")",
       "Bash(npm run *)",
       "Bash(curl -s \"https://flagcdn.com/rs.svg\" -o \"C:\\\\Users\\\\Korisnik\\\\Desktop\\\\CSLOG 2026\\\\public\\\\flags\\\\sr.svg\")",
-      "Bash(curl -s \"https://flagcdn.com/gb.svg\" -o \"C:\\\\Users\\\\Korisnik\\\\Desktop\\\\CSLOG 2026\\\\public\\\\flags\\\\en.svg\")"
+      "Bash(curl -s \"https://flagcdn.com/gb.svg\" -o \"C:\\\\Users\\\\Korisnik\\\\Desktop\\\\CSLOG 2026\\\\public\\\\flags\\\\en.svg\")",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__get_page_text",
+      "mcp__Claude_in_Chrome__javascript_tool",
+      "Bash(curl -s \"https://cslog.rs/wp-content/uploads/2021/05/ad3d5612-db51-4624-bcdf-ea01cda405fc.jpg\" -o \"C:\\\\Users\\\\Korisnik\\\\Desktop\\\\CSLOG 2026\\\\public\\\\slike\\\\usluge\\\\pratnja.jpg\")",
+      "Bash(curl -s \"https://cslog.rs/wp-content/uploads/2021/05/web-sajt-elementi-03.png\" -o \"C:\\\\Users\\\\Korisnik\\\\Desktop\\\\CSLOG 2026\\\\public\\\\slike\\\\usluge\\\\element-03.png\")",
+      "Bash(curl -s \"https://cslog.rs/wp-content/uploads/2019/11/Certop_9001-COsrb.jpg\" -o \"C:\\\\Users\\\\Korisnik\\\\Desktop\\\\CSLOG 2026\\\\public\\\\iso9001.jpg\")"
     ]
   }
 }
