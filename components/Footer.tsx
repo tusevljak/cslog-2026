@@ -34,12 +34,11 @@ export default function Footer() {
           {/* ISO + Social */}
           <div className="flex flex-col items-center gap-6">
             <Image
-              src="/iso9001.png"
+              src="/iso9001.jpg"
               alt="ISO 9001 sertifikat"
               width={140}
               height={70}
-              className="object-contain opacity-80"
-
+              className="object-contain"
             />
             <div className="flex items-center gap-3">
               <a
