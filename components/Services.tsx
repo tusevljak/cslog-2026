@@ -4,17 +4,17 @@ const services = [
   {
     title: 'Prevoz specijalnih i vangabaritnih tereta',
     description: 'Transportujemo terete koji premašuju standardne gabarite — po visini, širini, dužini ili težini. Pribavljamo sve potrebne dozvole i odobrenja za svaku rutu.',
-    href: '/usluge',
+    href: '/nase-usluge',
   },
   {
     title: 'Tehnička pratnja i koordinacija',
     description: 'Obezbeđujemo pratnju specijalnih vozila na svim rutama. Naši koordinatori prate transport od utovara do istovara i reaguju u svakom momentu.',
-    href: '/usluge',
+    href: '/nase-usluge',
   },
   {
     title: 'Unutrašnji i međunarodni transport',
     description: 'Vršimo transport na teritoriji Srbije i međunarodni prevoz — kroz Evropu, pa sve do Bliskog Istoka, sa svim potrebnim carinskim i transportnim dokumentima.',
-    href: '/usluge',
+    href: '/nase-usluge',
   },
 ]
 
