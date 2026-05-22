@@ -229,7 +229,6 @@ export default buildConfig({
 
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URL },
-    push: true, // auto-sync schema on deploy (ideal for staging; use migrations in prod)
   }),
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
