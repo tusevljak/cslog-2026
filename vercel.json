@@ -1,4 +1,4 @@
 {
-  "buildCommand": "npx payload migrate:create 2>&1; npx payload migrate && next build",
+  "buildCommand": "next build",
   "framework": "nextjs"
 }
