@@ -13,17 +13,11 @@
   },
   "dependencies": {
     "@eslint/eslintrc": "^3.3.5",
-    "@payloadcms/db-postgres": "^3.84.1",
-    "@payloadcms/next": "^3.84.1",
-    "@payloadcms/richtext-lexical": "^3.84.1",
-    "drizzle-kit": "^0.31.10",
-    "graphql": "^16.14.0",
+    "@neondatabase/serverless": "^0.10.4",
+    "marked": "^15.0.12",
     "next": "^15.4.11",
-    "patch-package": "^8.0.1",
-    "payload": "^3.84.1",
     "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "sharp": "^0.34.5"
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

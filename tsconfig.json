@@ -26,9 +26,7 @@
       "@/*": [
         "./*"
       ],
-      "@payload-config": [
-        "./payload.config.ts"
-      ]
+      "@payload-config": []
     }
   },
   "include": [

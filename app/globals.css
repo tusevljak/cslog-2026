@@ -46,6 +46,103 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Blog markdown prose */
+.prose-cslog {
+  color: var(--text);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+.prose-cslog h2 {
+  font-family: var(--font-bebas), sans-serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  letter-spacing: 0.05em;
+  color: var(--text);
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.1;
+}
+.prose-cslog h3 {
+  font-family: var(--font-bebas), sans-serif;
+  font-size: clamp(1.375rem, 3vw, 1.875rem);
+  letter-spacing: 0.04em;
+  color: var(--text);
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+  line-height: 1.15;
+}
+.prose-cslog h4 {
+  font-family: var(--font-inter), sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+.prose-cslog p {
+  margin-bottom: 1.4rem;
+  color: var(--text-muted);
+}
+.prose-cslog strong {
+  color: var(--text);
+  font-weight: 700;
+}
+.prose-cslog em {
+  font-style: italic;
+  color: var(--text-muted);
+}
+.prose-cslog a {
+  color: #c5d000;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-cslog a:hover {
+  color: #a8b200;
+}
+.prose-cslog ul,
+.prose-cslog ol {
+  margin-bottom: 1.4rem;
+  padding-left: 1.5rem;
+  color: var(--text-muted);
+}
+.prose-cslog li {
+  margin-bottom: 0.4rem;
+}
+.prose-cslog ul li {
+  list-style: disc;
+}
+.prose-cslog ol li {
+  list-style: decimal;
+}
+.prose-cslog blockquote {
+  border-left: 3px solid #c5d000;
+  padding-left: 1.25rem;
+  margin: 2rem 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.prose-cslog img {
+  width: 100%;
+  height: auto;
+  margin: 2rem 0;
+}
+.prose-cslog hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+.prose-cslog pre {
+  background: #1a1a1a;
+  padding: 1.25rem;
+  overflow-x: auto;
+  margin-bottom: 1.4rem;
+  border-radius: 2px;
+}
+.prose-cslog code {
+  font-size: 0.875em;
+  color: #c5d000;
+}
+
 /* Hazard tape pattern */
 .hazard-tape {
   background: repeating-linear-gradient(
