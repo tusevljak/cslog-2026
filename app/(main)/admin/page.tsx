@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback } from 'react'
 
 const ACCENT = '#c5d000'
 const DARK = '#0d0d0d'

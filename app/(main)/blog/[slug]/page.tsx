@@ -23,7 +23,7 @@ type Params = { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params
-  const [post] = await sql<Post[]>`
+  const [post] = await sql<Post>`
     SELECT title, excerpt, meta_title, meta_description, cover_image
     FROM blog_posts WHERE slug = ${slug} AND status = 'published'
   `
@@ -46,7 +46,7 @@ function formatDate(dateStr: string | null) {
 
 export default async function BlogPostPage({ params }: Params) {
   const { slug } = await params
-  const [post] = await sql<Post[]>`
+  const [post] = await sql<Post>`
     SELECT * FROM blog_posts WHERE slug = ${slug} AND status = 'published'
   `
   if (!post) notFound()

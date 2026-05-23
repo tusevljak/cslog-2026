@@ -29,7 +29,7 @@ function formatDate(dateStr: string | null) {
 
 export default async function BlogPage() {
   await initDb()
-  const posts = await sql<Post[]>`
+  const posts = await sql<Post>`
     SELECT id, title, slug, excerpt, cover_image, published_at, created_at
     FROM blog_posts
     WHERE status = 'published'
