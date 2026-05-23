@@ -5,6 +5,8 @@ import type { Metadata } from 'next'
 import { marked } from 'marked'
 import { sql } from '@/lib/db'
 
+export const dynamic = 'force-dynamic'
+
 type Post = {
   id: number
   title: string

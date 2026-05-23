@@ -3,6 +3,8 @@ import Image from 'next/image'
 import type { Metadata } from 'next'
 import { sql, initDb } from '@/lib/db'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'CSLOG Priče | Blog',
   description: 'Priče sa puta, specijalni transporti i novosti iz sveta teretnog transporta.',
