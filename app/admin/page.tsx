@@ -98,12 +98,18 @@ export default function AdminPage() {
   async function login(e: React.FormEvent) {
     e.preventDefault()
     setAuthError('')
-    const res = await fetch('/api/posts', { headers: { 'x-admin-password': password } })
+    const res = await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password }),
+    })
     if (res.ok) {
-      const data = await res.json()
-      setPosts(data)
-      const gRes = await fetch('/api/gallery', { headers: { 'x-admin-password': password } })
-      if (gRes.ok) setImages(await gRes.json())
+      const [postsRes, galleryRes] = await Promise.all([
+        fetch('/api/posts', { headers: { 'x-admin-password': password } }),
+        fetch('/api/gallery', { headers: { 'x-admin-password': password } }),
+      ])
+      if (postsRes.ok) setPosts(await postsRes.json())
+      if (galleryRes.ok) setImages(await galleryRes.json())
       setAuthed(true)
     } else {
       setAuthError('Pogrešna lozinka.')
