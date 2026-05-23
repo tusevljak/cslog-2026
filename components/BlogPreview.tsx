@@ -13,13 +13,14 @@ type Post = {
 
 export default async function BlogPreview() {
   await initDb()
-  const [post] = await sql<Post>`
+  const rows = await sql`
     SELECT id, title, slug, excerpt, cover_image, published_at
     FROM blog_posts
     WHERE status = 'published'
     ORDER BY published_at DESC NULLS LAST
     LIMIT 1
-  `
+  ` as Post[]
+  const post = rows[0]
 
   return (
     <section className="py-20" style={{ background: 'var(--bg-subtle)' }}>
