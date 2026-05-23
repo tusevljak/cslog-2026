@@ -70,6 +70,8 @@ export default function AdminPage() {
   const [authed, setAuthed] = useState(false)
   const [authError, setAuthError] = useState('')
   const [tab, setTab] = useState<'posts' | 'gallery'>('posts')
+  const [seeding, setSeeding] = useState(false)
+  const [seedMsg, setSeedMsg] = useState('')
 
   // Posts state
   const [posts, setPosts] = useState<Post[]>([])
@@ -209,6 +211,21 @@ export default function AdminPage() {
 
   function setContent(v: string) { setForm(f => ({ ...f, content: v })) }
 
+  async function seedPosts() {
+    if (!confirm('Uvesti sve postove sa originalnog sajta? Postojeći postovi neće biti prepisani.')) return
+    setSeeding(true); setSeedMsg('')
+    try {
+      const res = await fetch('/api/seed', { method: 'POST', headers: headers() })
+      const data = await res.json()
+      await fetchPosts()
+      setSeedMsg(`Uvezeno: ${data.inserted}, već postojalo: ${data.skipped}`)
+    } catch {
+      setSeedMsg('Greška pri uvozu.')
+    } finally {
+      setSeeding(false)
+    }
+  }
+
   // ── LOGIN ──────────────────────────────────────────────────────────
   if (!authed) {
     return (
@@ -320,12 +337,22 @@ export default function AdminPage() {
             {view === 'list' && (
               <>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                  <h1 style={{ color: '#ddd', fontSize: '1rem', fontWeight: 600, margin: 0 }}>
-                    Blog postovi ({posts.length})
-                  </h1>
-                  <button onClick={openNew} style={{ background: ACCENT, color: DARK, border: 'none', padding: '0.55rem 1.2rem', fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                    + Novi post
-                  </button>
+                  <div>
+                    <h1 style={{ color: '#ddd', fontSize: '1rem', fontWeight: 600, margin: 0 }}>
+                      Blog postovi ({posts.length})
+                    </h1>
+                    {seedMsg && <p style={{ margin: '0.25rem 0 0', fontSize: '0.72rem', color: ACCENT }}>{seedMsg}</p>}
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    {posts.length === 0 && (
+                      <button onClick={seedPosts} disabled={seeding} style={{ background: 'none', border: `1px solid ${ACCENT}`, color: ACCENT, padding: '0.5rem 1.1rem', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                        {seeding ? 'Uvoz...' : '↓ Uvezi postove'}
+                      </button>
+                    )}
+                    <button onClick={openNew} style={{ background: ACCENT, color: DARK, border: 'none', padding: '0.55rem 1.2rem', fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                      + Novi post
+                    </button>
+                  </div>
                 </div>
 
                 {posts.length === 0 ? (
