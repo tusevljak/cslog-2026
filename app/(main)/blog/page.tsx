@@ -1,13 +1,12 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import type { Metadata } from 'next'
 import { sql, initDb } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'CSLOG Priče | Blog',
-  description: 'Priče sa puta, specijalni transporti i novosti iz sveta teretnog transporta.',
+  title: 'Priče sa puta | CSLOG Blog',
+  description: 'Specijalni transporti, priče vozača i novosti iz CSLOG-a — dvadeset godina na putu.',
 }
 
 type Post = {
@@ -29,6 +28,22 @@ function formatDate(dateStr: string | null) {
   })
 }
 
+function PostImage({ src, alt, height = 240 }: { src: string; alt: string; height?: number }) {
+  if (!src) {
+    return (
+      <div style={{
+        height,
+        background: 'repeating-linear-gradient(-45deg, #1a1a00, #1a1a00 12px, #0d0d0d 12px, #0d0d0d 24px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '3rem', color: '#c5d000', opacity: 0.3, letterSpacing: '0.1em' }}>CSLOG</span>
+      </div>
+    )
+  }
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} alt={alt} style={{ width: '100%', height, objectFit: 'cover', display: 'block' }} />
+}
+
 export default async function BlogPage() {
   await initDb()
   const posts = await sql`
@@ -38,112 +53,197 @@ export default async function BlogPage() {
     ORDER BY published_at DESC NULLS LAST
   ` as Post[]
 
+  const [featured, ...rest] = posts
+
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
-      {/* Hero */}
-      <section className="py-20 border-b border-white/10">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <p
-            className="uppercase tracking-[0.25em] text-xs mb-4"
-            style={{ fontFamily: 'var(--font-inter)', color: '#c5d000' }}
-          >
-            CSLOG Blog
-          </p>
-          <h1
-            style={{
-              fontFamily: 'var(--font-bebas)',
-              fontSize: 'clamp(3rem, 8vw, 6rem)',
-              letterSpacing: '0.05em',
-              color: 'var(--text)',
-              lineHeight: 1,
-            }}
-          >
-            Priče sa puta
-          </h1>
-        </div>
-      </section>
 
-      {/* Posts grid */}
-      <section className="py-16">
-        <div className="max-w-[1280px] mx-auto px-6">
-          {posts.length === 0 ? (
-            <p style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)' }} className="text-center py-20">
-              Uskoro — prve priče su na putu.
-            </p>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map((post) => (
-                <article key={post.id} className="group flex flex-col">
-                  <Link href={`/blog/${post.slug}`} className="block overflow-hidden mb-4">
-                    {post.cover_image ? (
-                      <Image
-                        src={post.cover_image}
-                        alt={post.title}
-                        width={600}
-                        height={380}
-                        className="w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        style={{ height: '220px' }}
-                        unoptimized={post.cover_image.startsWith('http')}
-                      />
-                    ) : (
-                      <div
-                        className="w-full flex items-center justify-center"
-                        style={{ height: '220px', background: '#1a1a1a' }}
-                      >
-                        <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '4rem', color: '#333' }}>CS</span>
-                      </div>
-                    )}
-                  </Link>
-
-                  {post.published_at && (
-                    <p
-                      className="text-xs uppercase tracking-widest mb-2"
-                      style={{ fontFamily: 'var(--font-inter)', color: '#c5d000' }}
-                    >
-                      {formatDate(post.published_at)}
-                    </p>
-                  )}
-
-                  <Link href={`/blog/${post.slug}`}>
-                    <h2
-                      className="mb-3 group-hover:text-[#c5d000] transition-colors"
-                      style={{
-                        fontFamily: 'var(--font-inter)',
-                        fontWeight: 700,
-                        fontSize: '1.1rem',
-                        color: 'var(--text)',
-                        lineHeight: 1.4,
-                      }}
-                    >
-                      {post.title}
-                    </h2>
-                  </Link>
-
-                  {post.excerpt && (
-                    <p
-                      className="text-sm leading-relaxed mb-4 flex-1"
-                      style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)' }}
-                    >
-                      {post.excerpt}
-                    </p>
-                  )}
-
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="text-[#c5d000] text-xs uppercase tracking-widest hover:underline flex items-center gap-2 mt-auto"
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
-                    Pročitaj
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12,5 19,12 12,19" />
-                    </svg>
-                  </Link>
-                </article>
-              ))}
-            </div>
+      {/* Page label */}
+      <div style={{ borderBottom: '1px solid var(--border)' }}>
+        <div className="max-w-[1280px] mx-auto px-6 py-5 flex items-center justify-between">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '1.5rem', letterSpacing: '0.1em', color: '#c5d000' }}>Blog</span>
+            <span style={{ width: 1, height: 18, background: 'var(--border)', display: 'inline-block' }} />
+            <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Priče sa puta</span>
+          </div>
+          {posts.length > 0 && (
+            <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              {posts.length} {posts.length === 1 ? 'priča' : posts.length < 5 ? 'priče' : 'priča'}
+            </span>
           )}
         </div>
-      </section>
+      </div>
+
+      {posts.length === 0 ? (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
+          <p style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+            Uskoro — prve priče su na putu.
+          </p>
+        </div>
+      ) : (
+        <>
+          {/* ── FEATURED POST ── */}
+          <section style={{ borderBottom: '1px solid var(--border)' }}>
+            <Link href={`/blog/${featured.slug}`} className="block group">
+              <div className="max-w-[1280px] mx-auto">
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }} className="md:grid-cols-2">
+
+                  {/* Image */}
+                  <div style={{ position: 'relative', overflow: 'hidden', minHeight: 480 }}>
+                    <div style={{ position: 'absolute', inset: 0, transition: 'transform 0.6s ease' }} className="group-hover:scale-105">
+                      <PostImage src={featured.cover_image} alt={featured.title} height={480} />
+                    </div>
+                    <div style={{
+                      position: 'absolute', inset: 0,
+                      background: 'linear-gradient(to right, transparent 60%, var(--bg))',
+                    }} className="hidden md:block" />
+                  </div>
+
+                  {/* Content */}
+                  <div style={{
+                    padding: 'clamp(2rem, 5vw, 4rem)',
+                    display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                    background: 'var(--bg)',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                      <span style={{
+                        fontFamily: 'var(--font-inter)', fontSize: '0.65rem',
+                        textTransform: 'uppercase', letterSpacing: '0.2em',
+                        background: '#c5d000', color: '#0d0d0d',
+                        padding: '0.2rem 0.6rem', fontWeight: 700,
+                      }}>Najnovije</span>
+                      {featured.published_at && (
+                        <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                          {formatDate(featured.published_at)}
+                        </span>
+                      )}
+                    </div>
+
+                    <h2 style={{
+                      fontFamily: 'var(--font-bebas)',
+                      fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+                      letterSpacing: '0.04em',
+                      color: 'var(--text)',
+                      lineHeight: 1.05,
+                      marginBottom: '1.25rem',
+                      transition: 'color 0.2s',
+                    }} className="group-hover:text-[#c5d000]">
+                      {featured.title}
+                    </h2>
+
+                    {featured.excerpt && (
+                      <p style={{
+                        fontFamily: 'var(--font-inter)',
+                        fontSize: '1rem',
+                        lineHeight: 1.75,
+                        color: 'var(--text-muted)',
+                        marginBottom: '2rem',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 4,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                      }}>
+                        {featured.excerpt}
+                      </p>
+                    )}
+
+                    <span style={{
+                      display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                      fontFamily: 'var(--font-inter)', fontSize: '0.78rem',
+                      textTransform: 'uppercase', letterSpacing: '0.15em',
+                      color: '#c5d000', fontWeight: 600,
+                    }}>
+                      Čitaj celu priču
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ transition: 'transform 0.2s' }} className="group-hover:translate-x-1">
+                        <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12,5 19,12 12,19" />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </section>
+
+          {/* ── REST OF POSTS ── */}
+          {rest.length > 0 && (
+            <section className="py-16">
+              <div className="max-w-[1280px] mx-auto px-6">
+
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+                  gap: '2px',
+                  border: '1px solid var(--border)',
+                }}>
+                  {rest.map((post) => (
+                    <Link key={post.id} href={`/blog/${post.slug}`} className="group block" style={{ borderRight: '1px solid var(--border)' }}>
+                      <article>
+                        {/* Image */}
+                        <div style={{ overflow: 'hidden' }}>
+                          <div style={{ transition: 'transform 0.5s ease' }} className="group-hover:scale-[1.03]">
+                            <PostImage src={post.cover_image} alt={post.title} height={200} />
+                          </div>
+                        </div>
+
+                        {/* Text */}
+                        <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border)' }}>
+                          {post.published_at && (
+                            <p style={{
+                              fontFamily: 'var(--font-inter)', fontSize: '0.68rem',
+                              textTransform: 'uppercase', letterSpacing: '0.18em',
+                              color: '#c5d000', marginBottom: '0.6rem',
+                            }}>
+                              {formatDate(post.published_at)}
+                            </p>
+                          )}
+
+                          <h3 style={{
+                            fontFamily: 'var(--font-bebas)',
+                            fontSize: '1.4rem',
+                            letterSpacing: '0.04em',
+                            color: 'var(--text)',
+                            lineHeight: 1.15,
+                            marginBottom: '0.6rem',
+                            transition: 'color 0.2s',
+                          }} className="group-hover:text-[#c5d000]">
+                            {post.title}
+                          </h3>
+
+                          {post.excerpt && (
+                            <p style={{
+                              fontFamily: 'var(--font-inter)', fontSize: '0.85rem',
+                              lineHeight: 1.65, color: 'var(--text-muted)',
+                              display: '-webkit-box',
+                              WebkitLineClamp: 3,
+                              WebkitBoxOrient: 'vertical',
+                              overflow: 'hidden',
+                            }}>
+                              {post.excerpt}
+                            </p>
+                          )}
+
+                          <div style={{
+                            marginTop: '1.25rem',
+                            display: 'flex', alignItems: 'center', gap: '0.4rem',
+                            fontFamily: 'var(--font-inter)', fontSize: '0.7rem',
+                            textTransform: 'uppercase', letterSpacing: '0.15em',
+                            color: '#c5d000',
+                          }}>
+                            Pročitaj
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transition: 'transform 0.2s' }} className="group-hover:translate-x-1">
+                              <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12,5 19,12 12,19" />
+                            </svg>
+                          </div>
+                        </div>
+                      </article>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
+        </>
+      )}
     </div>
   )
 }
