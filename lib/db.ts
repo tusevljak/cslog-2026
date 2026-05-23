@@ -19,4 +19,13 @@ export async function initDb() {
       updated_at TIMESTAMPTZ DEFAULT NOW()
     )
   `
+  await sql`
+    CREATE TABLE IF NOT EXISTS gallery_images (
+      id SERIAL PRIMARY KEY,
+      url TEXT NOT NULL,
+      caption TEXT DEFAULT '',
+      sort_order INTEGER DEFAULT 0,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `
 }
