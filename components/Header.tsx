@@ -141,13 +141,18 @@ export default function Header() {
               </Link>
             ))}
           </nav>
-          <Link
-            href="/kontakt"
-            className="inline-flex items-center bg-[#0d0d0d] text-white font-semibold uppercase tracking-widest text-sm px-6 py-2.5 hover:bg-[#c5d000] hover:text-[#0d0d0d] transition-colors duration-200"
-            style={{ fontFamily: 'var(--font-inter)' }}
+          <a
+            href="#upit"
+            className="inline-flex items-center gap-2 font-bold uppercase tracking-widest text-sm px-6 py-2.5 transition-all duration-200"
+            style={{ fontFamily: 'var(--font-inter)', background: '#c5d000', color: '#0d0d0d' }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#0d0d0d'; e.currentTarget.style.color = '#c5d000' }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#c5d000'; e.currentTarget.style.color = '#0d0d0d' }}
           >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
             Besplatan upit
-          </Link>
+          </a>
         </div>
       </div>
 
@@ -163,13 +168,16 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
-          <Link href="/kontakt"
-            className="inline-flex items-center justify-center bg-[#0d0d0d] text-white font-semibold uppercase tracking-widest text-sm px-5 py-3 mt-2"
-            style={{ fontFamily: 'var(--font-inter)' }}
+          <a href="#upit"
+            className="inline-flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-sm px-5 py-3 mt-2"
+            style={{ fontFamily: 'var(--font-inter)', background: '#c5d000', color: '#0d0d0d' }}
             onClick={() => setMenuOpen(false)}
           >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
             Besplatan upit
-          </Link>
+          </a>
         </nav>
       )}
     </header>
