@@ -69,7 +69,7 @@ export default function AdminPage() {
   const [password, setPassword] = useState('')
   const [authed, setAuthed] = useState(false)
   const [authError, setAuthError] = useState('')
-  const [tab, setTab] = useState<'posts' | 'gallery'>('posts')
+  const [tab, setTab] = useState<'posts' | 'gallery' | 'inquiries'>('posts')
   const [seeding, setSeeding] = useState(false)
   const [seedMsg, setSeedMsg] = useState('')
   const [syncing, setSyncing] = useState(false)
@@ -83,6 +83,11 @@ export default function AdminPage() {
   const [deleting, setDeleting] = useState(false)
   const [msg, setMsg] = useState('')
   const contentRef = useRef<HTMLTextAreaElement>(null)
+
+  // Inquiries state
+  type Inquiry = { id: number; ime: string; email: string; telefon: string; ruta: string; teret: string; poruka: string; created_at: string }
+  const [inquiries, setInquiries] = useState<Inquiry[]>([])
+  const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null)
 
   // Gallery state
   const [images, setImages] = useState<GalleryImage[]>([])
@@ -105,12 +110,14 @@ export default function AdminPage() {
       body: JSON.stringify({ password }),
     })
     if (res.ok) {
-      const [postsRes, galleryRes] = await Promise.all([
+      const [postsRes, galleryRes, inquiriesRes] = await Promise.all([
         fetch('/api/posts', { headers: { 'x-admin-password': password } }),
         fetch('/api/gallery', { headers: { 'x-admin-password': password } }),
+        fetch('/api/inquiries', { headers: { 'x-admin-password': password } }),
       ])
       if (postsRes.ok) setPosts(await postsRes.json())
       if (galleryRes.ok) setImages(await galleryRes.json())
+      if (inquiriesRes.ok) setInquiries(await inquiriesRes.json())
       setAuthed(true)
     } else {
       setAuthError('Pogrešna lozinka.')
@@ -334,7 +341,7 @@ export default function AdminPage() {
 
       {/* Tabs */}
       <div style={{ borderBottom: '1px solid #1a1a1a', padding: '0 2rem', display: 'flex' }}>
-        {([['posts', '📝  Blog postovi'], ['gallery', '🖼  Galerija']] as const).map(([key, label]) => (
+        {([['posts', '📝  Blog postovi'], ['gallery', '🖼  Galerija'], ['inquiries', `📩  Upiti${inquiries.length ? ` (${inquiries.length})` : ''}`]] as const).map(([key, label]) => (
           <button
             key={key}
             onClick={() => setTab(key)}
@@ -497,6 +504,94 @@ export default function AdminPage() {
               </form>
             )}
           </>
+        )}
+
+        {/* ── INQUIRIES TAB ── */}
+        {tab === 'inquiries' && (
+          <div style={{ display: 'grid', gridTemplateColumns: selectedInquiry ? '1fr 1fr' : '1fr', gap: '1.5rem', alignItems: 'start' }}>
+            {/* List */}
+            <div>
+              <p style={{ color: '#555', fontSize: '0.82rem', marginBottom: '1rem' }}>
+                Ukupno upita: {inquiries.length}
+              </p>
+              {inquiries.length === 0 ? (
+                <p style={{ color: '#333', textAlign: 'center', padding: '4rem' }}>Nema upita.</p>
+              ) : (
+                <div style={{ border: '1px solid #1a1a1a' }}>
+                  {inquiries.map((inq, i) => (
+                    <div
+                      key={inq.id}
+                      onClick={() => setSelectedInquiry(selectedInquiry?.id === inq.id ? null : inq)}
+                      style={{
+                        padding: '1rem 1.25rem',
+                        borderBottom: i < inquiries.length - 1 ? '1px solid #1a1a1a' : 'none',
+                        cursor: 'pointer',
+                        background: selectedInquiry?.id === inq.id ? '#111' : 'transparent',
+                        borderLeft: selectedInquiry?.id === inq.id ? `2px solid ${ACCENT}` : '2px solid transparent',
+                      }}
+                      onMouseEnter={e => { if (selectedInquiry?.id !== inq.id) e.currentTarget.style.background = '#0d0d0d' }}
+                      onMouseLeave={e => { if (selectedInquiry?.id !== inq.id) e.currentTarget.style.background = 'transparent' }}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
+                        <div style={{ minWidth: 0 }}>
+                          <p style={{ margin: 0, color: '#ddd', fontWeight: 600, fontSize: '0.88rem' }}>{inq.ime}</p>
+                          <p style={{ margin: '0.15rem 0 0', color: '#555', fontSize: '0.75rem' }}>{inq.email}{inq.telefon ? ` · ${inq.telefon}` : ''}</p>
+                          {inq.ruta && <p style={{ margin: '0.15rem 0 0', color: ACCENT, fontSize: '0.72rem' }}>→ {inq.ruta}</p>}
+                        </div>
+                        <span style={{ color: '#333', fontSize: '0.68rem', flexShrink: 0, whiteSpace: 'nowrap' }}>
+                          {new Date(inq.created_at).toLocaleDateString('sr-RS', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Detail */}
+            {selectedInquiry && (
+              <div style={{ border: '1px solid #1a1a1a', padding: '1.5rem', position: 'sticky', top: '1rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                  <h2 style={{ color: '#ddd', fontSize: '1rem', fontWeight: 600, margin: 0 }}>{selectedInquiry.ime}</h2>
+                  <button onClick={() => setSelectedInquiry(null)} style={{ background: 'none', border: 'none', color: '#444', cursor: 'pointer', fontSize: '1.2rem', lineHeight: 1 }}>×</button>
+                </div>
+
+                {[
+                  { label: 'Email', value: selectedInquiry.email, href: `mailto:${selectedInquiry.email}` },
+                  { label: 'Telefon', value: selectedInquiry.telefon, href: `tel:${selectedInquiry.telefon}` },
+                  { label: 'Ruta', value: selectedInquiry.ruta },
+                  { label: 'Teret', value: selectedInquiry.teret },
+                ].map(({ label, value, href }) => value ? (
+                  <div key={label} style={{ marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #1a1a1a' }}>
+                    <p style={{ color: '#444', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.3rem', fontFamily: 'var(--font-inter)' }}>{label}</p>
+                    {href ? (
+                      <a href={href} style={{ color: ACCENT, fontSize: '0.875rem', textDecoration: 'none', fontFamily: 'var(--font-inter)' }}>{value}</a>
+                    ) : (
+                      <p style={{ color: '#ccc', fontSize: '0.875rem', margin: 0, fontFamily: 'var(--font-inter)' }}>{value}</p>
+                    )}
+                  </div>
+                ) : null)}
+
+                {selectedInquiry.poruka && (
+                  <div style={{ marginBottom: '1rem' }}>
+                    <p style={{ color: '#444', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.3rem', fontFamily: 'var(--font-inter)' }}>Napomena</p>
+                    <p style={{ color: '#aaa', fontSize: '0.875rem', lineHeight: 1.7, margin: 0, fontFamily: 'var(--font-inter)' }}>{selectedInquiry.poruka}</p>
+                  </div>
+                )}
+
+                <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem' }}>
+                  <a href={`mailto:${selectedInquiry.email}`} style={{ background: ACCENT, color: DARK, padding: '0.55rem 1.25rem', fontFamily: 'var(--font-inter)', fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', textDecoration: 'none', display: 'inline-block' }}>
+                    Odgovori →
+                  </a>
+                  {selectedInquiry.telefon && (
+                    <a href={`tel:${selectedInquiry.telefon}`} style={{ background: 'none', border: '1px solid #2a2a2a', color: '#888', padding: '0.55rem 1.25rem', fontFamily: 'var(--font-inter)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', textDecoration: 'none', display: 'inline-block' }}>
+                      Pozovi
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         )}
 
         {/* ── GALLERY TAB ── */}
