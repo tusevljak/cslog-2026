@@ -1,6 +1,28 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
+
 export default function Hero() {
+  const tapeRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    let pos = 0
+    let lastY = window.scrollY
+
+    function onScroll() {
+      const currentY = window.scrollY
+      const delta = currentY - lastY
+      pos += delta * 0.4
+      lastY = currentY
+      if (tapeRef.current) {
+        tapeRef.current.style.backgroundPosition = `${pos}px 0`
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
     <section className="relative w-full overflow-hidden" style={{ minHeight: '90vh' }}>
 
@@ -85,8 +107,8 @@ export default function Hero() {
         <div className="beacon-cast-right" />
       </div>
 
-      {/* Hazard tape bottom — animirana */}
-      <div className="absolute bottom-0 left-0 right-0 h-14 z-10 tape-scroll" />
+      {/* Hazard tape bottom — scroll-driven */}
+      <div ref={tapeRef} className="absolute bottom-0 left-0 right-0 h-14 z-10 tape-scroll" />
 
       <style>{`
         .beacon-container {
@@ -190,12 +212,7 @@ export default function Hero() {
             #0d0d0d 54px,  #0d0d0d 72px
           );
           background-size: 102px 102px;
-          animation: tape-move 1.8s linear infinite;
-        }
-
-        @keyframes tape-move {
-          from { background-position: 0 0; }
-          to   { background-position: 102px 0; }
+          background-position: 0 0;
         }
       `}</style>
     </section>
