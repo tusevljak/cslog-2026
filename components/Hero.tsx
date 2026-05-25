@@ -85,10 +85,8 @@ export default function Hero() {
         <div className="beacon-cast-right" />
       </div>
 
-      {/* Hazard tape bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-14 z-10" style={{
-        background: 'repeating-linear-gradient(-45deg, #c5d000 0px, #c5d000 18px, #0d0d0d 18px, #0d0d0d 36px, #ffffff 36px, #ffffff 54px, #0d0d0d 54px, #0d0d0d 72px)'
-      }} />
+      {/* Hazard tape bottom — animirana */}
+      <div className="absolute bottom-0 left-0 right-0 h-14 z-10 tape-scroll" />
 
       <style>{`
         .beacon-container {
@@ -181,6 +179,23 @@ export default function Hero() {
         @keyframes cast-spin-reverse {
           from { transform: rotate(0deg); }
           to { transform: rotate(-360deg); }
+        }
+
+        .tape-scroll {
+          background: repeating-linear-gradient(
+            -45deg,
+            #c5d000 0px,   #c5d000 18px,
+            #0d0d0d 18px,  #0d0d0d 36px,
+            #ffffff 36px,  #ffffff 54px,
+            #0d0d0d 54px,  #0d0d0d 72px
+          );
+          background-size: 102px 102px;
+          animation: tape-move 1.8s linear infinite;
+        }
+
+        @keyframes tape-move {
+          from { background-position: 0 0; }
+          to   { background-position: 102px 0; }
         }
       `}</style>
     </section>
