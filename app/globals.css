@@ -156,4 +156,11 @@ body {
     #0d0d0d 20px,
     #0d0d0d 40px
   );
+  background-size: 57px 57px;
+  animation: hazard-scroll 1.2s linear infinite;
+}
+
+@keyframes hazard-scroll {
+  from { background-position: 0 0; }
+  to   { background-position: 57px 0; }
 }
