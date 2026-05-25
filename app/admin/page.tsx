@@ -5,6 +5,67 @@ import { useState, useRef, useCallback } from 'react'
 const ACCENT = '#c5d000'
 const DARK = '#0d0d0d'
 
+function ImageUpload({ value, onChange, password, type = 'blog' }: {
+  value: string
+  onChange: (url: string) => void
+  password: string
+  type?: 'blog' | 'gallery'
+}) {
+  const [uploading, setUploading] = useState(false)
+  const [error, setError] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploading(true); setError('')
+    try {
+      const fd = new FormData()
+      fd.append('file', file)
+      fd.append('type', type)
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'x-admin-password': password },
+        body: fd,
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Greška')
+      onChange(data.url)
+    } catch (err) {
+      setError('Greška: ' + err)
+    } finally {
+      setUploading(false)
+      if (inputRef.current) inputRef.current.value = ''
+    }
+  }
+
+  return (
+    <div>
+      <input ref={inputRef} type="file" accept="image/*" onChange={handleFile} style={{ display: 'none' }} />
+      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem' }}>
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          disabled={uploading}
+          style={{ background: uploading ? '#1a1a1a' : ACCENT, color: uploading ? '#555' : DARK, border: 'none', padding: '0.5rem 1rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: uploading ? 'default' : 'pointer', fontFamily: 'var(--font-inter)', flexShrink: 0 }}
+        >
+          {uploading ? 'Konvertuje...' : '↑ Upload slike'}
+        </button>
+        {value && (
+          <button type="button" onClick={() => onChange('')} style={{ background: 'none', border: '1px solid #3a0000', color: '#c44', padding: '0.4rem 0.75rem', fontSize: '0.72rem', cursor: 'pointer' }}>
+            ×
+          </button>
+        )}
+      </div>
+      {error && <p style={{ color: '#f55', fontSize: '0.72rem', marginBottom: '0.5rem' }}>{error}</p>}
+      {value && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={value} alt="" style={{ width: '100%', height: 130, objectFit: 'cover', marginTop: '0.5rem' }} />
+      )}
+    </div>
+  )
+}
+
 type Post = {
   id: number
   title: string
@@ -491,13 +552,13 @@ export default function AdminPage() {
                     </div>
 
                     <div style={{ border: '1px solid #1a1a1a', padding: '1rem' }}>
-                      <label style={{ display: 'block', color: '#444', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.5rem' }}>Naslovna slika (URL)</label>
-                      <input type="text" placeholder="/slike/naziv.jpg ili https://..." value={form.cover_image} onChange={field('cover_image')}
-                        style={{ ...inp(), fontFamily: 'monospace', fontSize: '0.78rem' }} />
-                      {form.cover_image && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={form.cover_image} alt="" style={{ marginTop: '0.75rem', width: '100%', height: 110, objectFit: 'cover', opacity: 0.8 }} />
-                      )}
+                      <label style={{ display: 'block', color: '#444', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.75rem' }}>Naslovna slika</label>
+                      <ImageUpload
+                        value={form.cover_image || ''}
+                        onChange={url => setForm(f => ({ ...f, cover_image: url }))}
+                        password={password}
+                        type="blog"
+                      />
                     </div>
                   </div>
                 </div>
@@ -598,23 +659,39 @@ export default function AdminPage() {
         {tab === 'gallery' && (
           <>
             {/* Add form */}
-            <form onSubmit={addImage} style={{ border: '1px solid #1a1a1a', padding: '1.25rem', marginBottom: '2rem' }}>
+            <div style={{ border: '1px solid #1a1a1a', padding: '1.25rem', marginBottom: '2rem' }}>
               <p style={{ color: '#ddd', fontSize: '0.88rem', fontWeight: 600, margin: '0 0 1rem' }}>+ Dodaj sliku</p>
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'flex-end' }}>
-                <div style={{ flex: 2, minWidth: 220 }}>
-                  <label style={{ display: 'block', color: '#444', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.3rem' }}>URL slike *</label>
-                  <input type="text" placeholder="https://... ili /slike/..." value={imgUrl} onChange={e => setImgUrl(e.target.value)} required style={inp()} />
+              <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+                <div style={{ flex: 1, minWidth: 200 }}>
+                  <label style={{ display: 'block', color: '#444', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.5rem' }}>Slika</label>
+                  <ImageUpload
+                    value={imgUrl}
+                    onChange={async (url) => {
+                      setImgUrl(url)
+                      // auto-save to gallery on upload
+                      setImgSaving(true)
+                      try {
+                        const res = await fetch('/api/gallery', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+                          body: JSON.stringify({ url, caption: imgCaption }),
+                        })
+                        if (res.ok) { await fetchImages(); setImgUrl(''); setImgCaption(''); setImgMsg('✓ Dodato') }
+                        else setImgMsg('✗ Greška pri čuvanju')
+                      } catch { setImgMsg('✗ Greška') }
+                      finally { setImgSaving(false) }
+                    }}
+                    password={password}
+                    type="gallery"
+                  />
                 </div>
-                <div style={{ flex: 2, minWidth: 220 }}>
+                <div style={{ flex: 2, minWidth: 200 }}>
                   <label style={{ display: 'block', color: '#444', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.3rem' }}>Opis (opcionalno)</label>
                   <input type="text" placeholder="Transport Beograd–Tirol..." value={imgCaption} onChange={e => setImgCaption(e.target.value)} style={inp()} />
                 </div>
-                <button type="submit" disabled={imgSaving} style={{ background: ACCENT, color: DARK, border: 'none', padding: '0.6rem 1.2rem', fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em', flexShrink: 0 }}>
-                  {imgSaving ? '...' : 'Dodaj'}
-                </button>
               </div>
-              {imgMsg && <p style={{ marginTop: '0.5rem', fontSize: '0.78rem', color: imgMsg.startsWith('Greška') ? '#f55' : ACCENT }}>{imgMsg}</p>}
-            </form>
+              {imgMsg && <p style={{ marginTop: '0.5rem', fontSize: '0.78rem', color: imgMsg.startsWith('✗') ? '#f55' : ACCENT }}>{imgMsg}</p>}
+            </div>
 
             {/* Image grid */}
             <p style={{ color: '#555', fontSize: '0.82rem', marginBottom: '1rem' }}>Ukupno: {images.length} slika</p>
