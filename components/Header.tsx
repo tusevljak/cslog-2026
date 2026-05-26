@@ -15,23 +15,32 @@ const navLinks = [
   { href: '/kontakt', label: 'Kontakt' },
 ]
 
-// Hazard tape: white + black + yellow + black — no CSS animation, scroll-driven
-const TAPE_BG = `repeating-linear-gradient(
+// Left half: diagonals lean right (-45deg)
+const TAPE_LEFT = `repeating-linear-gradient(
   -45deg,
-  #ffffff    0px,  #ffffff   10px,
-  #0d0d0d   10px,  #0d0d0d  20px,
-  #c5d000   20px,  #c5d000  30px,
-  #0d0d0d   30px,  #0d0d0d  40px
+  #ffffff  0px, #ffffff 10px,
+  #0d0d0d 10px, #0d0d0d 20px,
+  #c5d000 20px, #c5d000 30px,
+  #0d0d0d 30px, #0d0d0d 40px
+)`
+// Right half: mirror (+45deg)
+const TAPE_RIGHT = `repeating-linear-gradient(
+  45deg,
+  #ffffff  0px, #ffffff 10px,
+  #0d0d0d 10px, #0d0d0d 20px,
+  #c5d000 20px, #c5d000 30px,
+  #0d0d0d 30px, #0d0d0d 40px
 )`
 const TAPE_SIZE = '56px 56px'
+const TAPE_H = 14   // stripe height in px
+const TRI_W  = 18   // half-width of the center triangle notch
 
 export default function Header() {
   const { theme, toggle } = useTheme()
   const [menuOpen, setMenuOpen] = useState(false)
-  const [compact, setCompact] = useState(false)
 
-  const topRef = useRef<HTMLDivElement>(null)
-  const botRef = useRef<HTMLDivElement>(null)
+  const leftRef  = useRef<HTMLDivElement>(null)
+  const rightRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     let lastY = window.scrollY
@@ -40,39 +49,47 @@ export default function Header() {
     function onScroll() {
       const y = window.scrollY
       const delta = y - lastY
-      pos += delta * 0.5
+      // scroll down → pos increases → left moves right (toward center), right moves left (toward center)
+      // scroll up   → pos decreases → both flee from center
+      pos += delta * 0.55
       lastY = y
 
-      // Scroll-driven tape movement (no CSS animation)
-      if (topRef.current) topRef.current.style.backgroundPosition = `${pos}px 0`
-      if (botRef.current) botRef.current.style.backgroundPosition = `${-pos}px 0`
-
-      // Collapse both stripes past threshold
-      setCompact(y > 60)
+      if (leftRef.current)  leftRef.current.style.backgroundPosition  = `${pos}px 0`
+      if (rightRef.current) rightRef.current.style.backgroundPosition = `${-pos}px 0`
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const tapeWrap: React.CSSProperties = {
-    height: compact ? 0 : 10,
-    overflow: 'hidden',
-    transition: 'height 0.38s cubic-bezier(0.4, 0, 0.2, 1)',
-    flexShrink: 0,
-  }
-  const tapeInner: React.CSSProperties = {
-    height: 10,
-    background: TAPE_BG,
-    backgroundSize: TAPE_SIZE,
-  }
-
   return (
     <header className="sticky top-0 z-50" style={{ background: 'var(--bg)' }}>
 
-      {/* ── TOP STRIPE ── */}
-      <div style={tapeWrap}>
-        <div ref={topRef} style={tapeInner} />
+      {/* ── SPLIT HAZARD TAPE WITH CENTER TRIANGLE ── */}
+      <div style={{ position: 'relative', height: TAPE_H, flexShrink: 0, overflow: 'hidden' }}>
+        {/* Left half — diagonals lean right */}
+        <div ref={leftRef} style={{
+          position: 'absolute', left: 0, right: '50%', top: 0, bottom: 0,
+          background: TAPE_LEFT, backgroundSize: TAPE_SIZE,
+        }} />
+        {/* Right half — diagonals lean left (mirror) */}
+        <div ref={rightRef} style={{
+          position: 'absolute', left: '50%', right: 0, top: 0, bottom: 0,
+          background: TAPE_RIGHT, backgroundSize: TAPE_SIZE,
+        }} />
+        {/* Center triangle notch — page background color, points down */}
+        <div style={{
+          position: 'absolute',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          top: 0,
+          width: 0,
+          height: 0,
+          borderLeft:  `${TRI_W}px solid transparent`,
+          borderRight: `${TRI_W}px solid transparent`,
+          borderTop:   `${TAPE_H}px solid var(--bg)`,
+          zIndex: 2,
+        }} />
       </div>
 
       {/* ── LOGO + CONTACT ── */}
@@ -204,11 +221,6 @@ export default function Header() {
             Besplatan upit
           </a>
         </div>
-      </div>
-
-      {/* ── BOTTOM STRIPE ── */}
-      <div style={tapeWrap}>
-        <div ref={botRef} style={tapeInner} />
       </div>
 
       {/* ── MOBILE MENU ── */}
