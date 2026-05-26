@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { sql, initDb } from '@/lib/db'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Galerija | CSLOG',
   description: 'Fotografije specijalnih transporta i vozila CSLOG kompanije.',

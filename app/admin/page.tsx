@@ -137,20 +137,14 @@ function GalleryUploader({ password, onDone }: { password: string; onDone: () =>
   const [running, setRunning] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  function pick(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = Array.from(e.target.files || [])
-    if (!files.length) return
-    setItems(files.map(file => ({ file, status: 'pending', preview: URL.createObjectURL(file) })))
-    if (inputRef.current) inputRef.current.value = ''
-  }
-
-  async function upload() {
+  async function runUpload(files: File[]) {
+    const newItems = files.map(file => ({ file, status: 'pending' as const, preview: URL.createObjectURL(file) }))
+    setItems(newItems)
     setRunning(true)
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].status === 'done') continue
+    for (let i = 0; i < newItems.length; i++) {
       setItems(prev => prev.map((it, j) => j === i ? { ...it, status: 'uploading' } : it))
       try {
-        const url = await uploadFile(items[i].file, password, 'gallery')
+        const url = await uploadFile(newItems[i].file, password, 'gallery')
         await fetch('/api/gallery', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
@@ -165,7 +159,15 @@ function GalleryUploader({ password, onDone }: { password: string; onDone: () =>
     onDone()
   }
 
+  function pick(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files || [])
+    if (inputRef.current) inputRef.current.value = ''
+    if (!files.length) return
+    runUpload(files)
+  }
+
   const allDone = items.length > 0 && items.every(it => it.status === 'done')
+  const hasErr = items.some(it => it.status === 'err')
 
   return (
     <div style={{ border: '1px solid #1a1a1a', padding: '1.25rem', marginBottom: '2rem' }}>
@@ -173,19 +175,14 @@ function GalleryUploader({ password, onDone }: { password: string; onDone: () =>
 
       <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: items.length ? '1rem' : 0 }}>
         <input ref={inputRef} type="file" accept="image/*" multiple onChange={pick} style={{ display: 'none' }} />
-        <button type="button" onClick={() => inputRef.current?.click()}
-          style={{ background: '#1a1a1a', border: `1px solid ${ACCENT}`, color: ACCENT, padding: '0.55rem 1.1rem', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer', fontFamily: 'var(--font-inter)' }}>
-          Izaberi slike
+        <button type="button" onClick={() => inputRef.current?.click()} disabled={running}
+          style={{ background: running ? '#111' : '#1a1a1a', border: `1px solid ${running ? '#333' : ACCENT}`, color: running ? '#555' : ACCENT, padding: '0.55rem 1.1rem', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: running ? 'default' : 'pointer', fontFamily: 'var(--font-inter)' }}>
+          {running ? 'Uploaduje...' : '↑ Izaberi i upload'}
         </button>
-        {items.length > 0 && !allDone && (
-          <button type="button" onClick={upload} disabled={running}
-            style={{ background: ACCENT, color: DARK, border: 'none', padding: '0.55rem 1.25rem', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: running ? 'default' : 'pointer', opacity: running ? 0.7 : 1, fontFamily: 'var(--font-inter)' }}>
-            {running ? 'Uploaduje...' : `↑ Upload ${items.length} slike`}
-          </button>
-        )}
-        {allDone && (
+        <span style={{ fontSize: '0.72rem', color: '#444' }}>Možete odabrati više slika odjednom</span>
+        {(allDone || hasErr) && (
           <button type="button" onClick={() => setItems([])}
-            style={{ background: 'none', border: '1px solid #2a2a2a', color: '#666', padding: '0.55rem 1rem', fontSize: '0.72rem', cursor: 'pointer' }}>
+            style={{ background: 'none', border: '1px solid #2a2a2a', color: '#666', padding: '0.4rem 0.8rem', fontSize: '0.72rem', cursor: 'pointer', marginLeft: 'auto' }}>
             Očisti
           </button>
         )}
@@ -200,9 +197,9 @@ function GalleryUploader({ password, onDone }: { password: string; onDone: () =>
               <div style={{
                 position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '1.25rem',
-                background: it.status === 'done' ? 'rgba(0,0,0,0.45)' : it.status === 'err' ? 'rgba(180,0,0,0.5)' : 'transparent',
+                background: it.status === 'done' ? 'rgba(0,0,0,0.45)' : it.status === 'err' ? 'rgba(180,0,0,0.5)' : it.status === 'uploading' ? 'rgba(0,0,0,0.2)' : 'transparent',
               }}>
-                {it.status === 'done' && '✓'}
+                {it.status === 'done' && <span style={{ color: ACCENT }}>✓</span>}
                 {it.status === 'err' && '✗'}
                 {it.status === 'uploading' && <span style={{ width: 20, height: 20, border: `2px solid ${ACCENT}`, borderTopColor: 'transparent', borderRadius: '50%', display: 'inline-block', animation: 'spin 0.7s linear infinite' }} />}
               </div>
@@ -370,6 +367,25 @@ export default function AdminPage() {
   async function deleteImage(id: number) {
     if (!confirm('Obrisati sliku?')) return
     await fetch(`/api/gallery/${id}`, { method: 'DELETE', headers: headers() })
+    await fetchImages()
+  }
+
+  async function moveImage(id: number, dir: 'up' | 'down') {
+    const idx = images.findIndex(img => img.id === id)
+    if (idx === -1) return
+    const swapIdx = dir === 'up' ? idx - 1 : idx + 1
+    if (swapIdx < 0 || swapIdx >= images.length) return
+
+    const a = images[idx]
+    const b = images[swapIdx]
+    // Give sort_order values based on current array positions, then swap
+    const orderA = idx
+    const orderB = swapIdx
+
+    await Promise.all([
+      fetch(`/api/gallery/${a.id}`, { method: 'PUT', headers: headers(), body: JSON.stringify({ sort_order: orderB }) }),
+      fetch(`/api/gallery/${b.id}`, { method: 'PUT', headers: headers(), body: JSON.stringify({ sort_order: orderA }) }),
+    ])
     await fetchImages()
   }
 
@@ -756,7 +772,7 @@ export default function AdminPage() {
               <p style={{ color: '#333', textAlign: 'center', padding: '3rem' }}>Nema slika u galeriji.</p>
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
-                {images.map(img => (
+                {images.map((img, idx) => (
                   <div key={img.id} style={{ position: 'relative', border: '1px solid #1a1a1a', overflow: 'hidden' }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={img.url} alt={img.caption} style={{ width: '100%', height: 160, objectFit: 'cover', display: 'block' }} />
@@ -765,12 +781,36 @@ export default function AdminPage() {
                         {img.caption}
                       </p>
                     )}
+                    {/* Delete */}
                     <button
                       onClick={() => deleteImage(img.id)}
-                      style={{ position: 'absolute', top: 6, right: 6, background: 'rgba(0,0,0,0.7)', border: '1px solid #500', color: '#f44', width: 26, height: 26, cursor: 'pointer', fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                      style={{ position: 'absolute', top: 6, right: 6, background: 'rgba(0,0,0,0.75)', border: '1px solid #500', color: '#f44', width: 26, height: 26, cursor: 'pointer', fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
                       ×
                     </button>
+                    {/* Sort order arrows */}
+                    <div style={{ position: 'absolute', top: 6, left: 6, display: 'flex', flexDirection: 'column', gap: 3 }}>
+                      <button
+                        onClick={() => moveImage(img.id, 'up')}
+                        disabled={idx === 0}
+                        title="Pomeri gore"
+                        style={{ background: 'rgba(0,0,0,0.75)', border: '1px solid #333', color: idx === 0 ? '#333' : '#aaa', width: 24, height: 24, cursor: idx === 0 ? 'default' : 'pointer', fontSize: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1 }}
+                      >
+                        ▲
+                      </button>
+                      <button
+                        onClick={() => moveImage(img.id, 'down')}
+                        disabled={idx === images.length - 1}
+                        title="Pomeri dole"
+                        style={{ background: 'rgba(0,0,0,0.75)', border: '1px solid #333', color: idx === images.length - 1 ? '#333' : '#aaa', width: 24, height: 24, cursor: idx === images.length - 1 ? 'default' : 'pointer', fontSize: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1 }}
+                      >
+                        ▼
+                      </button>
+                    </div>
+                    {/* Position number */}
+                    <div style={{ background: '#111', padding: '0.2rem 0.6rem', display: 'flex', justifyContent: 'flex-end', borderTop: '1px solid #1a1a1a' }}>
+                      <span style={{ fontSize: '0.65rem', color: '#333' }}>#{idx + 1}</span>
+                    </div>
                   </div>
                 ))}
               </div>

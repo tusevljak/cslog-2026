@@ -15,9 +15,7 @@ export async function POST(req: NextRequest) {
 
     const formData = await req.formData()
     const file = formData.get('file') as File | null
-    if (!file) {
-      return NextResponse.json({ error: 'Nema fajla.' }, { status: 400 })
-    }
+    if (!file) return NextResponse.json({ error: 'Nema fajla.' }, { status: 400 })
 
     const type = (formData.get('type') as string) || 'blog'
     const maxWidth = type === 'gallery' ? 1600 : 1920
@@ -30,24 +28,18 @@ export async function POST(req: NextRequest) {
       .webp({ quality: 82 })
       .toBuffer()
 
-    const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.webp`
-
-    // Try public/uploads (works on Hetzner/local), fall back to /tmp (Vercel)
-    let url: string
+    // Try filesystem first (works on Hetzner/local dev)
     try {
+      const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.webp`
       const dir = join(process.cwd(), 'public', 'uploads')
       await mkdir(dir, { recursive: true })
       await writeFile(join(dir, filename), webpBuffer)
-      url = `/uploads/${filename}`
+      return NextResponse.json({ url: `/uploads/${filename}` })
     } catch {
-      // Vercel: write to /tmp and serve via /api/files
-      const dir = '/tmp/uploads'
-      await mkdir(dir, { recursive: true })
-      await writeFile(join(dir, filename), webpBuffer)
-      url = `/api/files/${filename}`
+      // Vercel: filesystem read-only — return base64 data URL stored in DB
+      const base64 = webpBuffer.toString('base64')
+      return NextResponse.json({ url: `data:image/webp;base64,${base64}` })
     }
-
-    return NextResponse.json({ url })
   } catch (err) {
     console.error('Upload error:', err)
     return NextResponse.json({ error: String(err) }, { status: 500 })
