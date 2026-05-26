@@ -33,8 +33,6 @@ const TAPE_RIGHT = `repeating-linear-gradient(
 )`
 const TAPE_SIZE = '56px 56px'
 const TAPE_H = 14   // stripe height in px
-const TRI_H  = 12   // how far the tip dips below the stripe
-const TRI_W  = 22   // half-width of the triangle base
 
 export default function Header() {
   const { theme, toggle } = useTheme()
@@ -68,21 +66,7 @@ export default function Header() {
 
       {/* ── SPLIT HAZARD TAPE — chevron shape via clip-path, no overlay ── */}
       {/*   Left: -45° stripes, Right: +45° mirror, tip is the tape itself   */}
-      <div style={{
-        position: 'relative',
-        height: TAPE_H + TRI_H,
-        flexShrink: 0,
-        // Tape shaped as: flat rectangle top, bottom dips to a point at center
-        clipPath: `polygon(
-          0 0,
-          100% 0,
-          100% ${TAPE_H}px,
-          calc(50% + ${TRI_W}px) ${TAPE_H}px,
-          50% ${TAPE_H + TRI_H}px,
-          calc(50% - ${TRI_W}px) ${TAPE_H}px,
-          0 ${TAPE_H}px
-        )`,
-      }}>
+      <div style={{ position: 'relative', height: TAPE_H, flexShrink: 0 }}>
         {/* Left half — diagonals lean right (-45°) */}
         <div ref={leftRef} style={{
           position: 'absolute', left: 0, right: '50%', top: 0, bottom: 0,
