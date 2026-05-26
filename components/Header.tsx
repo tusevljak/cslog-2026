@@ -33,7 +33,8 @@ const TAPE_RIGHT = `repeating-linear-gradient(
 )`
 const TAPE_SIZE = '56px 56px'
 const TAPE_H = 14   // stripe height in px
-const TRI_W  = 18   // half-width of the center triangle notch
+const TRI_H  = 12   // how far the tip dips below the stripe
+const TRI_W  = 22   // half-width of the triangle base
 
 export default function Header() {
   const { theme, toggle } = useTheme()
@@ -65,30 +66,32 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50" style={{ background: 'var(--bg)' }}>
 
-      {/* ── SPLIT HAZARD TAPE WITH CENTER TRIANGLE ── */}
-      <div style={{ position: 'relative', height: TAPE_H, flexShrink: 0, overflow: 'hidden' }}>
-        {/* Left half — diagonals lean right */}
+      {/* ── SPLIT HAZARD TAPE — chevron shape via clip-path, no overlay ── */}
+      {/*   Left: -45° stripes, Right: +45° mirror, tip is the tape itself   */}
+      <div style={{
+        position: 'relative',
+        height: TAPE_H + TRI_H,
+        flexShrink: 0,
+        // Tape shaped as: flat rectangle top, bottom dips to a point at center
+        clipPath: `polygon(
+          0 0,
+          100% 0,
+          100% ${TAPE_H}px,
+          calc(50% + ${TRI_W}px) ${TAPE_H}px,
+          50% ${TAPE_H + TRI_H}px,
+          calc(50% - ${TRI_W}px) ${TAPE_H}px,
+          0 ${TAPE_H}px
+        )`,
+      }}>
+        {/* Left half — diagonals lean right (-45°) */}
         <div ref={leftRef} style={{
           position: 'absolute', left: 0, right: '50%', top: 0, bottom: 0,
           background: TAPE_LEFT, backgroundSize: TAPE_SIZE,
         }} />
-        {/* Right half — diagonals lean left (mirror) */}
+        {/* Right half — diagonals lean left (+45°, mirror) */}
         <div ref={rightRef} style={{
           position: 'absolute', left: '50%', right: 0, top: 0, bottom: 0,
           background: TAPE_RIGHT, backgroundSize: TAPE_SIZE,
-        }} />
-        {/* Center triangle notch — page background color, points down */}
-        <div style={{
-          position: 'absolute',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          top: 0,
-          width: 0,
-          height: 0,
-          borderLeft:  `${TRI_W}px solid transparent`,
-          borderRight: `${TRI_W}px solid transparent`,
-          borderTop:   `${TAPE_H}px solid var(--bg)`,
-          zIndex: 2,
         }} />
       </div>
 
