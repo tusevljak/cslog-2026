@@ -5,6 +5,21 @@ import { useState, useRef, useCallback } from 'react'
 const ACCENT = '#c5d000'
 const DARK = '#0d0d0d'
 
+async function uploadFile(file: File, password: string, type: 'blog' | 'gallery'): Promise<string> {
+  const fd = new FormData()
+  fd.append('file', file)
+  fd.append('type', type)
+  const res = await fetch('/api/upload', {
+    method: 'POST',
+    headers: { 'x-admin-password': password },
+    body: fd,
+  })
+  let data: { url?: string; error?: string }
+  try { data = await res.json() } catch { throw new Error('Server nije vratio validan odgovor.') }
+  if (!res.ok) throw new Error(data.error || 'Greška pri uploadu.')
+  return data.url!
+}
+
 function ImageUpload({ value, onChange, password, type = 'blog' }: {
   value: string
   onChange: (url: string) => void
@@ -20,19 +35,10 @@ function ImageUpload({ value, onChange, password, type = 'blog' }: {
     if (!file) return
     setUploading(true); setError('')
     try {
-      const fd = new FormData()
-      fd.append('file', file)
-      fd.append('type', type)
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        headers: { 'x-admin-password': password },
-        body: fd,
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Greška')
-      onChange(data.url)
+      const url = await uploadFile(file, password, type)
+      onChange(url)
     } catch (err) {
-      setError('Greška: ' + err)
+      setError(String(err))
     } finally {
       setUploading(false)
       if (inputRef.current) inputRef.current.value = ''
@@ -49,7 +55,7 @@ function ImageUpload({ value, onChange, password, type = 'blog' }: {
           disabled={uploading}
           style={{ background: uploading ? '#1a1a1a' : ACCENT, color: uploading ? '#555' : DARK, border: 'none', padding: '0.5rem 1rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: uploading ? 'default' : 'pointer', fontFamily: 'var(--font-inter)', flexShrink: 0 }}
         >
-          {uploading ? 'Konvertuje...' : '↑ Upload slike'}
+          {uploading ? 'Konvertuje...' : '↑ Upload'}
         </button>
         {value && (
           <button type="button" onClick={() => onChange('')} style={{ background: 'none', border: '1px solid #3a0000', color: '#c44', padding: '0.4rem 0.75rem', fontSize: '0.72rem', cursor: 'pointer' }}>
@@ -125,6 +131,89 @@ const inp = (extra?: React.CSSProperties): React.CSSProperties => ({
   fontSize: '0.875rem', outline: 'none', width: '100%', boxSizing: 'border-box',
   ...extra,
 })
+
+function GalleryUploader({ password, onDone }: { password: string; onDone: () => void }) {
+  const [items, setItems] = useState<{ file: File; status: 'pending' | 'uploading' | 'done' | 'err'; preview: string }[]>([])
+  const [running, setRunning] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  function pick(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files || [])
+    if (!files.length) return
+    setItems(files.map(file => ({ file, status: 'pending', preview: URL.createObjectURL(file) })))
+    if (inputRef.current) inputRef.current.value = ''
+  }
+
+  async function upload() {
+    setRunning(true)
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].status === 'done') continue
+      setItems(prev => prev.map((it, j) => j === i ? { ...it, status: 'uploading' } : it))
+      try {
+        const url = await uploadFile(items[i].file, password, 'gallery')
+        await fetch('/api/gallery', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+          body: JSON.stringify({ url, caption: '' }),
+        })
+        setItems(prev => prev.map((it, j) => j === i ? { ...it, status: 'done' } : it))
+      } catch {
+        setItems(prev => prev.map((it, j) => j === i ? { ...it, status: 'err' } : it))
+      }
+    }
+    setRunning(false)
+    onDone()
+  }
+
+  const allDone = items.length > 0 && items.every(it => it.status === 'done')
+
+  return (
+    <div style={{ border: '1px solid #1a1a1a', padding: '1.25rem', marginBottom: '2rem' }}>
+      <p style={{ color: '#ddd', fontSize: '0.88rem', fontWeight: 600, margin: '0 0 1rem' }}>+ Dodaj slike u galeriju</p>
+
+      <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: items.length ? '1rem' : 0 }}>
+        <input ref={inputRef} type="file" accept="image/*" multiple onChange={pick} style={{ display: 'none' }} />
+        <button type="button" onClick={() => inputRef.current?.click()}
+          style={{ background: '#1a1a1a', border: `1px solid ${ACCENT}`, color: ACCENT, padding: '0.55rem 1.1rem', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer', fontFamily: 'var(--font-inter)' }}>
+          Izaberi slike
+        </button>
+        {items.length > 0 && !allDone && (
+          <button type="button" onClick={upload} disabled={running}
+            style={{ background: ACCENT, color: DARK, border: 'none', padding: '0.55rem 1.25rem', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: running ? 'default' : 'pointer', opacity: running ? 0.7 : 1, fontFamily: 'var(--font-inter)' }}>
+            {running ? 'Uploaduje...' : `↑ Upload ${items.length} slike`}
+          </button>
+        )}
+        {allDone && (
+          <button type="button" onClick={() => setItems([])}
+            style={{ background: 'none', border: '1px solid #2a2a2a', color: '#666', padding: '0.55rem 1rem', fontSize: '0.72rem', cursor: 'pointer' }}>
+            Očisti
+          </button>
+        )}
+      </div>
+
+      {items.length > 0 && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '0.5rem' }}>
+          {items.map((it, i) => (
+            <div key={i} style={{ position: 'relative' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={it.preview} alt="" style={{ width: '100%', height: 90, objectFit: 'cover', display: 'block', opacity: it.status === 'uploading' ? 0.5 : 1 }} />
+              <div style={{
+                position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '1.25rem',
+                background: it.status === 'done' ? 'rgba(0,0,0,0.45)' : it.status === 'err' ? 'rgba(180,0,0,0.5)' : 'transparent',
+              }}>
+                {it.status === 'done' && '✓'}
+                {it.status === 'err' && '✗'}
+                {it.status === 'uploading' && <span style={{ width: 20, height: 20, border: `2px solid ${ACCENT}`, borderTopColor: 'transparent', borderRadius: '50%', display: 'inline-block', animation: 'spin 0.7s linear infinite' }} />}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+    </div>
+  )
+}
 
 export default function AdminPage() {
   const [password, setPassword] = useState('')
@@ -659,39 +748,7 @@ export default function AdminPage() {
         {tab === 'gallery' && (
           <>
             {/* Add form */}
-            <div style={{ border: '1px solid #1a1a1a', padding: '1.25rem', marginBottom: '2rem' }}>
-              <p style={{ color: '#ddd', fontSize: '0.88rem', fontWeight: 600, margin: '0 0 1rem' }}>+ Dodaj sliku</p>
-              <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', alignItems: 'flex-start' }}>
-                <div style={{ flex: 1, minWidth: 200 }}>
-                  <label style={{ display: 'block', color: '#444', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.5rem' }}>Slika</label>
-                  <ImageUpload
-                    value={imgUrl}
-                    onChange={async (url) => {
-                      setImgUrl(url)
-                      // auto-save to gallery on upload
-                      setImgSaving(true)
-                      try {
-                        const res = await fetch('/api/gallery', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
-                          body: JSON.stringify({ url, caption: imgCaption }),
-                        })
-                        if (res.ok) { await fetchImages(); setImgUrl(''); setImgCaption(''); setImgMsg('✓ Dodato') }
-                        else setImgMsg('✗ Greška pri čuvanju')
-                      } catch { setImgMsg('✗ Greška') }
-                      finally { setImgSaving(false) }
-                    }}
-                    password={password}
-                    type="gallery"
-                  />
-                </div>
-                <div style={{ flex: 2, minWidth: 200 }}>
-                  <label style={{ display: 'block', color: '#444', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.3rem' }}>Opis (opcionalno)</label>
-                  <input type="text" placeholder="Transport Beograd–Tirol..." value={imgCaption} onChange={e => setImgCaption(e.target.value)} style={inp()} />
-                </div>
-              </div>
-              {imgMsg && <p style={{ marginTop: '0.5rem', fontSize: '0.78rem', color: imgMsg.startsWith('✗') ? '#f55' : ACCENT }}>{imgMsg}</p>}
-            </div>
+            <GalleryUploader password={password} onDone={fetchImages} />
 
             {/* Image grid */}
             <p style={{ color: '#555', fontSize: '0.82rem', marginBottom: '1rem' }}>Ukupno: {images.length} slika</p>
