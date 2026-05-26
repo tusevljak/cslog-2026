@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { sql, initDb } from '@/lib/db'
 
 function isAdmin(req: NextRequest) {
@@ -21,5 +22,6 @@ export async function POST(req: NextRequest) {
     VALUES (${url}, ${caption || ''})
     RETURNING *
   `
+  revalidatePath('/galerija')
   return NextResponse.json(row)
 }

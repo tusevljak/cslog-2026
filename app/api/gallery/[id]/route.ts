@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { sql } from '@/lib/db'
 
 function isAdmin(req: NextRequest) {
@@ -24,5 +25,6 @@ export async function DELETE(req: NextRequest, { params }: Params) {
   if (!isAdmin(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { id } = await params
   await sql`DELETE FROM gallery_images WHERE id = ${parseInt(id)}`
+  revalidatePath('/galerija')
   return NextResponse.json({ ok: true })
 }
