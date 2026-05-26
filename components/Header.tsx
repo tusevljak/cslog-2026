@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useTheme } from './ThemeProvider'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const navLinks = [
   { href: '/', label: 'Početna' },
@@ -15,17 +15,67 @@ const navLinks = [
   { href: '/kontakt', label: 'Kontakt' },
 ]
 
+// Hazard tape: white + black + yellow + black — no CSS animation, scroll-driven
+const TAPE_BG = `repeating-linear-gradient(
+  -45deg,
+  #ffffff    0px,  #ffffff   10px,
+  #0d0d0d   10px,  #0d0d0d  20px,
+  #c5d000   20px,  #c5d000  30px,
+  #0d0d0d   30px,  #0d0d0d  40px
+)`
+const TAPE_SIZE = '56px 56px'
+
 export default function Header() {
   const { theme, toggle } = useTheme()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [compact, setCompact] = useState(false)
+
+  const topRef = useRef<HTMLDivElement>(null)
+  const botRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    let lastY = window.scrollY
+    let pos = 0
+
+    function onScroll() {
+      const y = window.scrollY
+      const delta = y - lastY
+      pos += delta * 0.5
+      lastY = y
+
+      // Scroll-driven tape movement (no CSS animation)
+      if (topRef.current) topRef.current.style.backgroundPosition = `${pos}px 0`
+      if (botRef.current) botRef.current.style.backgroundPosition = `${-pos}px 0`
+
+      // Collapse both stripes past threshold
+      setCompact(y > 60)
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const tapeWrap: React.CSSProperties = {
+    height: compact ? 0 : 10,
+    overflow: 'hidden',
+    transition: 'height 0.38s cubic-bezier(0.4, 0, 0.2, 1)',
+    flexShrink: 0,
+  }
+  const tapeInner: React.CSSProperties = {
+    height: 10,
+    background: TAPE_BG,
+    backgroundSize: TAPE_SIZE,
+  }
 
   return (
     <header className="sticky top-0 z-50" style={{ background: 'var(--bg)' }}>
 
-      {/* Hazard tape top */}
-      <div className="h-4 hazard-tape" />
+      {/* ── TOP STRIPE ── */}
+      <div style={tapeWrap}>
+        <div ref={topRef} style={tapeInner} />
+      </div>
 
-      {/* Row 2: Logo + contact + flags + theme */}
+      {/* ── LOGO + CONTACT ── */}
       <div style={{ borderBottom: '1px solid var(--border)' }}>
         <div className="max-w-[1280px] mx-auto px-6 py-4 flex items-center justify-between gap-6">
 
@@ -126,7 +176,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Row 3: Nav + CTA */}
+      {/* ── NAV + CTA ── */}
       <div style={{ borderBottom: '1px solid var(--border)' }}>
         <div className="max-w-[1280px] mx-auto px-6 hidden lg:flex items-center justify-between h-14">
           <nav className="flex items-center gap-8">
@@ -156,7 +206,12 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* ── BOTTOM STRIPE ── */}
+      <div style={tapeWrap}>
+        <div ref={botRef} style={tapeInner} />
+      </div>
+
+      {/* ── MOBILE MENU ── */}
       {menuOpen && (
         <nav style={{ background: 'var(--bg)', borderBottom: '1px solid var(--border)' }} className="lg:hidden px-6 py-6 flex flex-col gap-5">
           {navLinks.map((link) => (
