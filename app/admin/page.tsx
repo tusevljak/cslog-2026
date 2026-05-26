@@ -370,23 +370,36 @@ export default function AdminPage() {
     await fetchImages()
   }
 
-  async function moveImage(id: number, dir: 'up' | 'down') {
-    const idx = images.findIndex(img => img.id === id)
-    if (idx === -1) return
-    const swapIdx = dir === 'up' ? idx - 1 : idx + 1
-    if (swapIdx < 0 || swapIdx >= images.length) return
+  const [dragIdx, setDragIdx] = useState<number | null>(null)
+  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null)
 
-    const a = images[idx]
-    const b = images[swapIdx]
-    // Give sort_order values based on current array positions, then swap
-    const orderA = idx
-    const orderB = swapIdx
+  async function reorderImages(ordered: GalleryImage[]) {
+    setImages(ordered)
+    await fetch('/api/gallery/reorder', {
+      method: 'POST',
+      headers: headers(),
+      body: JSON.stringify(ordered.map((img, i) => ({ id: img.id, sort_order: i }))),
+    })
+  }
 
-    await Promise.all([
-      fetch(`/api/gallery/${a.id}`, { method: 'PUT', headers: headers(), body: JSON.stringify({ sort_order: orderB }) }),
-      fetch(`/api/gallery/${b.id}`, { method: 'PUT', headers: headers(), body: JSON.stringify({ sort_order: orderA }) }),
-    ])
-    await fetchImages()
+  function onDragStart(idx: number) {
+    setDragIdx(idx)
+  }
+
+  function onDragOver(e: React.DragEvent, idx: number) {
+    e.preventDefault()
+    setDragOverIdx(idx)
+  }
+
+  function onDrop(idx: number) {
+    if (dragIdx === null || dragIdx === idx) {
+      setDragIdx(null); setDragOverIdx(null); return
+    }
+    const next = [...images]
+    const [moved] = next.splice(dragIdx, 1)
+    next.splice(idx, 0, moved)
+    setDragIdx(null); setDragOverIdx(null)
+    reorderImages(next)
   }
 
   function setContent(v: string) { setForm(f => ({ ...f, content: v })) }
@@ -771,49 +784,51 @@ export default function AdminPage() {
             {images.length === 0 ? (
               <p style={{ color: '#333', textAlign: 'center', padding: '3rem' }}>Nema slika u galeriji.</p>
             ) : (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
-                {images.map((img, idx) => (
-                  <div key={img.id} style={{ position: 'relative', border: '1px solid #1a1a1a', overflow: 'hidden' }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img.url} alt={img.caption} style={{ width: '100%', height: 160, objectFit: 'cover', display: 'block' }} />
-                    {img.caption && (
-                      <p style={{ margin: 0, padding: '0.4rem 0.6rem', fontSize: '0.72rem', color: '#666', background: '#111', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {img.caption}
-                      </p>
-                    )}
-                    {/* Delete */}
-                    <button
-                      onClick={() => deleteImage(img.id)}
-                      style={{ position: 'absolute', top: 6, right: 6, background: 'rgba(0,0,0,0.75)', border: '1px solid #500', color: '#f44', width: 26, height: 26, cursor: 'pointer', fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              <>
+                <p style={{ color: '#333', fontSize: '0.72rem', marginBottom: '0.75rem' }}>Prevuci slike da promeniš redosled.</p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
+                  {images.map((img, idx) => (
+                    <div
+                      key={img.id}
+                      draggable
+                      onDragStart={() => onDragStart(idx)}
+                      onDragOver={e => onDragOver(e, idx)}
+                      onDrop={() => onDrop(idx)}
+                      onDragEnd={() => { setDragIdx(null); setDragOverIdx(null) }}
+                      style={{
+                        position: 'relative', border: dragOverIdx === idx && dragIdx !== idx ? `2px solid ${ACCENT}` : '1px solid #1a1a1a',
+                        overflow: 'hidden', cursor: 'grab',
+                        opacity: dragIdx === idx ? 0.4 : 1,
+                        transition: 'opacity 0.15s, border-color 0.15s',
+                      }}
                     >
-                      ×
-                    </button>
-                    {/* Sort order arrows */}
-                    <div style={{ position: 'absolute', top: 6, left: 6, display: 'flex', flexDirection: 'column', gap: 3 }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={img.url} alt={img.caption} style={{ width: '100%', height: 160, objectFit: 'cover', display: 'block', pointerEvents: 'none' }} />
+
+                      {/* Drag handle hint */}
+                      <div style={{ position: 'absolute', top: 6, left: 6, background: 'rgba(0,0,0,0.65)', padding: '3px 5px', borderRadius: 2, lineHeight: 1, fontSize: '0.7rem', color: '#888', letterSpacing: '0.05em', pointerEvents: 'none' }}>
+                        ⠿
+                      </div>
+
+                      {/* Delete */}
                       <button
-                        onClick={() => moveImage(img.id, 'up')}
-                        disabled={idx === 0}
-                        title="Pomeri gore"
-                        style={{ background: 'rgba(0,0,0,0.75)', border: '1px solid #333', color: idx === 0 ? '#333' : '#aaa', width: 24, height: 24, cursor: idx === 0 ? 'default' : 'pointer', fontSize: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1 }}
+                        onClick={() => deleteImage(img.id)}
+                        style={{ position: 'absolute', top: 6, right: 6, background: 'rgba(0,0,0,0.75)', border: '1px solid #500', color: '#f44', width: 26, height: 26, cursor: 'pointer', fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                       >
-                        ▲
+                        ×
                       </button>
-                      <button
-                        onClick={() => moveImage(img.id, 'down')}
-                        disabled={idx === images.length - 1}
-                        title="Pomeri dole"
-                        style={{ background: 'rgba(0,0,0,0.75)', border: '1px solid #333', color: idx === images.length - 1 ? '#333' : '#aaa', width: 24, height: 24, cursor: idx === images.length - 1 ? 'default' : 'pointer', fontSize: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1 }}
-                      >
-                        ▼
-                      </button>
+
+                      {/* Bottom bar */}
+                      <div style={{ background: '#111', borderTop: '1px solid #1a1a1a', padding: '0.25rem 0.6rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontSize: '0.68rem', color: '#444', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '80%' }}>
+                          {img.caption || <span style={{ color: '#2a2a2a', fontStyle: 'italic' }}>bez opisa</span>}
+                        </span>
+                        <span style={{ fontSize: '0.62rem', color: '#2a2a2a', flexShrink: 0 }}>#{idx + 1}</span>
+                      </div>
                     </div>
-                    {/* Position number */}
-                    <div style={{ background: '#111', padding: '0.2rem 0.6rem', display: 'flex', justifyContent: 'flex-end', borderTop: '1px solid #1a1a1a' }}>
-                      <span style={{ fontSize: '0.65rem', color: '#333' }}>#{idx + 1}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </>
             )}
           </>
         )}
