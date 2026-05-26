@@ -68,7 +68,6 @@ export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
             onClick={() => setLightbox(idx)}
             style={{
               breakInside: 'avoid',
-              WebkitColumnBreakInside: 'avoid',
               display: 'inline-block',
               width: '100%',
               marginBottom: '0.75rem',

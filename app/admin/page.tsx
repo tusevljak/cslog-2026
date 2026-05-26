@@ -238,10 +238,6 @@ export default function AdminPage() {
 
   // Gallery state
   const [images, setImages] = useState<GalleryImage[]>([])
-  const [imgUrl, setImgUrl] = useState('')
-  const [imgCaption, setImgCaption] = useState('')
-  const [imgSaving, setImgSaving] = useState(false)
-  const [imgMsg, setImgMsg] = useState('')
 
   const headers = useCallback(() => ({
     'Content-Type': 'application/json',
@@ -342,26 +338,6 @@ export default function AdminPage() {
     await fetchPosts()
     setDeleting(false)
     setView('list')
-  }
-
-  async function addImage(e: React.FormEvent) {
-    e.preventDefault()
-    if (!imgUrl.trim()) return
-    setImgSaving(true); setImgMsg('')
-    try {
-      const res = await fetch('/api/gallery', {
-        method: 'POST', headers: headers(),
-        body: JSON.stringify({ url: imgUrl, caption: imgCaption }),
-      })
-      if (!res.ok) throw new Error(await res.text())
-      setImgUrl(''); setImgCaption('')
-      await fetchImages()
-      setImgMsg('Dodato.')
-    } catch (err) {
-      setImgMsg('Greška: ' + err)
-    } finally {
-      setImgSaving(false)
-    }
   }
 
   async function deleteImage(id: number) {
