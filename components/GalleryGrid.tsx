@@ -57,13 +57,26 @@ export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
 
   return (
     <>
-      {/* Masonry grid */}
-      <div style={{ columns: '3 280px', gap: '0.75rem' }}>
+      {/* Masonry grid — CSS columns, explicit properties (shorthand unreliable in React inline styles) */}
+      <div style={{
+        columnCount: 3,
+        columnGap: '0.75rem',
+      }}>
         {images.map((img, idx) => (
           <div
             key={img.id}
             onClick={() => setLightbox(idx)}
-            style={{ breakInside: 'avoid', marginBottom: '0.75rem', overflow: 'hidden', cursor: 'zoom-in', position: 'relative' }}
+            style={{
+              breakInside: 'avoid',
+              WebkitColumnBreakInside: 'avoid',
+              display: 'inline-block',
+              width: '100%',
+              marginBottom: '0.75rem',
+              overflow: 'hidden',
+              cursor: 'zoom-in',
+              position: 'relative',
+              verticalAlign: 'top',
+            }}
             className="group"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
