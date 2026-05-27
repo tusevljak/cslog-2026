@@ -53,7 +53,7 @@ export default function Footer() {
             />
             <div className="flex items-center gap-3">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/cslogbeograd"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 flex items-center justify-center bg-[#c5d000] text-[#0d0d0d] hover:bg-[#a8b200] transition-colors"
@@ -64,14 +64,15 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://youtube.com"
+                href="https://www.youtube.com/channel/UCODJdGkhLTEt_CHmXIOUY3g"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 flex items-center justify-center bg-[#c5d000] text-[#0d0d0d] hover:bg-[#a8b200] transition-colors"
                 aria-label="YouTube"
               >
+                {/* Single-path YT icon — play triangle is a cutout, no fill conflicts */}
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75,15.02 15.5,12 9.75,8.98 9.75,15.02" fill="#0d0d0d"/>
+                  <path d="M23 7s-.3-2-1.2-2.7c-1.1-1.2-2.4-1.2-3-1.3C16.6 3 12 3 12 3s-4.6 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.3.7 11.6v2.1C.7 16.1 1 18 1 18s.3 2 1.2 2.7c1.1 1.2 2.6 1.1 3.3 1.2C7.6 22 12 22 12 22s4.6 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.7 1.2-2.7 1.2-2.7s.3-2.3.3-4.6v-2.1C23.3 9.3 23 7 23 7zM9.7 15.5V8.4l8.2 3.6-8.2 3.5z"/>
                 </svg>
               </a>
             </div>
