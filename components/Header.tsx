@@ -86,7 +86,7 @@ export default function Header() {
         {/* LOGO — full height, right border */}
         <Link href="/" style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          padding: '0 1.75rem', flexShrink: 0,
+          padding: '1rem 2rem', flexShrink: 0,
           borderRight: '1px solid var(--border)',
         }}>
           <Image
@@ -103,7 +103,7 @@ export default function Header() {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
 
           {/* Tier 1: contact + flags + theme + hamburger */}
-          <div style={{ borderBottom: '1px solid var(--border)', padding: '0 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1.5rem', flex: 1 }}>
+          <div style={{ borderBottom: '1px solid var(--border)', padding: '0.75rem 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1.5rem' }}>
 
             {/* Contact: tel → email → address */}
             <div className="hidden md:flex items-center gap-6 flex-1">
@@ -187,7 +187,7 @@ export default function Header() {
           </div>
 
           {/* Tier 2: nav + CTA (desktop only) */}
-          <div className="hidden lg:flex items-center justify-between px-6 h-12">
+          <div className="hidden lg:flex items-center justify-between h-14" style={{ padding: '0 2rem' }}>
             <nav className="flex items-center gap-7">
               {navLinks.map((link) => (
                 <Link
