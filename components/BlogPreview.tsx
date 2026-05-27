@@ -71,15 +71,14 @@ export default async function BlogPreview() {
               <article key={post.id} style={{ background: '#0d0d0d', display: 'flex', flexDirection: 'column' }}>
 
                 {/* Slika ili placeholder */}
-                <Link href={`/blog/${post.slug}`} style={{ display: 'block', overflow: 'hidden', flexShrink: 0 }}>
+                <Link href={`/blog/${post.slug}`} className="group" style={{ display: 'block', overflow: 'hidden', flexShrink: 0 }}>
                   {post.cover_image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={post.cover_image}
                       alt={post.title}
-                      style={{ width: '100%', height: 220, objectFit: 'cover', display: 'block', transition: 'transform 0.5s ease' }}
-                      onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.04)')}
-                      onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
+                      className="w-full object-cover block transition-transform duration-500 group-hover:scale-105"
+                      style={{ height: 220 }}
                     />
                   ) : (
                     <div style={{
@@ -101,9 +100,9 @@ export default async function BlogPreview() {
                     </p>
                   )}
                   <h3 style={{ fontFamily: 'var(--font-inter)', fontWeight: 700, fontSize: '1rem', color: '#f0f0f0', lineHeight: 1.45, margin: 0 }}>
-                    <Link href={`/blog/${post.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}
-                      onMouseOver={e => (e.currentTarget.style.color = '#c5d000')}
-                      onMouseOut={e => (e.currentTarget.style.color = 'inherit')}>
+                    <Link href={`/blog/${post.slug}`}
+                      className="hover:text-[#c5d000] transition-colors duration-200"
+                      style={{ textDecoration: 'none', color: 'inherit' }}>
                       {post.title}
                     </Link>
                   </h3>
@@ -133,16 +132,14 @@ export default async function BlogPreview() {
         <div style={{ textAlign: 'center' }}>
           <Link
             href="/blog"
+            className="hover:bg-[#c5d000] hover:text-[#0d0d0d] transition-colors duration-200"
             style={{
               fontFamily: 'var(--font-inter)', fontWeight: 700,
               fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.2em',
               display: 'inline-flex', alignItems: 'center', gap: '0.75rem',
               padding: '0.85rem 2.5rem',
               border: '1px solid #c5d000', color: '#c5d000', textDecoration: 'none',
-              transition: 'background 0.2s, color 0.2s',
             }}
-            onMouseOver={e => { e.currentTarget.style.background = '#c5d000'; e.currentTarget.style.color = '#0d0d0d' }}
-            onMouseOut={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#c5d000' }}
           >
             Sve CSLOG priče
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
