@@ -31,14 +31,25 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* ISO + Social */}
+          {/* Sertifikat + Social */}
           <div className="flex flex-col items-center gap-6">
+            {/* Svetla tema → tamni sertifikat */}
             <Image
-              src="/iso9001.jpg"
-              alt="ISO 9001 sertifikat"
-              width={140}
-              height={70}
-              className="object-contain"
+              src="/sertifikat/sertifikat%20za%20svetle%20pozadine.jpg"
+              alt="Sertifikat"
+              width={180}
+              height={90}
+              className="object-contain dark:hidden"
+              style={{ width: 'auto', height: 80 }}
+            />
+            {/* Tamna tema → svetli sertifikat */}
+            <Image
+              src="/sertifikat/sertifikat%20za%20tamne%20pozadine.png"
+              alt="Sertifikat"
+              width={180}
+              height={90}
+              className="object-contain hidden dark:block"
+              style={{ width: 'auto', height: 80 }}
             />
             <div className="flex items-center gap-3">
               <a
@@ -82,16 +93,16 @@ export default function Footer() {
               <svg className="mt-0.5 flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
               </svg>
-              Jurija Gagarina 21 R, lokal DL4, 11070 Novi Beograd
+              11070 Beograd, Srbija
             </a>
-            <a href="mailto:boban.bicanin@cslog.rs"
+            <a href="mailto:office@cslog.rs"
               className="flex items-center gap-2 text-sm hover:text-[#c5d000] transition-colors"
               style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
               </svg>
-              boban.bicanin@cslog.rs
+              office@cslog.rs
             </a>
             <a href="tel:+38163209675"
               className="flex items-center gap-2 text-sm hover:text-[#c5d000] transition-colors"
