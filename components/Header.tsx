@@ -38,8 +38,10 @@ export default function Header() {
   const { theme, toggle } = useTheme()
   const [menuOpen, setMenuOpen] = useState(false)
 
-  const leftRef  = useRef<HTMLDivElement>(null)
-  const rightRef = useRef<HTMLDivElement>(null)
+  const leftRef    = useRef<HTMLDivElement>(null)
+  const rightRef   = useRef<HTMLDivElement>(null)
+  const botLeftRef = useRef<HTMLDivElement>(null)
+  const botRightRef= useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     let lastY = window.scrollY
@@ -48,13 +50,14 @@ export default function Header() {
     function onScroll() {
       const y = window.scrollY
       const delta = y - lastY
-      // scroll down → pos increases → left moves right (toward center), right moves left (toward center)
-      // scroll up   → pos decreases → both flee from center
       pos += delta * 0.55
       lastY = y
 
-      if (leftRef.current)  leftRef.current.style.backgroundPosition  = `${pos}px 0`
-      if (rightRef.current) rightRef.current.style.backgroundPosition = `${-pos}px 0`
+      if (leftRef.current)     leftRef.current.style.backgroundPosition     = `${pos}px 0`
+      if (rightRef.current)    rightRef.current.style.backgroundPosition    = `${-pos}px 0`
+      // Bottom tape: opposite direction — flee from triangle on scroll down
+      if (botLeftRef.current)  botLeftRef.current.style.backgroundPosition  = `${-pos}px 0`
+      if (botRightRef.current) botRightRef.current.style.backgroundPosition = `${pos}px 0`
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -287,6 +290,33 @@ export default function Header() {
 
         </div>
       </div>
+      {/* ── BOTTOM TAPE — same halves, static white triangle in center ── */}
+      <div style={{ position: 'relative', height: TAPE_H, flexShrink: 0 }}>
+        {/* Left half */}
+        <div ref={botLeftRef} style={{
+          position: 'absolute', left: 0, right: '50%', top: 0, bottom: 0,
+          background: TAPE_LEFT, backgroundSize: TAPE_SIZE,
+        }} />
+        {/* Right half */}
+        <div ref={botRightRef} style={{
+          position: 'absolute', left: '50%', right: 0, top: 0, bottom: 0,
+          background: TAPE_RIGHT, backgroundSize: TAPE_SIZE,
+        }} />
+        {/* Static white triangle — always centered, points down into page */}
+        <div style={{
+          position: 'absolute',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          top: 0,
+          zIndex: 3,
+          width: 0, height: 0,
+          borderLeft:  `${TAPE_H + 2}px solid transparent`,
+          borderRight: `${TAPE_H + 2}px solid transparent`,
+          borderTop:   `${TAPE_H}px solid #ffffff`,
+          pointerEvents: 'none',
+        }} />
+      </div>
+
     </header>
   )
 }
