@@ -10,7 +10,8 @@ const team = [
     phone: '+381 63 209 675',
     phoneHref: 'tel:+38163209675',
     email: 'boban.bicanin@cslog.rs',
-    signature: '/potpisi/potpis-removebg-preview.png',
+    sigDark: '/potpisi/Boban-Bićanin-email-potpis.png',
+    sigLight: '/potpisi/Boban-Bićanin-email-potpis-beli.png',
   },
   {
     name: 'Sanja Branković',
@@ -18,7 +19,8 @@ const team = [
     phone: '+381 69 209 6753',
     phoneHref: 'tel:+381692096753',
     email: 'sanja.brankovic@cslog.rs',
-    signature: '/potpisi/Sanja-Brankovic-email-potpis.png',
+    sigDark: '/potpisi/Sanja-Brankovic-email-potpis.png',
+    sigLight: '/potpisi/Sanja-Brankovic-email-potpis-beli.png',
   },
   {
     name: 'Vladimir Mićić',
@@ -26,7 +28,8 @@ const team = [
     phone: '+381 63 261 105',
     phoneHref: 'tel:+38163261105',
     email: 'vladimir.micic@cslog.rs',
-    signature: '/potpisi/vladimir-micic-potpis.png',
+    sigDark: '/potpisi/vladimir-micic-email-potpis.png',
+    sigLight: '/potpisi/vladimir-micic-email-potpis-beli.png',
   },
   {
     name: 'Božana Bučevac',
@@ -34,7 +37,8 @@ const team = [
     phone: '+381 69 209 6751',
     phoneHref: 'tel:+381692096751',
     email: 'bozana.bucevac@cslog.rs',
-    signature: '/potpisi/bozana-bucevac-potpis.png',
+    sigDark: '/potpisi/bozana-bucevac-email-potpis.png',
+    sigLight: '/potpisi/bozana-bucevac-email-potpis-beli.png',
   },
 ]
 
@@ -95,11 +99,20 @@ export default function KontaktPage() {
                   minHeight: 120,
                   borderBottom: '1px solid var(--border)',
                 }}>
+                  {/* Svetla tema → crni potpis */}
                   <Image
-                    src={member.signature}
+                    src={member.sigDark}
                     alt={`${member.name} potpis`}
-                    width={180}
-                    height={80}
+                    width={180} height={80}
+                    className="dark:hidden"
+                    style={{ width: 'auto', height: 64, objectFit: 'contain', objectPosition: 'left bottom' }}
+                  />
+                  {/* Tamna tema → beli potpis */}
+                  <Image
+                    src={member.sigLight}
+                    alt={`${member.name} potpis`}
+                    width={180} height={80}
+                    className="hidden dark:block"
                     style={{ width: 'auto', height: 64, objectFit: 'contain', objectPosition: 'left bottom' }}
                   />
                 </div>
