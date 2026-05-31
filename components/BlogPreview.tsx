@@ -5,9 +5,25 @@ type Post = {
   id: number
   title: string
   slug: string
-  excerpt: string
+  content: string
   cover_image: string
   published_at: string | null
+}
+
+/** Strip markdown/html and return first ~140 chars */
+function snippet(content: string, max = 140): string {
+  const text = content
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/#{1,6}\s+/g, '')
+    .replace(/[*_`~>]/g, '')
+    .replace(/\n+/g, ' ')
+    .trim()
+  if (text.length <= max) return text
+  return text.slice(0, max).replace(/\s\S*$/, '') + '…'
 }
 
 function formatDate(iso: string | null) {
@@ -18,7 +34,7 @@ function formatDate(iso: string | null) {
 export default async function BlogPreview() {
   await initDb()
   const posts = await sql`
-    SELECT id, title, slug, excerpt, cover_image, published_at
+    SELECT id, title, slug, content, cover_image, published_at
     FROM blog_posts
     WHERE status = 'published'
     ORDER BY published_at DESC NULLS LAST
@@ -106,11 +122,9 @@ export default async function BlogPreview() {
                       {post.title}
                     </Link>
                   </h3>
-                  {post.excerpt && (
-                    <p style={{ fontFamily: 'var(--font-inter)', fontSize: '0.84rem', color: '#6b7280', lineHeight: 1.7, margin: 0, flex: 1,
-                      display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden',
-                    }}>
-                      {post.excerpt}
+                  {post.content && (
+                    <p style={{ fontFamily: 'var(--font-inter)', fontSize: '0.84rem', color: '#6b7280', lineHeight: 1.7, margin: 0, flex: 1 }}>
+                      {snippet(post.content)}
                     </p>
                   )}
                   <Link
@@ -132,13 +146,11 @@ export default async function BlogPreview() {
         <div style={{ textAlign: 'center' }}>
           <Link
             href="/blog"
-            className="hover:bg-[#c5d000] hover:text-[#0d0d0d] transition-colors duration-200"
+            className="text-[#c5d000] border border-[#c5d000] hover:bg-[#c5d000] hover:text-[#0d0d0d] transition-colors duration-200 inline-flex items-center gap-3"
             style={{
               fontFamily: 'var(--font-inter)', fontWeight: 700,
               fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.2em',
-              display: 'inline-flex', alignItems: 'center', gap: '0.75rem',
-              padding: '0.85rem 2.5rem',
-              border: '1px solid #c5d000', color: '#c5d000', textDecoration: 'none',
+              padding: '0.85rem 2.5rem', textDecoration: 'none',
             }}
           >
             Sve CSLOG priče

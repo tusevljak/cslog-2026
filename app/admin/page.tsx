@@ -646,12 +646,6 @@ export default function AdminPage() {
                     </div>
 
                     <div>
-                      <label style={{ display: 'block', color: '#444', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.3rem' }}>Kratak opis</label>
-                      <textarea rows={3} value={form.excerpt} onChange={field('excerpt')} placeholder="Prikazuje se u listi postova..."
-                        style={{ ...inp(), resize: 'vertical' }} />
-                    </div>
-
-                    <div>
                       <label style={{ display: 'block', color: '#444', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.3rem' }}>Sadržaj (Markdown)</label>
                       <div style={{ display: 'flex', gap: '0.25rem', marginBottom: '0.3rem', flexWrap: 'wrap' }}>
                         {[['B','**','**'],['I','_','_'],['H2','## ',''],['H3','### ',''],['H4','#### ',''],['Link','[','](url)']]

@@ -13,10 +13,25 @@ type Post = {
   id: number
   title: string
   slug: string
-  excerpt: string
+  content: string
   cover_image: string
   published_at: string | null
   created_at: string
+}
+
+function snippet(content: string, max = 140): string {
+  const text = content
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/#{1,6}\s+/g, '')
+    .replace(/[*_`~>]/g, '')
+    .replace(/\n+/g, ' ')
+    .trim()
+  if (text.length <= max) return text
+  return text.slice(0, max).replace(/\s\S*$/, '') + '…'
 }
 
 function formatDate(dateStr: string | null) {
@@ -47,7 +62,7 @@ function PostImage({ src, alt, height = 240 }: { src: string; alt: string; heigh
 export default async function BlogPage() {
   await initDb()
   const posts = await sql`
-    SELECT id, title, slug, excerpt, cover_image, published_at, created_at
+    SELECT id, title, slug, content, cover_image, published_at, created_at
     FROM blog_posts
     WHERE status = 'published'
     ORDER BY published_at DESC NULLS LAST
@@ -131,19 +146,13 @@ export default async function BlogPage() {
                       {featured.title}
                     </h2>
 
-                    {featured.excerpt && (
+                    {featured.content && (
                       <p style={{
                         fontFamily: 'var(--font-inter)',
-                        fontSize: '1rem',
-                        lineHeight: 1.75,
-                        color: 'var(--text-muted)',
-                        marginBottom: '2rem',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 4,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
+                        fontSize: '1rem', lineHeight: 1.75,
+                        color: 'var(--text-muted)', marginBottom: '2rem',
                       }}>
-                        {featured.excerpt}
+                        {snippet(featured.content)}
                       </p>
                     )}
 
@@ -209,16 +218,12 @@ export default async function BlogPage() {
                             {post.title}
                           </h3>
 
-                          {post.excerpt && (
+                          {post.content && (
                             <p style={{
                               fontFamily: 'var(--font-inter)', fontSize: '0.85rem',
                               lineHeight: 1.65, color: 'var(--text-muted)',
-                              display: '-webkit-box',
-                              WebkitLineClamp: 3,
-                              WebkitBoxOrient: 'vertical',
-                              overflow: 'hidden',
                             }}>
-                              {post.excerpt}
+                              {snippet(post.content)}
                             </p>
                           )}
 
