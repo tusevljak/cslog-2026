@@ -220,6 +220,7 @@ export default function AdminPage() {
   const [seeding, setSeeding] = useState(false)
   const [seedMsg, setSeedMsg] = useState('')
   const [syncing, setSyncing] = useState(false)
+  const [syncingBlog, setSyncingBlog] = useState(false)
 
   // Posts state
   const [posts, setPosts] = useState<Post[]>([])
@@ -380,6 +381,21 @@ export default function AdminPage() {
 
   function setContent(v: string) { setForm(f => ({ ...f, content: v })) }
 
+  async function syncBlogImages() {
+    setSyncingBlog(true); setSeedMsg('Sinhronizacija blog slika...')
+    try {
+      const res = await fetch('/api/sync-blog-images', { method: 'POST', headers: headers() })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Greška')
+      await fetchPosts()
+      setSeedMsg(`✓ Blog slike: ažurirano ${data.updated}, preskočeno ${data.skipped}`)
+    } catch (err) {
+      setSeedMsg('✗ Greška: ' + err)
+    } finally {
+      setSyncingBlog(false)
+    }
+  }
+
   async function syncImages() {
     setSyncing(true); setSeedMsg('Sinhronizacija slika...')
     try {
@@ -528,8 +544,11 @@ export default function AdminPage() {
                     {seedMsg && <p style={{ margin: '0.25rem 0 0', fontSize: '0.72rem', color: ACCENT }}>{seedMsg}</p>}
                   </div>
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <button onClick={syncBlogImages} disabled={syncingBlog} style={{ background: 'none', border: '1px solid #333', color: '#888', padding: '0.5rem 1.1rem', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: syncingBlog ? 0.5 : 1 }}>
+                      {syncingBlog ? '...' : '📁 Blog slike'}
+                    </button>
                     <button onClick={syncImages} disabled={syncing} style={{ background: 'none', border: '1px solid #333', color: '#888', padding: '0.5rem 1.1rem', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: syncing ? 0.5 : 1 }}>
-                      {syncing ? '...' : '🖼 Slike'}
+                      {syncing ? '...' : '🖼 WP slike'}
                     </button>
                     <button onClick={seedPosts} disabled={seeding} style={{ background: 'none', border: `1px solid ${ACCENT}`, color: ACCENT, padding: '0.5rem 1.1rem', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: seeding ? 0.5 : 1 }}>
                       {seeding ? 'Uvoz...' : '↓ Uvezi sa cslog.rs'}
