@@ -8,9 +8,9 @@ export const metadata = {
 
 const team = [
   { name: 'Boban Bićanin', role: 'Generalni direktor' },
-  { name: 'Sanja', role: 'Operativni tim' },
-  { name: 'Vladimir', role: 'Operativni tim' },
-  { name: 'Božana', role: 'Administracija' },
+  { name: 'Sanja Branković', role: 'Operativni tim' },
+  { name: 'Vladimir Mićić', role: 'Operativni tim' },
+  { name: 'Božana Bučevac', role: 'Administracija' },
 ]
 
 const stats = [
