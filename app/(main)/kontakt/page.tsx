@@ -85,7 +85,7 @@ export default function KontaktPage() {
             Tim za kontakt
           </h2>
           <p className="mb-12 text-sm" style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)' }}>
-            Svaki upit je lično pitanje — obratite se direktno osobi koja pokriva vašu oblast.
+            Naš tim vam je uvek na raspolaganju.
           </p>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px" style={{ background: 'var(--border)' }}>
