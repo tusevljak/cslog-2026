@@ -12,7 +12,7 @@ const t = {
   },
   en: {
     label: 'Cargo Special Logistic · since 2005',
-    h1a: 'No matter how', h1b: 'heavy or', h1c: 'oversized.',
+    h1a: 'No matter how', h1b: 'heavy and', h1c: 'big it is.',
     sub: 'Transport and escort of special and oversized cargo — from Belgrade to the Middle East.',
     cta: 'Free Quote', ctaHref: '/en/contact',
     link: 'Our services', linkHref: '/en/services',
