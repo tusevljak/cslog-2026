@@ -290,30 +290,15 @@ export default function Header() {
 
         </div>
       </div>
-      {/* ── BOTTOM TAPE — same halves, static white triangle in center ── */}
-      <div style={{ position: 'relative', height: TAPE_H, flexShrink: 0 }}>
-        {/* Left half */}
+      {/* ── BOTTOM TAPE — 180° rotation of top tape (water reflection) ── */}
+      <div style={{ position: 'relative', height: TAPE_H, flexShrink: 0, transform: 'rotate(180deg)' }}>
         <div ref={botLeftRef} style={{
           position: 'absolute', left: 0, right: '50%', top: 0, bottom: 0,
           background: TAPE_LEFT, backgroundSize: TAPE_SIZE,
         }} />
-        {/* Right half */}
         <div ref={botRightRef} style={{
           position: 'absolute', left: '50%', right: 0, top: 0, bottom: 0,
           background: TAPE_RIGHT, backgroundSize: TAPE_SIZE,
-        }} />
-        {/* Static white triangle — points UP, half stripe height */}
-        <div style={{
-          position: 'absolute',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          bottom: 0,
-          zIndex: 3,
-          width: 0, height: 0,
-          borderLeft:   `${TAPE_H / 2 + 1}px solid transparent`,
-          borderRight:  `${TAPE_H / 2 + 1}px solid transparent`,
-          borderBottom: `${TAPE_H / 2}px solid #ffffff`,
-          pointerEvents: 'none',
         }} />
       </div>
 
