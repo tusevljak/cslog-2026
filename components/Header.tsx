@@ -240,12 +240,12 @@ export default function Header() {
               </a>
             </div>
             <div className="flex items-center gap-3 flex-shrink-0">
-              <button title="Srpski" className="w-6 h-6 rounded-sm overflow-hidden opacity-90 hover:opacity-100 transition-opacity">
+              <Link href="/" title="Srpski" className="w-6 h-6 rounded-sm overflow-hidden opacity-90 hover:opacity-100 transition-opacity block">
                 <Image src="/flags/sr.svg" alt="Srpski" width={24} height={24} />
-              </button>
-              <button title="English" className="w-6 h-6 rounded-sm overflow-hidden opacity-60 hover:opacity-100 transition-opacity">
+              </Link>
+              <Link href="/en" title="English" className="w-6 h-6 rounded-sm overflow-hidden opacity-60 hover:opacity-100 transition-opacity block">
                 <Image src="/flags/en.svg" alt="English" width={24} height={24} />
-              </button>
+              </Link>
               <div className="w-px h-5 mx-1" style={{ background: 'var(--border)' }} />
               <button onClick={toggle} aria-label="Toggle theme"
                 style={{ color: 'var(--text-muted)' }}

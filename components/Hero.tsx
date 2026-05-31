@@ -2,7 +2,25 @@
 
 import { useEffect, useRef } from 'react'
 
-export default function Hero() {
+const t = {
+  sr: {
+    label: 'Cargo Special Logistic · od 2005. godine',
+    h1a: 'Nema veze', h1b: 'koliko je', h1c: 'teško i veliko.',
+    sub: 'Prevoz i pratnja specijalnih i vangabaritnih tereta — od Beograda do Bliskog istoka.',
+    cta: 'Besplatan upit', ctaHref: '/kontakt',
+    link: 'Naše usluge', linkHref: '/usluge',
+  },
+  en: {
+    label: 'Cargo Special Logistic · since 2005',
+    h1a: 'No matter how', h1b: 'heavy or', h1c: 'oversized.',
+    sub: 'Transport and escort of special and oversized cargo — from Belgrade to the Middle East.',
+    cta: 'Free Quote', ctaHref: '/en/contact',
+    link: 'Our services', linkHref: '/en/services',
+  },
+}
+
+export default function Hero({ lang = 'sr' }: { lang?: 'sr' | 'en' }) {
+  const tx = t[lang]
   const tapeRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -39,36 +57,30 @@ export default function Hero() {
 
         <p className="text-[#c5d000] uppercase tracking-[0.28em] mb-3"
           style={{ fontFamily: 'var(--font-inter)', fontSize: 'clamp(0.6rem, 1.2vw, 0.8rem)' }}>
-          Cargo Special Logistic · od 2005. godine
+          {tx.label}
         </p>
 
         <h1 className="text-white leading-none mb-4"
-          style={{
-            fontFamily: 'var(--font-bebas)',
-            fontSize: 'clamp(2.4rem, 7.5vw, 7.5rem)',
-            letterSpacing: '0.02em',
-          }}>
-          Nema veze<br />
-          koliko je<br />
-          <span className="text-[#c5d000]">teško i veliko.</span>
+          style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(2.4rem, 7.5vw, 7.5rem)', letterSpacing: '0.02em' }}>
+          {tx.h1a}<br />{tx.h1b}<br />
+          <span className="text-[#c5d000]">{tx.h1c}</span>
         </h1>
 
         <p className="text-white/60 max-w-md leading-relaxed mb-7"
           style={{ fontFamily: 'var(--font-inter)', fontSize: 'clamp(0.8rem, 1.5vw, 1rem)' }}>
-          Prevoz i pratnja specijalnih i vangabaritnih tereta —<br className="hidden sm:block" />
-          od Beograda do Bliskog istoka.
+          {tx.sub}
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-3">
-          <a href="/kontakt"
+          <a href={tx.ctaHref}
             className="inline-flex items-center bg-[#c5d000] text-[#0d0d0d] font-semibold uppercase tracking-widest px-7 py-3 hover:bg-[#a8b200] transition-colors duration-200"
             style={{ fontFamily: 'var(--font-inter)', fontSize: 'clamp(0.7rem, 1.1vw, 0.82rem)' }}>
-            Besplatan upit
+            {tx.cta}
           </a>
-          <a href="/usluge"
+          <a href={tx.linkHref}
             className="inline-flex items-center text-white/70 uppercase tracking-widest hover:text-[#c5d000] transition-colors duration-200 gap-2"
             style={{ fontFamily: 'var(--font-inter)', fontSize: 'clamp(0.7rem, 1.1vw, 0.82rem)' }}>
-            Naše usluge
+            {tx.link}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
             </svg>

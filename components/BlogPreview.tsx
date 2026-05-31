@@ -31,7 +31,27 @@ function formatDate(iso: string | null) {
   return new Date(iso).toLocaleDateString('sr-RS', { day: '2-digit', month: 'long', year: 'numeric' })
 }
 
-export default async function BlogPreview() {
+const copy = {
+  sr: {
+    label: 'Priče sa puta',
+    h2: 'CSLOG Priče',
+    body: 'CSLOG sistem duple posade omogućava izuzetnu efikasnost pri postizanju zadatih rokova. Kada putujete maksimalnom brzinom od 90 km/h, a često i sporije — ljudi i događaji pored kojih prolazite dobijaju posebnu perspektivu.',
+    cta: 'Sve CSLOG priče',
+    read: 'Čitaj',
+    href: '/blog',
+  },
+  en: {
+    label: 'Stories from the road',
+    h2: 'CSLOG Stories',
+    body: 'The CSLOG double-crew system delivers exceptional efficiency in meeting deadlines. Travelling at a maximum speed of 90 km/h — and often slower — gives the people and places you pass a perspective entirely their own.',
+    cta: 'All CSLOG stories',
+    read: 'Read',
+    href: '/blog',
+  },
+}
+
+export default async function BlogPreview({ lang = 'sr' }: { lang?: 'sr' | 'en' }) {
+  const tx = copy[lang]
   await initDb()
   const posts = await sql`
     SELECT id, title, slug, content, cover_image, published_at
@@ -54,7 +74,7 @@ export default async function BlogPreview() {
               fontSize: '0.7rem', letterSpacing: '0.3em', textTransform: 'uppercase',
               marginBottom: '1rem',
             }}>
-              Priče sa puta
+              {tx.label}
             </p>
             <h2 style={{
               fontFamily: 'var(--font-bebas)',
@@ -64,14 +84,12 @@ export default async function BlogPreview() {
               lineHeight: 1,
               margin: 0,
             }}>
-              CSLOG Priče
+              {tx.h2}
             </h2>
           </div>
           <div style={{ maxWidth: 480 }}>
             <p style={{ fontFamily: 'var(--font-inter)', color: '#6b7280', lineHeight: 1.8, fontSize: '0.925rem', margin: 0 }}>
-              CSLOG sistem duple posade omogućava izuzetnu efikasnost pri postizanju zadatih rokova.
-              Kada putujete maksimalnom brzinom od 90 km/h, a često i sporije — ljudi i događaji
-              pored kojih prolazite dobijaju posebnu perspektivu.
+              {tx.body}
             </p>
           </div>
         </div>
@@ -131,7 +149,7 @@ export default async function BlogPreview() {
                     href={`/blog/${post.slug}`}
                     style={{ fontFamily: 'var(--font-inter)', fontSize: '0.72rem', color: '#c5d000', textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginTop: 'auto', paddingTop: '0.5rem' }}
                   >
-                    Čitaj
+                    {tx.read}
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
                     </svg>
@@ -145,7 +163,7 @@ export default async function BlogPreview() {
         {/* ── CTA dugme ── */}
         <div style={{ textAlign: 'center' }}>
           <Link
-            href="/blog"
+            href={tx.href}
             className="text-[#c5d000] border border-[#c5d000] hover:bg-[#c5d000] hover:text-[#0d0d0d] transition-colors duration-200 inline-flex items-center gap-3"
             style={{
               fontFamily: 'var(--font-inter)', fontWeight: 700,
@@ -153,7 +171,7 @@ export default async function BlogPreview() {
               padding: '0.85rem 2.5rem', textDecoration: 'none',
             }}
           >
-            Sve CSLOG priče
+            {tx.cta}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
             </svg>
