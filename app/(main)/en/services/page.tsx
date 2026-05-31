@@ -111,7 +111,7 @@ export default function ServicesPage() {
               Special and oversized transport is always carried out with full technical escort and coordination. Our workflow includes detailed route planning, precise scheduling, and the definition of loading and delivery points.
             </p>
             <p style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)' }} className="text-base leading-relaxed mb-8">
-              Only after all of this is in place does the safe execution of the transport begin — accompanied by CSLOG's dedicated escort vehicle.
+              Only after all of this is in place does the safe execution of the transport begin — accompanied by CSLOG&apos;s dedicated escort vehicle.
             </p>
             <Link href="/en/contact"
               className="inline-flex items-center gap-3 border border-[#c5d000] text-[#c5d000] uppercase tracking-widest text-sm px-6 py-3 hover:bg-[#c5d000] hover:text-[#0d0d0d] transition-colors"
