@@ -231,6 +231,8 @@ export default function AdminPage() {
   const [deleting, setDeleting] = useState(false)
   const [msg, setMsg] = useState('')
   const contentRef = useRef<HTMLTextAreaElement>(null)
+  const inlineImgRef = useRef<HTMLInputElement>(null)
+  const [inlineUploading, setInlineUploading] = useState(false)
 
   // Inquiries state
   type Inquiry = { id: number; ime: string; email: string; telefon: string; ruta: string; teret: string; poruka: string; created_at: string }
@@ -380,6 +382,33 @@ export default function AdminPage() {
   }
 
   function setContent(v: string) { setForm(f => ({ ...f, content: v })) }
+
+  async function handleInlineImage(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (inlineImgRef.current) inlineImgRef.current.value = ''
+    if (!file) return
+    setInlineUploading(true)
+    try {
+      const url = await uploadFile(file, password, 'blog')
+      // Insert at cursor position in textarea
+      const ta = contentRef.current
+      if (!ta) return
+      const pos = ta.selectionStart ?? ta.value.length
+      const before = ta.value.substring(0, pos)
+      const after = ta.value.substring(pos)
+      const insert = `\n\n![](${url})\n\n`
+      setContent(before + insert + after)
+      setTimeout(() => {
+        ta.focus()
+        ta.selectionStart = pos + insert.length
+        ta.selectionEnd = pos + insert.length
+      }, 0)
+    } catch (err) {
+      setMsg('Greška pri uploadu slike: ' + err)
+    } finally {
+      setInlineUploading(false)
+    }
+  }
 
   async function syncBlogImages() {
     setSyncingBlog(true); setSeedMsg('Sinhronizacija blog slika...')
@@ -625,14 +654,22 @@ export default function AdminPage() {
                     <div>
                       <label style={{ display: 'block', color: '#444', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.3rem' }}>Sadržaj (Markdown)</label>
                       <div style={{ display: 'flex', gap: '0.25rem', marginBottom: '0.3rem', flexWrap: 'wrap' }}>
-                        {[['B','**','**'],['I','_','_'],['H2','## ',''],['H3','### ',''],['H4','#### ',''],['Link','[','](url)'],['Slika','![opis](',')']]
+                        {[['B','**','**'],['I','_','_'],['H2','## ',''],['H3','### ',''],['H4','#### ',''],['Link','[','](url)']]
                           .map(([label, before, after]) => (
                             <button key={label} type="button"
-                              onClick={() => mdInsert(contentRef, before, after, setContent)}
+                              onClick={() => mdInsert(contentRef, before, after ?? '', setContent)}
                               style={{ background: '#161616', border: '1px solid #222', color: '#888', padding: '0.22rem 0.55rem', fontSize: '0.7rem', cursor: 'pointer' }}>
                               {label}
                             </button>
                           ))}
+                        {/* Slika — upload direktno u tekst */}
+                        <input ref={inlineImgRef} type="file" accept="image/*" onChange={handleInlineImage} style={{ display: 'none' }} />
+                        <button type="button"
+                          disabled={inlineUploading}
+                          onClick={() => inlineImgRef.current?.click()}
+                          style={{ background: inlineUploading ? '#111' : '#161616', border: '1px solid #222', color: inlineUploading ? '#444' : '#c5d000', padding: '0.22rem 0.55rem', fontSize: '0.7rem', cursor: inlineUploading ? 'default' : 'pointer' }}>
+                          {inlineUploading ? '↑...' : '↑ Slika'}
+                        </button>
                       </div>
                       <textarea ref={contentRef} rows={22} value={form.content} onChange={field('content')}
                         placeholder="## Naslov&#10;&#10;Tekst posta..."
