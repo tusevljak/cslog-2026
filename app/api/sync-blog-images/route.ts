@@ -121,8 +121,8 @@ export async function POST(req: NextRequest) {
     updated++
   }
 
+  revalidatePath('/')
   revalidatePath('/blog')
-  revalidatePath('/(main)/blog')
 
   return NextResponse.json({ updated, skipped })
 }

@@ -1,41 +1,126 @@
 import Link from 'next/link'
 
+const TRAILER_TYPES = [
+  { code: '01', label: 'Niskoutovarne prikolice' },
+  { code: '02', label: 'Platformske prikolice' },
+  { code: '03', label: 'Teleskopske prikolice' },
+  { code: '04', label: 'Modularni transport' },
+]
+
 export default function TrailersBanner() {
   return (
-    <>
-      {/* Hazard tape divider */}
-      <div className="h-14" style={{
-        background: 'repeating-linear-gradient(-45deg, #c5d000 0px, #c5d000 18px, #0d0d0d 18px, #0d0d0d 36px, #ffffff 36px, #ffffff 54px, #0d0d0d 54px, #0d0d0d 72px)'
+    <section className="relative overflow-hidden" style={{ background: '#0a0a0a', minHeight: 420 }}>
+
+      {/* Background photo — one of the transport shots */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: "url('/slike/viber_image_2025-03-11_18-06-05-454.jpg')",
+          opacity: 0.22,
+        }}
+      />
+
+      {/* Hazard tape — top edge */}
+      <div style={{
+        height: 10,
+        background: 'repeating-linear-gradient(-45deg, #ffffff 0px,#ffffff 8px, #0d0d0d 8px,#0d0d0d 16px, #c5d000 16px,#c5d000 24px, #0d0d0d 24px,#0d0d0d 32px)',
+        backgroundSize: '45px 45px',
       }} />
 
-      <section className="py-20" style={{ background: 'var(--bg)' }}>
-        <div className="max-w-[1280px] mx-auto px-6">
-          <div className="max-w-2xl">
-            <h2
-              className="mb-6"
-              style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(2rem, 4vw, 3.5rem)', letterSpacing: '0.05em', color: '#c5d000' }}
-            >
-              Svi tipovi prikolica za bilo koji teret, bilo koju rutu
+      <div className="relative z-10 max-w-[1280px] mx-auto px-6 py-16 lg:py-20">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+          {/* LEFT — heading + CTA */}
+          <div>
+            <p style={{
+              fontFamily: 'var(--font-inter)', color: '#c5d000',
+              fontSize: '0.7rem', letterSpacing: '0.3em', textTransform: 'uppercase',
+              marginBottom: '1.25rem',
+            }}>
+              Specijalni transport
+            </p>
+            <h2 style={{
+              fontFamily: 'var(--font-bebas)',
+              fontSize: 'clamp(2.8rem, 6vw, 5rem)',
+              letterSpacing: '0.03em',
+              color: '#f5f5f5',
+              lineHeight: 1,
+              margin: '0 0 2rem',
+            }}>
+              Svi tipovi prikolica<br />
+              <span style={{ color: '#c5d000' }}>za svaki teret</span>
             </h2>
-            <p style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)' }} className="text-base leading-relaxed mb-4">
-              Nudimo vam najkraće rokove vangabaritnog transporta u Srbiji i svetu. U stanju smo da prevezemo gotovo bilo kakav specijalni ili vangabaritni teret, ma koliko god da je težak, visok, širok ili dugačak.
-            </p>
-            <p style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)' }} className="text-base leading-relaxed mb-10">
-              Posebnu pažnju poklanjamo bezbednosti i papirologiji. Pribavljamo vangabaritne dozvole i odobrenja državnih organa u Srbiji i svim državama na predviđenoj ruti do cilja.
-            </p>
             <Link
               href="/prikolice"
-              className="inline-flex items-center gap-3 border border-[#c5d000] text-[#c5d000] uppercase tracking-widest text-sm px-6 py-3 hover:bg-[#c5d000] hover:text-[#0d0d0d] transition-colors duration-200"
-              style={{ fontFamily: 'var(--font-inter)' }}
+              style={{
+                fontFamily: 'var(--font-inter)', fontWeight: 700,
+                fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.18em',
+                display: 'inline-flex', alignItems: 'center', gap: '0.75rem',
+                padding: '0.85rem 2rem',
+                background: '#c5d000', color: '#0d0d0d', textDecoration: 'none',
+              }}
+              className="hover:bg-[#a8b200] transition-colors duration-200"
             >
-              Sve naše prikolice
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              Pogledaj sve prikolice
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
               </svg>
             </Link>
           </div>
+
+          {/* RIGHT — opis + tipovi prikolica */}
+          <div>
+            <p style={{
+              fontFamily: 'var(--font-inter)', color: '#9ca3af',
+              lineHeight: 1.8, fontSize: '0.925rem',
+              marginBottom: '2rem',
+            }}>
+              Nudimo najkraće rokove vangabaritnog transporta u Srbiji i svetu.
+              Prevozimo gotovo svaki specijalni teret — bez obzira na težinu, visinu, širinu ili dužinu.
+              Pribavljamo vangabaritne dozvole u Srbiji i svim državama na ruti.
+            </p>
+
+            {/* Tipovi */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0 ' }}>
+              {TRAILER_TYPES.map((t, i) => (
+                <div key={t.code} style={{
+                  display: 'flex', alignItems: 'center', gap: '1rem',
+                  padding: '0.85rem 0',
+                  borderTop: i === 0 ? '1px solid #1f1f1f' : 'none',
+                  borderBottom: '1px solid #1f1f1f',
+                }}>
+                  <span style={{
+                    fontFamily: 'var(--font-bebas)', fontSize: '0.85rem',
+                    color: '#c5d000', letterSpacing: '0.08em', flexShrink: 0,
+                  }}>
+                    {t.code}
+                  </span>
+                  <div style={{ width: 1, height: 16, background: '#2a2a2a', flexShrink: 0 }} />
+                  <span style={{
+                    fontFamily: 'var(--font-inter)', fontSize: '0.875rem',
+                    color: '#d1d5db', letterSpacing: '0.02em',
+                  }}>
+                    {t.label}
+                  </span>
+                  <svg style={{ marginLeft: 'auto', color: '#374151', flexShrink: 0 }}
+                    width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
+                  </svg>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
-      </section>
-    </>
+      </div>
+
+      {/* Hazard tape — bottom edge */}
+      <div style={{
+        height: 10,
+        background: 'repeating-linear-gradient(45deg, #ffffff 0px,#ffffff 8px, #0d0d0d 8px,#0d0d0d 16px, #c5d000 16px,#c5d000 24px, #0d0d0d 24px,#0d0d0d 32px)',
+        backgroundSize: '45px 45px',
+      }} />
+
+    </section>
   )
 }

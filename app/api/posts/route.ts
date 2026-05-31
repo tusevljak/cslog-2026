@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { sql, initDb } from '@/lib/db'
 
 function isAdmin(req: NextRequest) {
@@ -48,5 +49,7 @@ export async function POST(req: NextRequest) {
             ${status || 'draft'}, ${published_at || null}, ${meta_title || ''}, ${meta_description || ''})
     RETURNING *
   `
+  revalidatePath('/')
+  revalidatePath('/blog')
   return NextResponse.json(post)
 }
