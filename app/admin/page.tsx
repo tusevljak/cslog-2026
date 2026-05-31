@@ -617,8 +617,8 @@ export default function AdminPage() {
 
             {view === 'editor' && (
               <form onSubmit={save}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                  <button type="button" onClick={() => setView('list')} style={{ background: 'none', border: 'none', color: '#555', cursor: 'pointer', fontSize: '0.82rem', padding: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', position: 'sticky', top: 0, background: '#0a0a0a', zIndex: 10, padding: '0.75rem 0', borderBottom: '1px solid #1a1a1a' }}>
+                  <button type="button" onClick={() => setView('list')} style={{ background: 'none', border: '1px solid #2a2a2a', color: '#aaa', cursor: 'pointer', fontSize: '0.78rem', padding: '0.4rem 0.9rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                     ← Svi postovi
                   </button>
                   <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
