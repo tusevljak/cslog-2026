@@ -4,8 +4,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useTheme } from './ThemeProvider'
 import { useState, useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 
-const navLinks = [
+const navSr = [
   { href: '/', label: 'Početna' },
   { href: '/nase-usluge', label: 'Usluge' },
   { href: '/prikolice', label: 'Prikolice' },
@@ -13,6 +14,16 @@ const navLinks = [
   { href: '/blog', label: 'Blog' },
   { href: '/o-nama', label: 'O nama' },
   { href: '/kontakt', label: 'Kontakt' },
+]
+
+const navEn = [
+  { href: '/en', label: 'Home' },
+  { href: '/en/services', label: 'Services' },
+  { href: '/en/trailers', label: 'Trailers' },
+  { href: '/en/gallery', label: 'Gallery' },
+  { href: '/en/blog', label: 'Blog' },
+  { href: '/en/about', label: 'About' },
+  { href: '/en/contact', label: 'Contact' },
 ]
 
 // Left half: diagonals lean right (-45deg)
@@ -37,6 +48,9 @@ const TAPE_H = 14   // stripe height in px
 export default function Header() {
   const { theme, toggle } = useTheme()
   const [menuOpen, setMenuOpen] = useState(false)
+  const pathname = usePathname()
+  const isEn = pathname.startsWith('/en')
+  const navLinks = isEn ? navEn : navSr
 
   const leftRef    = useRef<HTMLDivElement>(null)
   const rightRef   = useRef<HTMLDivElement>(null)
@@ -240,10 +254,12 @@ export default function Header() {
               </a>
             </div>
             <div className="flex items-center gap-3 flex-shrink-0">
-              <Link href="/" title="Srpski" className="w-6 h-6 rounded-sm overflow-hidden opacity-90 hover:opacity-100 transition-opacity block">
+              <Link href={isEn ? pathname.replace(/^\/en/, '') || '/' : pathname}
+                title="Srpski" className={`w-6 h-6 rounded-sm overflow-hidden transition-opacity block ${isEn ? 'opacity-60 hover:opacity-100' : 'opacity-90'}`}>
                 <Image src="/flags/sr.svg" alt="Srpski" width={24} height={24} />
               </Link>
-              <Link href="/en" title="English" className="w-6 h-6 rounded-sm overflow-hidden opacity-60 hover:opacity-100 transition-opacity block">
+              <Link href={isEn ? pathname : `/en${pathname === '/' ? '' : pathname}`}
+                title="English" className={`w-6 h-6 rounded-sm overflow-hidden transition-opacity block ${isEn ? 'opacity-90' : 'opacity-60 hover:opacity-100'}`}>
                 <Image src="/flags/en.svg" alt="English" width={24} height={24} />
               </Link>
               <div className="w-px h-5 mx-1" style={{ background: 'var(--border)' }} />
