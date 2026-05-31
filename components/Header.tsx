@@ -302,17 +302,17 @@ export default function Header() {
           position: 'absolute', left: '50%', right: 0, top: 0, bottom: 0,
           background: TAPE_RIGHT, backgroundSize: TAPE_SIZE,
         }} />
-        {/* Static white triangle — always centered, points down into page */}
+        {/* Static white triangle — points UP, half stripe height */}
         <div style={{
           position: 'absolute',
           left: '50%',
           transform: 'translateX(-50%)',
-          top: 0,
+          bottom: 0,
           zIndex: 3,
           width: 0, height: 0,
-          borderLeft:  `${TAPE_H + 2}px solid transparent`,
-          borderRight: `${TAPE_H + 2}px solid transparent`,
-          borderTop:   `${TAPE_H}px solid #ffffff`,
+          borderLeft:   `${TAPE_H / 2 + 1}px solid transparent`,
+          borderRight:  `${TAPE_H / 2 + 1}px solid transparent`,
+          borderBottom: `${TAPE_H / 2}px solid #ffffff`,
           pointerEvents: 'none',
         }} />
       </div>
