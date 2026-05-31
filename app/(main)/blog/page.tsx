@@ -64,7 +64,7 @@ export default async function BlogPage() {
   const posts = await sql`
     SELECT id, title, slug, content, cover_image, published_at, created_at
     FROM blog_posts
-    WHERE status = 'published'
+    WHERE status = 'published' AND (lang = 'sr' OR lang IS NULL)
     ORDER BY published_at DESC NULLS LAST
   ` as Post[]
 

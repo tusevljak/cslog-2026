@@ -83,6 +83,7 @@ type Post = {
   published_at: string | null
   meta_title: string
   meta_description: string
+  lang: string
   created_at: string
 }
 
@@ -96,7 +97,7 @@ type GalleryImage = {
 const emptyPost = (): Partial<Post> => ({
   title: '', slug: '', excerpt: '', content: '',
   cover_image: '', status: 'draft', published_at: '',
-  meta_title: '', meta_description: '',
+  meta_title: '', meta_description: '', lang: 'sr',
 })
 
 function toSlug(title: string) {
@@ -295,6 +296,7 @@ export default function AdminPage() {
       cover_image: post.cover_image || '', status: post.status,
       published_at: post.published_at ? post.published_at.slice(0, 10) : '',
       meta_title: post.meta_title || '', meta_description: post.meta_description || '',
+      lang: post.lang || 'sr',
     })
     setMsg('')
     setView('editor')
@@ -440,6 +442,21 @@ export default function AdminPage() {
     }
   }
 
+  async function seedEnPosts() {
+    setSeeding(true); setSeedMsg('Uvoz EN postova...')
+    try {
+      const res = await fetch('/api/seed-en', { method: 'POST', headers: headers() })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Greška')
+      await fetchPosts()
+      setSeedMsg(`✓ EN postovi: uvezeno ${data.inserted}, preskočeno ${data.skipped}`)
+    } catch (err) {
+      setSeedMsg('✗ Greška: ' + err)
+    } finally {
+      setSeeding(false)
+    }
+  }
+
   async function seedPosts() {
     setSeeding(true); setSeedMsg('Uvoz u toku...')
     try {
@@ -579,6 +596,9 @@ export default function AdminPage() {
                     <button onClick={syncImages} disabled={syncing} style={{ background: 'none', border: '1px solid #333', color: '#888', padding: '0.5rem 1.1rem', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: syncing ? 0.5 : 1 }}>
                       {syncing ? '...' : '🖼 WP slike'}
                     </button>
+                    <button onClick={seedEnPosts} disabled={seeding} style={{ background: 'none', border: '1px solid #4466aa', color: '#7799cc', padding: '0.5rem 1.1rem', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: seeding ? 0.5 : 1 }}>
+                      {seeding ? '...' : '↓ EN postovi'}
+                    </button>
                     <button onClick={seedPosts} disabled={seeding} style={{ background: 'none', border: `1px solid ${ACCENT}`, color: ACCENT, padding: '0.5rem 1.1rem', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: seeding ? 0.5 : 1 }}>
                       {seeding ? 'Uvoz...' : '↓ Uvezi sa cslog.rs'}
                     </button>
@@ -681,6 +701,13 @@ export default function AdminPage() {
 
                   {/* Sidebar */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div style={{ border: '1px solid #1a1a1a', padding: '1rem' }}>
+                      <label style={{ display: 'block', color: '#444', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.5rem' }}>Jezik / Language</label>
+                      <select value={form.lang || 'sr'} onChange={field('lang')} style={{ ...inp() }}>
+                        <option value="sr">🇷🇸 Srpski</option>
+                        <option value="en">🇬🇧 English</option>
+                      </select>
+                    </div>
                     <div style={{ border: '1px solid #1a1a1a', padding: '1rem' }}>
                       <label style={{ display: 'block', color: '#444', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '0.5rem' }}>Status</label>
                       <select value={form.status} onChange={field('status')} style={{ ...inp() }}>

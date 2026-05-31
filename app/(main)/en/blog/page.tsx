@@ -40,7 +40,7 @@ export default async function BlogEnPage() {
   await initDb()
   const posts = await sql`
     SELECT id, title, slug, content, cover_image, published_at, created_at
-    FROM blog_posts WHERE status = 'published'
+    FROM blog_posts WHERE status = 'published' AND lang = 'en'
     ORDER BY published_at DESC NULLS LAST
   ` as Post[]
 

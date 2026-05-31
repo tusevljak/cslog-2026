@@ -56,7 +56,7 @@ export default async function BlogPreview({ lang = 'sr' }: { lang?: 'sr' | 'en' 
   const posts = await sql`
     SELECT id, title, slug, content, cover_image, published_at
     FROM blog_posts
-    WHERE status = 'published'
+    WHERE status = 'published' AND (lang = 'sr' OR lang IS NULL)
     ORDER BY published_at DESC NULLS LAST
     LIMIT 3
   ` as Post[]
