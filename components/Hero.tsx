@@ -81,11 +81,12 @@ export default function Hero() {
         <div className="beacon-unit">
           <div className="beacon-dome">
             <div className="beacon-rotor" />
-            <div className="beacon-glint beacon-glint-1" />
-            <div className="beacon-glint beacon-glint-2" />
+            <div className="beacon-lamp" />
+            <div className="beacon-refl" />
           </div>
-          <div className="beacon-collar" />
-          <div className="beacon-housing" />
+          <div className="beacon-rim" />
+          <div className="beacon-body"><div className="beacon-body-line" /></div>
+          <div className="beacon-foot" />
         </div>
       </div>
 
@@ -94,11 +95,12 @@ export default function Hero() {
         <div className="beacon-unit">
           <div className="beacon-dome">
             <div className="beacon-rotor beacon-rotor-rev" />
-            <div className="beacon-glint beacon-glint-1" />
-            <div className="beacon-glint beacon-glint-2" />
+            <div className="beacon-lamp" />
+            <div className="beacon-refl" />
           </div>
-          <div className="beacon-collar" />
-          <div className="beacon-housing" />
+          <div className="beacon-rim" />
+          <div className="beacon-body"><div className="beacon-body-line" /></div>
+          <div className="beacon-foot" />
         </div>
       </div>
 
@@ -151,46 +153,47 @@ export default function Hero() {
           display: flex;
           flex-direction: column;
           align-items: center;
+          filter: drop-shadow(0 0 18px rgba(245,158,11,0.7))
+                  drop-shadow(0 0 40px rgba(245,158,11,0.35));
         }
 
-        /* ─── GLASS DOME — taller than wide, like photo ──── */
+        /* ─── GLASS DOME — semi-transparent, lamp visible inside ─ */
         .beacon-dome {
           position: relative;
-          width:  clamp(30px, 4vw, 50px);
-          height: clamp(40px, 5.5vw, 68px); /* taller than wide */
-          background: radial-gradient(
-            ellipse at 42% 22%,
-            rgba(255,252,180,0.98)  0%,
-            rgba(253,224,50,0.92)   10%,
-            rgba(245,158,11,0.88)   38%,
-            rgba(146,64,14,0.92)    68%,
-            rgba(60,25,0,0.90)      100%
+          width:  clamp(42px, 5.2vw, 62px);
+          height: clamp(54px, 6.8vw, 80px);
+          border-radius: 50% 50% 30% 30% / 58% 58% 42% 42%;
+
+          /* KEY: semi-transparent amber — looks like tinted glass */
+          background: radial-gradient(ellipse at 50% 58%,
+            rgba(255,230,80,0.82)  0%,
+            rgba(245,158,11,0.62) 38%,
+            rgba(160,75,0,0.45)   68%,
+            rgba(80,30,0,0.28)    88%,
+            rgba(30,10,0,0.15)   100%
           );
-          /* egg/bullet shape — rounder at top, slightly tapered at base */
-          border-radius: 50% 50% 28% 28% / 58% 58% 42% 42%;
+          border: 1.5px solid rgba(255,195,40,0.5);
           box-shadow:
-            0 0  16px  6px rgba(245,158,11,0.75),
-            0 0  40px 15px rgba(245,158,11,0.35),
-            0 0  80px 30px rgba(245,158,11,0.15),
-            inset 0 6px 18px rgba(255,255,255,0.12),
-            inset 0 -8px 16px rgba(0,0,0,0.30);
+            inset 0 -18px 28px rgba(0,0,0,0.5),
+            inset 0  4px 14px rgba(255,230,100,0.18);
           overflow: hidden;
         }
 
-        /* Internal rotating reflector */
+        /* Rotating beam — mix-blend-mode:screen blends into amber naturally */
         .beacon-rotor {
           position: absolute; inset: 0;
           background: conic-gradient(
-            from 0deg at 50% 55%,
-            transparent 0deg,
-            transparent 148deg,
-            rgba(255,255,255,0.0) 148deg,
-            rgba(255,255,255,0.85) 174deg,
-            rgba(255,255,255,0.0) 200deg,
-            transparent 200deg,
-            transparent 360deg
+            from 0deg at 50% 58%,
+            transparent  0deg,
+            transparent  148deg,
+            rgba(255,255,210,0.0)  148deg,
+            rgba(255,255,210,0.95) 173deg,
+            rgba(255,255,210,0.0)  198deg,
+            transparent  198deg,
+            transparent  360deg
           );
           animation: rotor-spin 1.8s linear infinite;
+          mix-blend-mode: screen;
         }
         .beacon-rotor-rev { animation-direction: reverse; }
         @keyframes rotor-spin {
@@ -198,40 +201,74 @@ export default function Hero() {
           to   { transform: rotate(360deg); }
         }
 
-        /* Two specular glint dots visible through glass, like in photo */
-        .beacon-glint {
+        /* Visible lamp/bulb — bright point seen through the glass */
+        .beacon-lamp {
           position: absolute;
+          top: 50%; left: 50%;
+          transform: translate(-50%, -50%);
+          width:  clamp(8px, 1.1vw, 13px);
+          height: clamp(8px, 1.1vw, 13px);
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, transparent 100%);
+          background: radial-gradient(circle,
+            #ffffff 0%, #fffde7 35%, rgba(253,224,50,0.6) 65%, transparent 100%
+          );
+          box-shadow:
+            0 0  6px 3px rgba(255,255,200,1),
+            0 0 16px 7px rgba(245,158,11,0.9);
+        }
+
+        /* Glass reflection highlight — top-left, like polycarbonate lens */
+        .beacon-refl {
+          position: absolute;
+          top: 7%; left: 9%;
+          width: 28%; height: 18%;
+          background: radial-gradient(ellipse,
+            rgba(255,255,255,0.55) 0%, transparent 100%
+          );
+          border-radius: 50%;
+          transform: rotate(-22deg);
           pointer-events: none;
         }
-        .beacon-glint-1 {
-          top: 12%; left: 26%;
-          width: 18%; height: 14%;
-        }
-        .beacon-glint-2 {
-          top: 9%; left: 52%;
-          width: 13%; height: 10%;
+
+        /* ─── CHROME RIM — metallic collar, multi-stop to fake reflection ─ */
+        .beacon-rim {
+          width:  clamp(48px, 6vw, 72px);
+          height: clamp(5px, 0.65vw, 8px);
+          background: linear-gradient(90deg,
+            #555f6b  0%, #c8cdd3 12%, #f0f1f2 26%,
+            #a0a8b0 42%, #e2e4e6 55%, #c0c6cc 68%,
+            #f0f1f2 80%, #8a9099 92%, #555f6b 100%
+          );
+          border-radius: 1px;
         }
 
-        /* ─── CHROME COLLAR (ring between dome and housing) ─ */
-        .beacon-collar {
-          width:  clamp(34px, 4.5vw, 56px);
-          height: clamp(4px, 0.6vw, 7px);
+        /* ─── BODY — dark metal housing ──────────────────── */
+        .beacon-body {
+          position: relative;
+          width:  clamp(44px, 5.5vw, 66px);
+          height: clamp(14px, 1.8vw, 22px);
           background: linear-gradient(to bottom,
-            #f3f4f6, #d1d5db 40%, #9ca3af 70%, #6b7280
+            #3a424e 0%, #252d38 45%, #161d27 100%
           );
-          border-radius: 2px 2px 0 0;
+          border-radius: 2px 2px 5px 5px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.75);
+          overflow: hidden;
+        }
+        /* Panel detail line */
+        .beacon-body-line {
+          position: absolute;
+          top: 38%;
+          left: 12%; right: 12%;
+          height: 1px;
+          background: rgba(255,255,255,0.07);
         }
 
-        /* ─── CHROME HOUSING (body) ─────────────────────── */
-        .beacon-housing {
-          width:  clamp(40px, 5.2vw, 64px);
-          height: clamp(10px, 1.4vw, 18px);
-          background: linear-gradient(to bottom,
-            #d1d5db 0%, #9ca3af 35%, #6b7280 65%, #4b5563 100%
-          );
-          border-radius: 2px 2px 4px 4px;
+        /* ─── FOOT — wide mounting base ──────────────────── */
+        .beacon-foot {
+          width:  clamp(54px, 6.8vw, 82px);
+          height: clamp(6px, 0.8vw, 10px);
+          background: linear-gradient(to bottom, #424d5a, #2a333e);
+          border-radius: 2px;
           box-shadow: 0 3px 8px rgba(0,0,0,0.6);
         }
 
