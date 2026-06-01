@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Bebas_Neue, Inter } from 'next/font/google'
+import { headers } from 'next/headers'
 import './globals.css'
 
 const bebas = Bebas_Neue({
@@ -20,13 +21,17 @@ export const metadata: Metadata = {
   description: 'Nema veze koliko je teško i veliko. Cargo Special Logistic vrši transport vangabaritnog tereta od 2005. godine.',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const headersList = await headers()
+  const pathname = headersList.get('x-pathname') ?? ''
+  const lang = pathname.startsWith('/en') ? 'en' : 'sr'
+
   return (
-    <html lang="sr" suppressHydrationWarning className={`${bebas.variable} ${inter.variable}`}>
+    <html lang={lang} suppressHydrationWarning className={`${bebas.variable} ${inter.variable}`}>
       <body suppressHydrationWarning className="min-h-screen flex flex-col">
         {children}
       </body>

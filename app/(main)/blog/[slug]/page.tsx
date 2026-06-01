@@ -18,6 +18,7 @@ type Post = {
   published_at: string | null
   meta_title: string
   meta_description: string
+  lang: string
   created_at: string
 }
 
@@ -138,14 +139,14 @@ export default async function BlogPostPage({ params }: Params) {
         {/* Back link */}
         <div className="mt-16 pt-10 border-t border-white/10">
           <Link
-            href="/blog"
+            href={post.lang === 'en' ? '/en/blog' : '/blog'}
             className="inline-flex items-center gap-2 text-[#c5d000] text-sm uppercase tracking-widest hover:underline"
             style={{ fontFamily: 'var(--font-inter)' }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12,19 5,12 12,5" />
             </svg>
-            Sve priče
+            {post.lang === 'en' ? 'All stories' : 'Sve priče'}
           </Link>
         </div>
       </article>

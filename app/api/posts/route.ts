@@ -39,14 +39,14 @@ export async function POST(req: NextRequest) {
   await initDb()
 
   const body = await req.json()
-  const { title, slug, content, excerpt, cover_image, status, published_at, meta_title, meta_description } = body
+  const { title, slug, content, excerpt, cover_image, status, published_at, meta_title, meta_description, lang } = body
 
   const finalSlug = slug || toSlug(title)
 
   const [post] = await sql`
-    INSERT INTO blog_posts (title, slug, content, excerpt, cover_image, status, published_at, meta_title, meta_description)
+    INSERT INTO blog_posts (title, slug, content, excerpt, cover_image, status, published_at, meta_title, meta_description, lang)
     VALUES (${title}, ${finalSlug}, ${content || ''}, ${excerpt || ''}, ${cover_image || ''},
-            ${status || 'draft'}, ${published_at || null}, ${meta_title || ''}, ${meta_description || ''})
+            ${status || 'draft'}, ${published_at || null}, ${meta_title || ''}, ${meta_description || ''}, ${lang || 'sr'})
     RETURNING *
   `
   revalidatePath('/')

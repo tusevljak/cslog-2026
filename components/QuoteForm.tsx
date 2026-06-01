@@ -24,7 +24,7 @@ const inputStyle = {
 }
 
 export default function QuoteForm() {
-  const [form, setForm] = useState({ ime: '', email: '', telefon: '', ruta: '', teret: '', poruka: '' })
+  const [form, setForm] = useState({ ime: '', email: '', telefon: '', ruta: '', teret: '', poruka: '', website: '' })
   const [status, setStatus] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
 
   function field(key: keyof typeof form) {
@@ -77,7 +77,7 @@ export default function QuoteForm() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {[
                 { href: 'https://maps.google.com/?q=Jurija+Gagarina+21R+Novi+Beograd', text: 'Jurija Gagarina 21 R, lokal DL4, Novi Beograd' },
-                { href: 'mailto:boban.bicanin@cslog.rs', text: 'boban.bicanin@cslog.rs' },
+                { href: 'mailto:office@cslog.rs', text: 'office@cslog.rs' },
                 { href: 'tel:+38163209675', text: '+381 63 209 675' },
               ].map(({ href, text }) => (
                 <a key={text} href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer"
@@ -105,6 +105,13 @@ export default function QuoteForm() {
               </div>
             ) : (
               <form onSubmit={submit}>
+                {/* Honeypot — nevidljivo za ljude, botovi popunjavaju */}
+                <input
+                  type="text" name="website" value={form.website}
+                  onChange={field('website')} tabIndex={-1} autoComplete="off"
+                  style={{ position: 'absolute', opacity: 0, height: 0, pointerEvents: 'none' }}
+                  aria-hidden="true"
+                />
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 2rem' }}>
                   <Field label="Ime i kompanija" required>
                     <input type="text" required value={form.ime} onChange={field('ime')} placeholder="Petar / ABC d.o.o." style={inputStyle} onFocus={focus} onBlur={blur} />

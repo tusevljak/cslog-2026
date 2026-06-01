@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { sql, initDb } from '@/lib/db'
+import { snippet } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,20 +20,6 @@ type Post = {
   created_at: string
 }
 
-function snippet(content: string, max = 140): string {
-  const text = content
-    .replace(/<!--[\s\S]*?-->/g, '')
-    .replace(/<[^>]+>/g, '')
-    .replace(/!\[[^\]]*\]\([^)]+\)/g, '')
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    .replace(/```[\s\S]*?```/g, '')
-    .replace(/#{1,6}\s+/g, '')
-    .replace(/[*_`~>]/g, '')
-    .replace(/\n+/g, ' ')
-    .trim()
-  if (text.length <= max) return text
-  return text.slice(0, max).replace(/\s\S*$/, '') + '…'
-}
 
 function formatDate(dateStr: string | null) {
   if (!dateStr) return ''

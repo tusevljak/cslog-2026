@@ -26,7 +26,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
   if (!isAdmin(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { id } = await params
   const body = await req.json()
-  const { title, slug, content, excerpt, cover_image, status, published_at, meta_title, meta_description } = body
+  const { title, slug, content, excerpt, cover_image, status, published_at, meta_title, meta_description, lang } = body
 
   const [post] = await sql`
     UPDATE blog_posts SET
@@ -39,6 +39,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
       published_at = ${published_at || null},
       meta_title = ${meta_title || ''},
       meta_description = ${meta_description || ''},
+      lang = ${lang || 'sr'},
       updated_at = NOW()
     WHERE id = ${parseInt(id)}
     RETURNING *

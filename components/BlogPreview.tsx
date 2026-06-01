@@ -10,21 +10,7 @@ type Post = {
   published_at: string | null
 }
 
-/** Strip markdown/html and return first ~140 chars */
-function snippet(content: string, max = 140): string {
-  const text = content
-    .replace(/<!--[\s\S]*?-->/g, '')
-    .replace(/<[^>]+>/g, '')
-    .replace(/!\[[^\]]*\]\([^)]+\)/g, '')
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    .replace(/```[\s\S]*?```/g, '')
-    .replace(/#{1,6}\s+/g, '')
-    .replace(/[*_`~>]/g, '')
-    .replace(/\n+/g, ' ')
-    .trim()
-  if (text.length <= max) return text
-  return text.slice(0, max).replace(/\s\S*$/, '') + '…'
-}
+import { snippet } from '@/lib/utils'
 
 function formatDate(iso: string | null) {
   if (!iso) return null

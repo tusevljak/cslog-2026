@@ -18,9 +18,20 @@ export default function ContactPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setSending(true)
-    await new Promise((r) => setTimeout(r, 800))
-    setSent(true)
-    setSending(false)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ime: form.name, email: form.email, poruka: form.message, telefon: '', ruta: '', teret: '' }),
+      })
+      setSent(res.ok)
+      if (!res.ok) throw new Error()
+    } catch {
+      setSent(false)
+      alert('Error sending message. Please contact us directly.')
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
