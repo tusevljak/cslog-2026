@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1440" height="56" viewBox="0 0 1440 56">
+  <defs>
+    <!--
+      Hazard tape — CSLOG
+      Colors: lime #c5d000 · black #0d0d0d · white #ffffff
+      Stripe width: 18 px each  |  Pattern period: 72 px
+      Matches CSS: repeating-linear-gradient(-45deg,
+        #c5d000 0px 18px, #0d0d0d 18px 36px,
+        #ffffff 36px 54px, #0d0d0d 54px 72px)
+    -->
+    <pattern id="tape"
+             x="0" y="0"
+             width="72" height="72"
+             patternUnits="userSpaceOnUse"
+             patternTransform="rotate(-45)">
+      <rect x="0" y="0"  width="72" height="18" fill="#c5d000"/>
+      <rect x="0" y="18" width="72" height="18" fill="#0d0d0d"/>
+      <rect x="0" y="36" width="72" height="18" fill="#ffffff"/>
+      <rect x="0" y="54" width="72" height="18" fill="#0d0d0d"/>
+    </pattern>
+  </defs>
+  <rect width="1440" height="56" fill="url(#tape)"/>
+</svg>
