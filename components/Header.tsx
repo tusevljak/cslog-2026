@@ -81,18 +81,22 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50" style={{ background: 'var(--bg)' }}>
 
-      {/* ── SPLIT HAZARD TAPE — chevron shape via clip-path, no overlay ── */}
-      {/*   Left: -45° stripes, Right: +45° mirror, tip is the tape itself   */}
-      <div style={{ position: 'relative', height: TAPE_H, flexShrink: 0 }}>
-        {/* Left half — diagonals lean right (-45°) */}
+      {/* ── SPLIT HAZARD TAPE — mirror at center, viewport-anchored ──
+           Both halves are full-width with pattern anchored at x=0,
+           then clip-path hides one half each. This way the patterns
+           share the same phase at the seam → perfect mirror at any width. */}
+      <div style={{ position: 'relative', height: TAPE_H, flexShrink: 0, overflow: 'hidden' }}>
+        {/* Left half — full width, clipped to left 50% */}
         <div ref={leftRef} style={{
-          position: 'absolute', left: 0, right: '50%', top: 0, bottom: 0,
+          position: 'absolute', inset: 0,
           background: TAPE_LEFT, backgroundSize: TAPE_SIZE,
+          clipPath: 'inset(0 50% 0 0)',
         }} />
-        {/* Right half — diagonals lean left (+45°, mirror) */}
+        {/* Right half — full width, clipped to right 50%, same x=0 anchor */}
         <div ref={rightRef} style={{
-          position: 'absolute', left: '50%', right: 0, top: 0, bottom: 0,
+          position: 'absolute', inset: 0,
           background: TAPE_RIGHT, backgroundSize: TAPE_SIZE,
+          clipPath: 'inset(0 0 0 50%)',
         }} />
       </div>
 
@@ -306,15 +310,17 @@ export default function Header() {
 
         </div>
       </div>
-      {/* ── BOTTOM TAPE — 180° rotation of top tape (water reflection) ── */}
-      <div style={{ position: 'relative', height: TAPE_H, flexShrink: 0, transform: 'rotate(180deg)' }}>
+      {/* ── BOTTOM TAPE — 180° rotation, same viewport-anchored mirror ── */}
+      <div style={{ position: 'relative', height: TAPE_H, flexShrink: 0, transform: 'rotate(180deg)', overflow: 'hidden' }}>
         <div ref={botLeftRef} style={{
-          position: 'absolute', left: 0, right: '50%', top: 0, bottom: 0,
+          position: 'absolute', inset: 0,
           background: TAPE_LEFT, backgroundSize: TAPE_SIZE,
+          clipPath: 'inset(0 50% 0 0)',
         }} />
         <div ref={botRightRef} style={{
-          position: 'absolute', left: '50%', right: 0, top: 0, bottom: 0,
+          position: 'absolute', inset: 0,
           background: TAPE_RIGHT, backgroundSize: TAPE_SIZE,
+          clipPath: 'inset(0 0 0 50%)',
         }} />
       </div>
 
