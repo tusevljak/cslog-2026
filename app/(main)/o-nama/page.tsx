@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import PageHero from '@/components/PageHero'
 
 export const metadata = {
   title: 'O nama – CSLOG',
@@ -23,39 +24,21 @@ const stats = [
 export default function ONamaPage() {
   return (
     <>
-      {/* Hero — citat */}
-      <section
-        className="relative min-h-[70vh] flex items-center overflow-hidden"
-        style={{ background: '#0d0d0d' }}
+      <PageHero
+        eyebrow="O nama"
+        title={<span style={{ fontStyle: 'italic' }}>&ldquo;Od momenta utovara, prevoz više nije briga klijenta&rdquo;</span>}
+        bgImage="/slike/NASLOVNA.jpg"
+        height="70vh"
       >
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: "url('/slike/NASLOVNA.jpg')" }}
-        />
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 py-32">
-          <p className="text-[#c5d000] text-sm uppercase tracking-[0.3em] mb-8" style={{ fontFamily: 'var(--font-inter)' }}>
-            O nama
+        <div style={{ marginTop: '2rem' }}>
+          <p className="text-[#c5d000] text-lg italic" style={{ fontFamily: 'Georgia, serif', marginBottom: '0.25rem' }}>
+            Boban Bićanin
           </p>
-          <blockquote
-            className="text-white leading-tight mb-10 max-w-4xl"
-            style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(2.5rem, 6vw, 6rem)', letterSpacing: '0.02em' }}
-          >
-            &ldquo;Od momenta utovara, prevoz više nije briga klijenta&rdquo;
-          </blockquote>
-          <div>
-            <p className="text-[#c5d000] text-lg italic mb-1" style={{ fontFamily: 'Georgia, serif' }}>
-              Boban Bićanin
-            </p>
-            <p className="text-white/50 text-sm uppercase tracking-widest" style={{ fontFamily: 'var(--font-inter)' }}>
-              Generalni direktor
-            </p>
-          </div>
+          <p className="text-white/50 text-sm uppercase tracking-widest" style={{ fontFamily: 'var(--font-inter)' }}>
+            Generalni direktor
+          </p>
         </div>
-        {/* Hazard tape bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-10" style={{
-          background: 'repeating-linear-gradient(-45deg, #c5d000 0px, #c5d000 14px, #0d0d0d 14px, #0d0d0d 28px, #ffffff 28px, #ffffff 42px, #0d0d0d 42px, #0d0d0d 56px)'
-        }} />
-      </section>
+      </PageHero>
 
       {/* Video */}
       <section className="py-24" style={{ background: 'var(--bg-subtle)' }}>

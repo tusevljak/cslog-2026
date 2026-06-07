@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { sql, initDb } from '@/lib/db'
+import { snippet } from '@/lib/utils'
+import BlogHero from '@/components/BlogHero'
 
 export const dynamic = 'force-dynamic'
 
@@ -15,8 +17,6 @@ function formatDate(d: string | null) {
   if (!d) return ''
   return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
 }
-
-import { snippet } from '@/lib/utils'
 
 function PostImage({ src, alt, height = 240 }: { src: string; alt: string; height?: number }) {
   if (!src) return (
@@ -40,97 +40,56 @@ export default async function BlogEnPage() {
 
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
-      <div style={{ borderBottom: '1px solid var(--border)' }}>
-        <div className="max-w-[1280px] mx-auto px-6 py-5 flex items-center justify-between">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '1.5rem', letterSpacing: '0.1em', color: '#c5d000' }}>Blog</span>
-            <span style={{ width: 1, height: 18, background: 'var(--border)', display: 'inline-block' }} />
-            <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Stories from the road</span>
+      <BlogHero post={featured || null} lang="en" />
+
+      {rest.length > 0 && (
+        <section className="py-16">
+          <div className="max-w-[1280px] mx-auto px-6">
+            <div className="flex items-baseline justify-between mb-10">
+              <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', letterSpacing: '0.04em', color: 'var(--text)' }}>
+                All stories
+              </h2>
+              <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                {posts.length} {posts.length === 1 ? 'story' : 'stories'}
+              </span>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2px', border: '1px solid var(--border)' }}>
+              {rest.map((post) => (
+                <Link key={post.id} href={`/blog/${post.slug}`} className="group block" style={{ borderRight: '1px solid var(--border)' }}>
+                  <article>
+                    <div style={{ overflow: 'hidden' }}>
+                      <div style={{ transition: 'transform 0.5s ease' }} className="group-hover:scale-[1.03]">
+                        <PostImage src={post.cover_image} alt={post.title} height={200} />
+                      </div>
+                    </div>
+                    <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border)' }}>
+                      {post.published_at && (
+                        <p style={{ fontFamily: 'var(--font-inter)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.18em', color: '#c5d000', marginBottom: '0.6rem' }}>
+                          {formatDate(post.published_at)}
+                        </p>
+                      )}
+                      <h3 style={{ fontFamily: 'var(--font-bebas)', fontSize: '1.4rem', letterSpacing: '0.04em', color: 'var(--text)', lineHeight: 1.15, marginBottom: '0.6rem', transition: 'color 0.2s' }} className="group-hover:text-[#c5d000]">
+                        {post.title}
+                      </h3>
+                      {post.content && (
+                        <p style={{ fontFamily: 'var(--font-inter)', fontSize: '0.85rem', lineHeight: 1.65, color: 'var(--text-muted)' }}>
+                          {snippet(post.content)}
+                        </p>
+                      )}
+                      <div style={{ marginTop: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontFamily: 'var(--font-inter)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#c5d000' }}>
+                        Read
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transition: 'transform 0.2s' }} className="group-hover:translate-x-1">
+                          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </article>
+                </Link>
+              ))}
+            </div>
           </div>
-          {posts.length > 0 && (
-            <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-              {posts.length} {posts.length === 1 ? 'story' : 'stories'}
-            </span>
-          )}
-        </div>
-      </div>
-
-      {posts.length === 0 ? (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
-          <p style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)', fontSize: '0.9rem' }}>Coming soon — first stories are on the way.</p>
-        </div>
-      ) : (
-        <>
-          {/* Featured */}
-          <section style={{ borderBottom: '1px solid var(--border)' }}>
-            <Link href={`/blog/${featured.slug}`} className="block group">
-              <div className="max-w-[1280px] mx-auto">
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }} className="md:grid-cols-2">
-                  <div style={{ position: 'relative', overflow: 'hidden', minHeight: 480 }}>
-                    <div style={{ position: 'absolute', inset: 0, transition: 'transform 0.6s ease' }} className="group-hover:scale-105">
-                      <PostImage src={featured.cover_image} alt={featured.title} height={480} />
-                    </div>
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, transparent 60%, var(--bg))' }} className="hidden md:block" />
-                  </div>
-                  <div style={{ padding: 'clamp(2rem, 5vw, 4rem)', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'var(--bg)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                      <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.2em', background: '#c5d000', color: '#0d0d0d', padding: '0.2rem 0.6rem', fontWeight: 700 }}>Latest</span>
-                      {featured.published_at && <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>{formatDate(featured.published_at)}</span>}
-                    </div>
-                    <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(2rem, 4vw, 3.25rem)', letterSpacing: '0.04em', color: 'var(--text)', lineHeight: 1.05, marginBottom: '1.25rem', transition: 'color 0.2s' }} className="group-hover:text-[#c5d000]">
-                      {featured.title}
-                    </h2>
-                    {featured.content && (
-                      <p style={{ fontFamily: 'var(--font-inter)', fontSize: '1rem', lineHeight: 1.75, color: 'var(--text-muted)', marginBottom: '2rem' }}>
-                        {snippet(featured.content)}
-                      </p>
-                    )}
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--font-inter)', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#c5d000', fontWeight: 600 }}>
-                      Read the full story
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ transition: 'transform 0.2s' }} className="group-hover:translate-x-1">
-                        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </section>
-
-          {/* Rest */}
-          {rest.length > 0 && (
-            <section className="py-16">
-              <div className="max-w-[1280px] mx-auto px-6">
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2px', border: '1px solid var(--border)' }}>
-                  {rest.map((post) => (
-                    <Link key={post.id} href={`/blog/${post.slug}`} className="group block" style={{ borderRight: '1px solid var(--border)' }}>
-                      <article>
-                        <div style={{ overflow: 'hidden' }}>
-                          <div style={{ transition: 'transform 0.5s ease' }} className="group-hover:scale-[1.03]">
-                            <PostImage src={post.cover_image} alt={post.title} height={200} />
-                          </div>
-                        </div>
-                        <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border)' }}>
-                          {post.published_at && <p style={{ fontFamily: 'var(--font-inter)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.18em', color: '#c5d000', marginBottom: '0.6rem' }}>{formatDate(post.published_at)}</p>}
-                          <h3 style={{ fontFamily: 'var(--font-bebas)', fontSize: '1.4rem', letterSpacing: '0.04em', color: 'var(--text)', lineHeight: 1.15, marginBottom: '0.6rem', transition: 'color 0.2s' }} className="group-hover:text-[#c5d000]">
-                            {post.title}
-                          </h3>
-                          {post.content && <p style={{ fontFamily: 'var(--font-inter)', fontSize: '0.85rem', lineHeight: 1.65, color: 'var(--text-muted)' }}>{snippet(post.content)}</p>}
-                          <div style={{ marginTop: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontFamily: 'var(--font-inter)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#c5d000' }}>
-                            Read
-                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transition: 'transform 0.2s' }} className="group-hover:translate-x-1">
-                              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
-                            </svg>
-                          </div>
-                        </div>
-                      </article>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </section>
-          )}
-        </>
+        </section>
       )}
     </div>
   )

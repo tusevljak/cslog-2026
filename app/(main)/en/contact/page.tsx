@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import PageHero from '@/components/PageHero'
 
 const team = [
   { name: 'Boban Bićanin', role: 'CEO', phone: '+381 63 209 675', phoneHref: 'tel:+38163209675', email: 'boban.bicanin@cslog.rs', sigDark: '/potpisi/Boban-Bićanin-email-potpis.png', sigLight: '/potpisi/Boban-Bićanin-email-potpis-beli.png' },
@@ -36,23 +37,12 @@ export default function ContactPage() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative min-h-[50vh] flex items-center overflow-hidden" style={{ background: '#0d0d0d' }}>
-        <div className="absolute inset-0 bg-cover bg-center opacity-20" style={{ backgroundImage: "url('/slike/NASLOVNA.jpg')" }} />
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 py-28">
-          <p className="text-[#c5d000] text-sm uppercase tracking-[0.3em] mb-6" style={{ fontFamily: 'var(--font-inter)' }}>Contact</p>
-          <h1 className="text-white leading-tight mb-6 max-w-3xl"
-            style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(2.5rem, 6vw, 5.5rem)', letterSpacing: '0.02em' }}>
-            Straight to the right person
-          </h1>
-          <p className="text-white/60 text-base max-w-xl leading-relaxed" style={{ fontFamily: 'var(--font-inter)' }}>
-            Contact us directly — every team member is available and ready to respond promptly.
-          </p>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-10" style={{
-          background: 'repeating-linear-gradient(-45deg, #c5d000 0px, #c5d000 14px, #0d0d0d 14px, #0d0d0d 28px, #ffffff 28px, #ffffff 42px, #0d0d0d 42px, #0d0d0d 56px)',
-        }} />
-      </section>
+      <PageHero
+        eyebrow="Contact"
+        title="Straight to the right person"
+        subtitle="Contact us directly — every team member is available and ready to respond promptly."
+        bgImage="/slike/NASLOVNA.jpg"
+      />
 
       {/* Team */}
       <section className="py-20" style={{ background: 'var(--bg)' }}>

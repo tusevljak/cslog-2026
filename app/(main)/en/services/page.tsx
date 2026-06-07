@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import PageHero from '@/components/PageHero'
 
 export const metadata = {
   title: 'Services – CSLOG',
@@ -32,21 +33,12 @@ const steps = [
 export default function ServicesPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative py-24 overflow-hidden" style={{ background: '#0d0d0d' }}>
-        <div className="max-w-[1280px] mx-auto px-6 relative z-10">
-          <p className="text-[#c5d000] text-sm uppercase tracking-[0.3em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
-            What we do
-          </p>
-          <h1 className="text-white leading-none"
-            style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(3rem, 7vw, 7rem)', letterSpacing: '0.02em' }}>
-            CSLOG Services
-          </h1>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-10" style={{
-          background: 'repeating-linear-gradient(-45deg, #c5d000 0px, #c5d000 14px, #0d0d0d 14px, #0d0d0d 28px, #ffffff 28px, #ffffff 42px, #0d0d0d 42px, #0d0d0d 56px)'
-        }} />
-      </section>
+      <PageHero
+        eyebrow="What we do"
+        title="CSLOG Services"
+        subtitle="Special and oversized cargo transport, technical escort, coordination and international haulage — all under one roof."
+        bgImage="/slike/viber_image_2026-04-24_10-27-03-123.jpg"
+      />
 
       {/* Anchor nav */}
       <nav style={{ background: 'var(--bg-subtle)', borderBottom: '1px solid var(--border)' }}>

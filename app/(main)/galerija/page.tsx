@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { sql, initDb } from '@/lib/db'
 import GalleryGrid from '@/components/GalleryGrid'
+import PageHero from '@/components/PageHero'
 
 export const metadata: Metadata = {
   title: 'Galerija | CSLOG',
@@ -21,24 +22,12 @@ export default async function GalerijaPage() {
 
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
-      {/* Hero */}
-      <section className="py-20 border-b border-white/10">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <p className="uppercase tracking-[0.25em] text-xs mb-4"
-            style={{ fontFamily: 'var(--font-inter)', color: '#c5d000' }}>
-            CSLOG Galerija
-          </p>
-          <h1 style={{
-            fontFamily: 'var(--font-bebas)',
-            fontSize: 'clamp(3rem, 8vw, 6rem)',
-            letterSpacing: '0.05em',
-            color: 'var(--text)',
-            lineHeight: 1,
-          }}>
-            Fotografije
-          </h1>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="CSLOG Galerija"
+        title="Fotografije"
+        subtitle={`${images.length} fotografija sa najzanimljivijih transporta — od redovnih ruta do najizazovnijih vangabaritnih projekata.`}
+        bgImage={images[0]?.url}
+      />
 
       {/* Grid + Lightbox */}
       <section className="py-16">

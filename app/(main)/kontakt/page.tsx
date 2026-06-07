@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import PageHero from '@/components/PageHero'
 
 const team = [
   {
@@ -57,25 +58,12 @@ export default function KontaktPage() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative min-h-[50vh] flex items-center overflow-hidden" style={{ background: '#0d0d0d' }}>
-        <div className="absolute inset-0 bg-cover bg-center opacity-20" style={{ backgroundImage: "url('/slike/NASLOVNA.jpg')" }} />
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 py-28">
-          <p className="text-[#c5d000] text-sm uppercase tracking-[0.3em] mb-6" style={{ fontFamily: 'var(--font-inter)' }}>
-            Kontakt
-          </p>
-          <h1 className="text-white leading-tight mb-6 max-w-3xl"
-            style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(2.5rem, 6vw, 5.5rem)', letterSpacing: '0.02em' }}>
-            Direktno do prave osobe
-          </h1>
-          <p className="text-white/60 text-base max-w-xl leading-relaxed" style={{ fontFamily: 'var(--font-inter)' }}>
-            Kontaktirajte nas direktno — svaki član tima je dostupan i spreman da odgovori u najkraćem roku.
-          </p>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-10" style={{
-          background: 'repeating-linear-gradient(-45deg, #c5d000 0px, #c5d000 14px, #0d0d0d 14px, #0d0d0d 28px, #ffffff 28px, #ffffff 42px, #0d0d0d 42px, #0d0d0d 56px)',
-        }} />
-      </section>
+      <PageHero
+        eyebrow="Kontakt"
+        title="Direktno do prave osobe"
+        subtitle="Kontaktirajte nas direktno — svaki član tima je dostupan i spreman da odgovori u najkraćem roku."
+        bgImage="/slike/NASLOVNA.jpg"
+      />
 
       {/* Tim kartice */}
       <section className="py-20" style={{ background: 'var(--bg)' }}>

@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import QuoteForm from '@/components/QuoteForm'
+import PageHero from '@/components/PageHero'
 
 export const metadata = {
   title: 'Usluge – CSLOG',
@@ -33,24 +34,12 @@ const steps = [
 export default function UslugeKPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative py-24 overflow-hidden" style={{ background: 'var(--ink, #0d0d0d)' }}>
-        <div className="max-w-[1280px] mx-auto px-6 relative z-10">
-          <p className="text-[#c5d000] text-sm uppercase tracking-[0.3em] mb-4" style={{ fontFamily: 'var(--font-inter)' }}>
-            Šta radimo
-          </p>
-          <h1
-            className="text-white leading-none"
-            style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(3rem, 7vw, 7rem)', letterSpacing: '0.02em' }}
-          >
-            CSLOG usluge
-          </h1>
-        </div>
-        {/* Hazard tape bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-10" style={{
-          background: 'repeating-linear-gradient(-45deg, #c5d000 0px, #c5d000 14px, #0d0d0d 14px, #0d0d0d 28px, #ffffff 28px, #ffffff 42px, #0d0d0d 42px, #0d0d0d 56px)'
-        }} />
-      </section>
+      <PageHero
+        eyebrow="Šta radimo"
+        title="CSLOG usluge"
+        subtitle="Prevoz specijalnih i vangabaritnih tereta, tehnička pratnja, koordinacija i međunarodni transport — sve pod jednim krovom."
+        bgImage="/slike/viber_image_2026-04-24_10-27-03-123.jpg"
+      />
 
       {/* Anchor nav */}
       <nav style={{ background: 'var(--bg-subtle)', borderBottom: '1px solid var(--border)' }}>

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import PageHero from '@/components/PageHero'
 
 export const metadata: Metadata = {
   title: 'Prikolice | CSLOG',
@@ -21,39 +22,12 @@ const trailers = [
 export default function PrikolicesPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden" style={{ background: '#0d0d0d', minHeight: '52vh', display: 'flex', alignItems: 'center' }}>
-        <div className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: "url('/slike/viber_image_2026-04-08_16-38-45-091.jpg')" }} />
-
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 py-28 w-full">
-          <p className="text-[#c5d000] text-sm uppercase tracking-[0.3em] mb-6"
-            style={{ fontFamily: 'var(--font-inter)' }}>
-            Flota
-          </p>
-          <h1 style={{
-            fontFamily: 'var(--font-bebas)',
-            fontSize: 'clamp(3rem, 8vw, 7rem)',
-            letterSpacing: '0.02em',
-            color: '#ffffff',
-            lineHeight: 1,
-            marginBottom: '1.5rem',
-          }}>
-            Naše prikolice
-          </h1>
-          <p style={{ fontFamily: 'var(--font-inter)', color: 'rgba(255,255,255,0.55)', fontSize: '1rem', lineHeight: 1.75, maxWidth: 560 }}>
-            Od niskoutovarne do modularnog transporta — CSLOG flota prikolica pokriva svaki gabarit,
-            svaki teret i svaku rutu.
-          </p>
-        </div>
-
-        {/* Hazard tape */}
-        <div className="absolute bottom-0 left-0 right-0" style={{
-          height: 10,
-          background: 'repeating-linear-gradient(-45deg, #ffffff 0px,#ffffff 8px, #0d0d0d 8px,#0d0d0d 16px, #c5d000 16px,#c5d000 24px, #0d0d0d 24px,#0d0d0d 32px)',
-          backgroundSize: '45px 45px',
-        }} />
-      </section>
+      <PageHero
+        eyebrow="Flota"
+        title="Naše prikolice"
+        subtitle="Od niskoutovarne do modularnog transporta — CSLOG flota prikolica pokriva svaki gabarit, svaki teret i svaku rutu."
+        bgImage="/slike/viber_image_2026-04-08_16-38-45-091.jpg"
+      />
 
       {/* Grid prikolica */}
       <section className="py-20" style={{ background: 'var(--bg)' }}>
