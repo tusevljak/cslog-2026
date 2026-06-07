@@ -215,12 +215,21 @@ export default function ONamaPage() {
             </div>
           </div>
           <div className="flex justify-center">
+            {/* Svetla tema → tamni sertifikat */}
             <Image
-              src="/iso9001.jpg"
+              src="/sertifikat/sertifikat%20za%20svetle%20pozadine.jpg"
               alt="ISO 9001 sertifikat"
-              width={300}
-              height={180}
-              className="object-contain"
+              width={300} height={180}
+              className="object-contain dark:hidden"
+              style={{ width: 'auto', height: 180 }}
+            />
+            {/* Tamna tema → svetli sertifikat */}
+            <Image
+              src="/sertifikat/sertifikat%20za%20tamne%20pozadine.png"
+              alt="ISO 9001 sertifikat"
+              width={300} height={180}
+              className="object-contain hidden dark:block"
+              style={{ width: 'auto', height: 180 }}
             />
           </div>
         </div>
