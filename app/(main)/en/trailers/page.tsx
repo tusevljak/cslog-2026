@@ -10,13 +10,14 @@ export const metadata: Metadata = {
 const trailers = [
   { file: 'prikolice-01.webp', name: 'Faymonville',       type: 'Low-bed' },
   { file: 'prikolice-02.webp', name: 'Kassbohrer',        type: 'Platform' },
-  { file: 'prikolice-03.webp', name: 'Kögel / Schmitz',   type: 'Platform' },
+  { file: 'prikolice-03.webp', name: 'Schmitz',           type: 'Platform' },
   { file: 'prikolice-04.webp', name: 'Krone NA',          type: 'Curtainsider' },
   { file: 'prikolice-05.webp', name: 'Lintrailer OO-435', type: 'Low-bed' },
   { file: 'prikolice-06.webp', name: 'Lintrailer OO-436', type: 'Low-bed' },
   { file: 'prikolice-07.webp', name: 'Meusburger',        type: 'Low-bed' },
   { file: 'prikolice-08.webp', name: 'Meusburger MPG3',   type: 'Telescopic' },
   { file: 'prikolice-09.webp', name: 'Yalçın',            type: 'Modular transport' },
+  { file: 'prikolice-10.webp', name: 'Kögel',             type: 'Platform' },
 ]
 
 export default function TrailersPage() {
