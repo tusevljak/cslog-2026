@@ -8,16 +8,16 @@ export const metadata: Metadata = {
 }
 
 const trailers = [
-  { file: 'prikolice-01.webp', name: 'Faymonville',       type: 'Low-bed' },
-  { file: 'prikolice-02.webp', name: 'Kassbohrer',        type: 'Platform' },
-  { file: 'prikolice-03.webp', name: 'Schmitz',           type: 'Platform' },
-  { file: 'prikolice-04.webp', name: 'Krone NA',          type: 'Curtainsider' },
-  { file: 'prikolice-05.webp', name: 'Lintrailer OO-435', type: 'Low-bed' },
-  { file: 'prikolice-06.webp', name: 'Lintrailer OO-436', type: 'Low-bed' },
-  { file: 'prikolice-07.webp', name: 'Meusburger',        type: 'Low-bed' },
-  { file: 'prikolice-08.webp', name: 'Meusburger MPG3',   type: 'Telescopic' },
-  { file: 'prikolice-09.webp', name: 'Yalçın',            type: 'Modular transport' },
-  { file: 'prikolice-10.webp', name: 'Kögel',             type: 'Platform' },
+  { file: 'prikolice-01.webp', name: 'Faymonville', type: 'Low-bed · 3 axles' },
+  { file: 'prikolice-02.webp', name: 'Faymonville', type: 'Low-bed · 4 axles' },
+  { file: 'prikolice-03.webp', name: 'FWG',         type: 'Vehicle carrier' },
+  { file: 'prikolice-04.webp', name: 'Kässbohrer',  type: 'Low-bed' },
+  { file: 'prikolice-05.webp', name: 'Krone',       type: 'Curtainsider' },
+  { file: 'prikolice-06.webp', name: 'Nooteboom',   type: 'Extendable low-bed' },
+  { file: 'prikolice-07.webp', name: 'Yalçın',      type: 'Flatbed' },
+  { file: 'prikolice-08.webp', name: 'Schmitz',     type: 'Curtainsider' },
+  { file: 'prikolice-09.webp', name: 'Schmitz',     type: 'Flatbed' },
+  { file: 'prikolice-10.webp', name: 'Kögel',       type: 'Flatbed' },
 ]
 
 export default function TrailersPage() {
@@ -36,11 +36,10 @@ export default function TrailersPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px" style={{ background: 'var(--border)' }}>
             {trailers.map((t) => (
               <div key={t.file} style={{ background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ overflow: 'hidden', flexShrink: 0 }}>
+                <div style={{ overflow: 'hidden', flexShrink: 0, background: '#ffffff' }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={`/prikolice/${t.file}`} alt={t.name}
-                    style={{ width: '100%', height: 240, objectFit: 'cover', display: 'block' }}
-                    className="transition-transform duration-500 hover:scale-105" />
+                    style={{ width: '100%', height: 240, objectFit: 'contain', display: 'block', padding: '0.5rem' }} />
                 </div>
                 <div style={{ padding: '1.25rem 1.5rem', borderTop: '2px solid #c5d000', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
                   <div>
