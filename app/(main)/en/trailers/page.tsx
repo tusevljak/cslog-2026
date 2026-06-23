@@ -8,15 +8,15 @@ export const metadata: Metadata = {
 }
 
 const trailers = [
-  { file: 'FAYMONVILLE_page-0001.jpg',          name: 'Faymonville',          type: 'Low-bed' },
-  { file: 'KASSBORHRER_page-0001.jpg',           name: 'Kassbohrer',           type: 'Platform' },
-  { file: 'KOGEL-SMITZKOGEL_page-0001.jpg',     name: 'Kögel / Schmitz',      type: 'Platform' },
-  { file: 'KRONE-NA_page-0001.jpg',              name: 'Krone NA',             type: 'Curtainsider' },
-  { file: 'LINTRAILER-OO-435-BG_page-0001.jpg', name: 'Lintrailer OO-435',    type: 'Low-bed' },
-  { file: 'LINTRAILER-OO-436-BG_page-0001.jpg', name: 'Lintrailer OO-436',    type: 'Low-bed' },
-  { file: 'MEUSBURGER_page-0001.jpg',            name: 'Meusburger',           type: 'Low-bed' },
-  { file: 'MEUSBURGER-MPG3_page-0001.jpg',       name: 'Meusburger MPG3',      type: 'Telescopic' },
-  { file: 'YALCIN_page-0001.jpg',                name: 'Yalçın',              type: 'Modular transport' },
+  { file: 'prikolice-01.webp', name: 'Faymonville',       type: 'Low-bed' },
+  { file: 'prikolice-02.webp', name: 'Kassbohrer',        type: 'Platform' },
+  { file: 'prikolice-03.webp', name: 'Kögel / Schmitz',   type: 'Platform' },
+  { file: 'prikolice-04.webp', name: 'Krone NA',          type: 'Curtainsider' },
+  { file: 'prikolice-05.webp', name: 'Lintrailer OO-435', type: 'Low-bed' },
+  { file: 'prikolice-06.webp', name: 'Lintrailer OO-436', type: 'Low-bed' },
+  { file: 'prikolice-07.webp', name: 'Meusburger',        type: 'Low-bed' },
+  { file: 'prikolice-08.webp', name: 'Meusburger MPG3',   type: 'Telescopic' },
+  { file: 'prikolice-09.webp', name: 'Yalçın',            type: 'Modular transport' },
 ]
 
 export default function TrailersPage() {
@@ -35,10 +35,11 @@ export default function TrailersPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px" style={{ background: 'var(--border)' }}>
             {trailers.map((t) => (
               <div key={t.file} style={{ background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ overflow: 'hidden', background: 'var(--bg-subtle)', flexShrink: 0 }}>
+                <div style={{ overflow: 'hidden', flexShrink: 0 }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`/prikolice/${encodeURIComponent(t.file)}`} alt={t.name}
-                    style={{ width: '100%', height: 240, objectFit: 'contain', display: 'block', padding: '1rem' }} />
+                  <img src={`/prikolice/${t.file}`} alt={t.name}
+                    style={{ width: '100%', height: 240, objectFit: 'cover', display: 'block' }}
+                    className="transition-transform duration-500 hover:scale-105" />
                 </div>
                 <div style={{ padding: '1.25rem 1.5rem', borderTop: '2px solid #c5d000', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
                   <div>

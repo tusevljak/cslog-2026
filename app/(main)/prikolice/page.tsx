@@ -8,15 +8,15 @@ export const metadata: Metadata = {
 }
 
 const trailers = [
-  { file: 'FAYMONVILLE_page-0001.jpg',      name: 'Faymonville',          type: 'Niskoutovarna' },
-  { file: 'KASSBORHRER_page-0001.jpg',       name: 'Kassbohrer',           type: 'Platformska' },
-  { file: 'KOGEL-SMITZKOGEL_page-0001.jpg', name: 'Kögel / Schmitz',      type: 'Platformska' },
-  { file: 'KRONE-NA_page-0001.jpg',          name: 'Krone NA',             type: 'Cerada' },
-  { file: 'LINTRAILER-OO-435-BG_page-0001.jpg', name: 'Lintrailer OO-435', type: 'Niskoutovarna' },
-  { file: 'LINTRAILER-OO-436-BG_page-0001.jpg', name: 'Lintrailer OO-436', type: 'Niskoutovarna' },
-  { file: 'MEUSBURGER_page-0001.jpg',        name: 'Meusburger',           type: 'Niskoutovarna' },
-  { file: 'MEUSBURGER-MPG3_page-0001.jpg',   name: 'Meusburger MPG3',      type: 'Teleskopska' },
-  { file: 'YALCIN_page-0001.jpg',            name: 'Yalçın',              type: 'Modularni transport' },
+  { file: 'prikolice-01.webp', name: 'Faymonville',       type: 'Niskoutovarna' },
+  { file: 'prikolice-02.webp', name: 'Kassbohrer',        type: 'Platformska' },
+  { file: 'prikolice-03.webp', name: 'Kögel / Schmitz',   type: 'Platformska' },
+  { file: 'prikolice-04.webp', name: 'Krone NA',          type: 'Cerada' },
+  { file: 'prikolice-05.webp', name: 'Lintrailer OO-435', type: 'Niskoutovarna' },
+  { file: 'prikolice-06.webp', name: 'Lintrailer OO-436', type: 'Niskoutovarna' },
+  { file: 'prikolice-07.webp', name: 'Meusburger',        type: 'Niskoutovarna' },
+  { file: 'prikolice-08.webp', name: 'Meusburger MPG3',   type: 'Teleskopska' },
+  { file: 'prikolice-09.webp', name: 'Yalçın',            type: 'Modularni transport' },
 ]
 
 export default function PrikolicesPage() {
@@ -37,12 +37,13 @@ export default function PrikolicesPage() {
             {trailers.map((t) => (
               <div key={t.file} style={{ background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
                 {/* Slika */}
-                <div style={{ overflow: 'hidden', background: 'var(--bg-subtle)', flexShrink: 0 }}>
+                <div style={{ overflow: 'hidden', flexShrink: 0 }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={`/prikolice/${encodeURIComponent(t.file)}`}
+                    src={`/prikolice/${t.file}`}
                     alt={t.name}
-                    style={{ width: '100%', height: 240, objectFit: 'contain', display: 'block', padding: '1rem' }}
+                    style={{ width: '100%', height: 240, objectFit: 'cover', display: 'block' }}
+                    className="transition-transform duration-500 hover:scale-105"
                   />
                 </div>
 
