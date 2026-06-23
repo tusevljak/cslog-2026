@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import QuoteForm from '@/components/QuoteForm'
 import PageHero from '@/components/PageHero'
 
 export const metadata = {
@@ -229,8 +228,6 @@ export default function UslugeKPage() {
         </div>
       </section>
 
-      {/* Quote form */}
-      <QuoteForm />
     </>
   )
 }
