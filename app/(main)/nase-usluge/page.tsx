@@ -38,11 +38,11 @@ export default function UslugeKPage() {
         eyebrow="Šta radimo"
         title="CSLOG usluge"
         subtitle="Prevoz specijalnih i vangabaritnih tereta, tehnička pratnja, koordinacija i međunarodni transport — sve pod jednim krovom."
-        bgImage="/slike/viber_image_2026-04-24_10-27-03-123.jpg"
+        bgImage="/slike/usluge/pratnja.jpg"
       />
 
-      {/* Anchor nav */}
-      <nav style={{ background: 'var(--bg-subtle)', borderBottom: '1px solid var(--border)' }}>
+      {/* Anchor nav — sticky pod headerom */}
+      <nav style={{ background: 'var(--bg-subtle)', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, zIndex: 30 }}>
         <div className="max-w-[1280px] mx-auto px-6 flex gap-8 overflow-x-auto">
           {[
             ['prevoz', 'Prevoz vangabaritnih tereta'],
@@ -62,7 +62,7 @@ export default function UslugeKPage() {
       </nav>
 
       {/* Service 1: Prevoz */}
-      <section id="prevoz" className="py-24" style={{ background: 'var(--bg)' }}>
+      <section id="prevoz" className="py-24" style={{ background: 'var(--bg)', scrollMarginTop: '60px' }}>
         <div className="max-w-[1280px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <div className="w-8 h-0.5 bg-[#c5d000] mb-6" />
@@ -101,7 +101,7 @@ export default function UslugeKPage() {
       </section>
 
       {/* Service 2: Tehnička pratnja */}
-      <section id="pratnja" className="py-24" style={{ background: 'var(--bg-subtle)' }}>
+      <section id="pratnja" className="py-24" style={{ background: 'var(--bg-subtle)', scrollMarginTop: '60px' }}>
         <div className="max-w-[1280px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
           <div className="overflow-hidden order-2 lg:order-1">
             <Image
@@ -139,7 +139,7 @@ export default function UslugeKPage() {
       </section>
 
       {/* Service 3: Međunarodni transport */}
-      <section id="transport" className="py-24" style={{ background: 'var(--bg)' }}>
+      <section id="transport" className="py-24" style={{ background: 'var(--bg)', scrollMarginTop: '60px' }}>
         <div className="max-w-[1280px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <div className="w-8 h-0.5 bg-[#c5d000] mb-6" />

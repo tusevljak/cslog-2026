@@ -37,11 +37,11 @@ export default function ServicesPage() {
         eyebrow="What we do"
         title="CSLOG Services"
         subtitle="Special and oversized cargo transport, technical escort, coordination and international haulage — all under one roof."
-        bgImage="/slike/viber_image_2026-04-24_10-27-03-123.jpg"
+        bgImage="/slike/usluge/pratnja.jpg"
       />
 
-      {/* Anchor nav */}
-      <nav style={{ background: 'var(--bg-subtle)', borderBottom: '1px solid var(--border)' }}>
+      {/* Anchor nav — sticky */}
+      <nav style={{ background: 'var(--bg-subtle)', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, zIndex: 30 }}>
         <div className="max-w-[1280px] mx-auto px-6 flex gap-8 overflow-x-auto">
           {[
             ['transport', 'Oversized Cargo Transport'],
@@ -58,7 +58,7 @@ export default function ServicesPage() {
       </nav>
 
       {/* Service 1 */}
-      <section id="transport" className="py-24" style={{ background: 'var(--bg)' }}>
+      <section id="transport" className="py-24" style={{ background: 'var(--bg)', scrollMarginTop: '60px' }}>
         <div className="max-w-[1280px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <div className="w-8 h-0.5 bg-[#c5d000] mb-6" />
@@ -88,7 +88,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Service 2 */}
-      <section id="escort" className="py-24" style={{ background: 'var(--bg-subtle)' }}>
+      <section id="escort" className="py-24" style={{ background: 'var(--bg-subtle)', scrollMarginTop: '60px' }}>
         <div className="max-w-[1280px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
           <div className="overflow-hidden order-2 lg:order-1">
             <Image src="/slike/usluge/pratnja.jpg" alt="Technical escort" width={700} height={480}
@@ -115,7 +115,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Service 3 */}
-      <section id="international" className="py-24" style={{ background: 'var(--bg)' }}>
+      <section id="international" className="py-24" style={{ background: 'var(--bg)', scrollMarginTop: '60px' }}>
         <div className="max-w-[1280px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <div className="w-8 h-0.5 bg-[#c5d000] mb-6" />
