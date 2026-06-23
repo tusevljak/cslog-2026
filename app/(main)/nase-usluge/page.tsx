@@ -37,7 +37,7 @@ export default function UslugeKPage() {
         eyebrow="Šta radimo"
         title="CSLOG usluge"
         subtitle="Prevoz specijalnih i vangabaritnih tereta, tehnička pratnja, koordinacija i međunarodni transport — sve pod jednim krovom."
-        bgImage="/slike/usluge/pratnja.jpg"
+        bgImage="/usluge/pratnja.jpg"
       />
 
       {/* Anchor nav — sticky pod headerom */}
@@ -104,7 +104,7 @@ export default function UslugeKPage() {
         <div className="max-w-[1280px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
           <div className="overflow-hidden order-2 lg:order-1">
             <Image
-              src="/slike/usluge/pratnja.jpg"
+              src="/usluge/pratnja.jpg"
               alt="Tehnička pratnja i koordinacija"
               width={700}
               height={480}

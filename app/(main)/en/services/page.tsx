@@ -37,7 +37,7 @@ export default function ServicesPage() {
         eyebrow="What we do"
         title="CSLOG Services"
         subtitle="Special and oversized cargo transport, technical escort, coordination and international haulage — all under one roof."
-        bgImage="/slike/usluge/pratnja.jpg"
+        bgImage="/usluge/pratnja.jpg"
       />
 
       {/* Anchor nav — sticky */}
@@ -91,7 +91,7 @@ export default function ServicesPage() {
       <section id="escort" className="py-24" style={{ background: 'var(--bg-subtle)', scrollMarginTop: '60px' }}>
         <div className="max-w-[1280px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
           <div className="overflow-hidden order-2 lg:order-1">
-            <Image src="/slike/usluge/pratnja.jpg" alt="Technical escort" width={700} height={480}
+            <Image src="/usluge/pratnja.jpg" alt="Technical escort" width={700} height={480}
               className="w-full object-cover hover:scale-105 transition-transform duration-500" style={{ height: '400px' }} />
           </div>
           <div className="order-1 lg:order-2">
