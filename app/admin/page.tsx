@@ -222,6 +222,8 @@ export default function AdminPage() {
   const [seedMsg, setSeedMsg] = useState('')
   const [syncing, setSyncing] = useState(false)
   const [syncingBlog, setSyncingBlog] = useState(false)
+  const [seedingGallery, setSeedingGallery] = useState(false)
+  const [galleryMsg, setGalleryMsg] = useState('')
 
   // Posts state
   const [posts, setPosts] = useState<Post[]>([])
@@ -439,6 +441,21 @@ export default function AdminPage() {
       setSeedMsg('✗ Greška: ' + err)
     } finally {
       setSyncing(false)
+    }
+  }
+
+  async function seedGallery() {
+    setSeedingGallery(true); setGalleryMsg('Uvoz...')
+    try {
+      const res = await fetch('/api/seed-gallery', { method: 'POST', headers: headers() })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Greška')
+      await fetchImages()
+      setGalleryMsg(`✓ Uvezeno ${data.inserted}, preskočeno ${data.skipped} (ukupno ${data.total} fajlova)`)
+    } catch (err) {
+      setGalleryMsg('✗ Greška: ' + err)
+    } finally {
+      setSeedingGallery(false)
     }
   }
 
@@ -829,6 +846,18 @@ export default function AdminPage() {
         {/* ── GALLERY TAB ── */}
         {tab === 'gallery' && (
           <>
+            {/* Seed bulk import */}
+            <div style={{ border: '1px solid #1a1a1a', padding: '1rem 1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
+              <div>
+                <p style={{ color: '#ddd', fontSize: '0.85rem', fontWeight: 600, margin: 0 }}>Uvezi sve slike iz /public/galerija/</p>
+                {galleryMsg && <p style={{ margin: '0.25rem 0 0', fontSize: '0.72rem', color: galleryMsg.startsWith('✗') ? '#f55' : ACCENT }}>{galleryMsg}</p>}
+              </div>
+              <button onClick={seedGallery} disabled={seedingGallery}
+                style={{ background: 'none', border: '1px solid #4466aa', color: '#7799cc', padding: '0.5rem 1.1rem', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: seedingGallery ? 0.5 : 1, flexShrink: 0 }}>
+                {seedingGallery ? '...' : '↓ Bulk uvoz'}
+              </button>
+            </div>
+
             {/* Add form */}
             <GalleryUploader password={password} onDone={fetchImages} />
 

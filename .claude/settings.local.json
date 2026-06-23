@@ -72,7 +72,8 @@
       "Bash(identify \"C:\\\\Users\\\\Korisnik\\\\Desktop\\\\CSLOG 2026\\\\public\\\\blog\\\\Kada je transpot zaista specijalan\")",
       "WebFetch(domain:www.youtube.com)",
       "Bash(git commit *)",
-      "Bash(node scripts/build-team-svg.mjs)"
+      "Bash(node scripts/build-team-svg.mjs)",
+      "Bash(node scripts/build-gallery.mjs)"
     ]
   }
 }
