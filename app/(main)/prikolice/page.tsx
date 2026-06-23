@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import PageHero from '@/components/PageHero'
+import TrailersGrid from '@/components/TrailersGrid'
 
 export const metadata: Metadata = {
   title: 'Prikolice | CSLOG',
@@ -34,33 +35,7 @@ export default function PrikolicesPage() {
       <section className="py-20" style={{ background: 'var(--bg)' }}>
         <div className="max-w-[1280px] mx-auto px-6">
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px" style={{ background: 'var(--border)' }}>
-            {trailers.map((t) => (
-              <div key={t.file} style={{ background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
-                {/* Slika */}
-                <div style={{ overflow: 'hidden', flexShrink: 0, background: '#ffffff' }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={`/prikolice/${t.file}`}
-                    alt={t.name}
-                    style={{ width: '100%', height: 240, objectFit: 'contain', display: 'block', padding: '0.5rem' }}
-                  />
-                </div>
-
-                {/* Info */}
-                <div style={{ padding: '1.25rem 1.5rem', borderTop: '2px solid #c5d000', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
-                  <div>
-                    <p style={{ fontFamily: 'var(--font-bebas)', fontSize: '1.25rem', letterSpacing: '0.04em', color: 'var(--text)', lineHeight: 1.1 }}>
-                      {t.name}
-                    </p>
-                    <p style={{ fontFamily: 'var(--font-inter)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.14em', color: '#c5d000', marginTop: '0.2rem' }}>
-                      {t.type}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <TrailersGrid trailers={trailers} />
         </div>
       </section>
 
