@@ -8,7 +8,7 @@ const copy = {
     body: 'Nudimo najkraće rokove vangabaritnog transporta u Srbiji i svetu. Prevozimo gotovo svaki specijalni teret — bez obzira na težinu, visinu, širinu ili dužinu. Pribavljamo vangabaritne dozvole u Srbiji i svim državama na ruti.',
     cta: 'Pogledaj sve prikolice',
     href: '/prikolice',
-    types: ['Niskoutovarne prikolice', 'Platformske prikolice', 'Teleskopske prikolice', 'Modularni transport'],
+    types: ['Niskopodne prikolice', 'Plato prikolice', 'Teleskopske prikolice', 'Truck transporter'],
   },
   en: {
     label: 'Special transport',
@@ -17,7 +17,7 @@ const copy = {
     body: 'We offer the shortest lead times for oversized transport in Serbia and internationally. We carry virtually any special or oversized load — regardless of weight, height, width or length. We obtain all required permits in Serbia and every transit country along the route.',
     cta: 'View all trailers',
     href: '/en/trailers',
-    types: ['Low-bed trailers', 'Platform trailers', 'Telescopic trailers', 'Modular transport'],
+    types: ['Low-bed trailers', 'Flatbed trailers', 'Telescopic trailers', 'Truck transporter'],
   },
 }
 

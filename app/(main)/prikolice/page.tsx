@@ -9,16 +9,16 @@ export const metadata: Metadata = {
 }
 
 const trailers = [
-  { file: 'prikolice-01.webp', name: 'Faymonville', type: 'Niskoutovarna · 3 osovine' },
-  { file: 'prikolice-02.webp', name: 'Faymonville', type: 'Niskoutovarna · 4 osovine' },
-  { file: 'prikolice-03.webp', name: 'FWG',         type: 'Auto-transporter' },
-  { file: 'prikolice-04.webp', name: 'Kässbohrer',  type: 'Niskoutovarna' },
-  { file: 'prikolice-05.webp', name: 'Krone',       type: 'Cerada' },
-  { file: 'prikolice-06.webp', name: 'Nooteboom',   type: 'Niskoutovarna teleskopska' },
-  { file: 'prikolice-07.webp', name: 'Yalçın',      type: 'Platformska' },
-  { file: 'prikolice-08.webp', name: 'Schmitz',     type: 'Cerada' },
-  { file: 'prikolice-09.webp', name: 'Schmitz',     type: 'Platformska' },
-  { file: 'prikolice-10.webp', name: 'Kögel',       type: 'Platformska' },
+  { file: 'prikolice-01.webp', name: 'Faymonville', type: 'Niskopodne prikolice · 3 osovine' },
+  { file: 'prikolice-02.webp', name: 'Faymonville', type: 'Niskopodne prikolice · 4 osovine' },
+  { file: 'prikolice-03.webp', name: 'FWG',         type: 'Truck transporter' },
+  { file: 'prikolice-04.webp', name: 'Kässbohrer',  type: 'Niskopodne prikolice' },
+  { file: 'prikolice-05.webp', name: 'Krone',       type: 'Plato prikolice · sa ceradom' },
+  { file: 'prikolice-06.webp', name: 'Nooteboom',   type: 'Teleskopske prikolice' },
+  { file: 'prikolice-07.webp', name: 'Yalçın',      type: 'Plato prikolice' },
+  { file: 'prikolice-08.webp', name: 'Schmitz',     type: 'Plato prikolice · sa ceradom' },
+  { file: 'prikolice-09.webp', name: 'Schmitz',     type: 'Plato prikolice' },
+  { file: 'prikolice-10.webp', name: 'Kögel',       type: 'Plato prikolice' },
 ]
 
 export default function PrikolicesPage() {

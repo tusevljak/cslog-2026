@@ -9,16 +9,16 @@ export const metadata: Metadata = {
 }
 
 const trailers = [
-  { file: 'prikolice-01.webp', name: 'Faymonville', type: 'Low-bed · 3 axles' },
-  { file: 'prikolice-02.webp', name: 'Faymonville', type: 'Low-bed · 4 axles' },
-  { file: 'prikolice-03.webp', name: 'FWG',         type: 'Vehicle carrier' },
-  { file: 'prikolice-04.webp', name: 'Kässbohrer',  type: 'Low-bed' },
-  { file: 'prikolice-05.webp', name: 'Krone',       type: 'Curtainsider' },
-  { file: 'prikolice-06.webp', name: 'Nooteboom',   type: 'Extendable low-bed' },
-  { file: 'prikolice-07.webp', name: 'Yalçın',      type: 'Flatbed' },
-  { file: 'prikolice-08.webp', name: 'Schmitz',     type: 'Curtainsider' },
-  { file: 'prikolice-09.webp', name: 'Schmitz',     type: 'Flatbed' },
-  { file: 'prikolice-10.webp', name: 'Kögel',       type: 'Flatbed' },
+  { file: 'prikolice-01.webp', name: 'Faymonville', type: 'Low-bed trailer · 3 axles' },
+  { file: 'prikolice-02.webp', name: 'Faymonville', type: 'Low-bed trailer · 4 axles' },
+  { file: 'prikolice-03.webp', name: 'FWG',         type: 'Truck transporter' },
+  { file: 'prikolice-04.webp', name: 'Kässbohrer',  type: 'Low-bed trailer' },
+  { file: 'prikolice-05.webp', name: 'Krone',       type: 'Flatbed trailer · curtainsider' },
+  { file: 'prikolice-06.webp', name: 'Nooteboom',   type: 'Telescopic trailer' },
+  { file: 'prikolice-07.webp', name: 'Yalçın',      type: 'Flatbed trailer' },
+  { file: 'prikolice-08.webp', name: 'Schmitz',     type: 'Flatbed trailer · curtainsider' },
+  { file: 'prikolice-09.webp', name: 'Schmitz',     type: 'Flatbed trailer' },
+  { file: 'prikolice-10.webp', name: 'Kögel',       type: 'Flatbed trailer' },
 ]
 
 export default function TrailersPage() {
