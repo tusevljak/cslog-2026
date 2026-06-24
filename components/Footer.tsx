@@ -10,22 +10,25 @@ export default function Footer() {
       }} />
 
       {/* Main footer */}
-      <div className="py-14" style={{ background: 'var(--bg)' }}>
-        <div className="max-w-[1280px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.1fr_1.4fr_1.1fr_1.2fr] gap-12 lg:gap-10 items-start">
+      <div className="py-16" style={{ background: 'var(--bg)' }}>
+        <div className="max-w-[1280px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 items-start">
 
-          {/* ── 1. LOGO ────────────────────────────────── */}
-          <div className="flex items-center justify-center lg:justify-start">
+          {/* ── 1. LOGO ────────────────────────────── */}
+          <div className="flex flex-col items-center lg:items-start gap-4">
             <Image
               src="/logo/logo-dark.svg"
               alt="Cargo Special Logistic"
-              width={200}
-              height={70}
+              width={240}
+              height={100}
               className="dark:invert"
-              style={{ width: 'auto', height: 70 }}
+              style={{ width: 'auto', height: 100 }}
             />
+            <p style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)', fontSize: '0.78rem', letterSpacing: '0.05em', lineHeight: 1.6 }}>
+              Specijalni transport<br />od 2005. godine.
+            </p>
           </div>
 
-          {/* ── 2. KONTAKT + SOCIAL ──────────────────── */}
+          {/* ── 2. KONTAKT + SOCIAL ───────────────── */}
           <div>
             <p className="text-xs uppercase tracking-widest mb-5 font-semibold" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
               Kontakt
@@ -76,67 +79,65 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* ── 3. DOSTUPNOST ────────────────────────── */}
+          {/* ── 3. DOSTUPNOST ─────────────────────── */}
           <div>
             <p className="text-xs uppercase tracking-widest mb-5 font-semibold" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
               Dostupnost
             </p>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.4rem', marginBottom: '0.6rem' }}>
-              <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '2.5rem', letterSpacing: '0.04em', lineHeight: 1, color: '#c5d000' }}>24</span>
-              <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '1.3rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }}>/</span>
-              <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '2.5rem', letterSpacing: '0.04em', lineHeight: 1, color: '#c5d000' }}>7</span>
-              <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '1.3rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }}>/</span>
-              <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '2.5rem', letterSpacing: '0.04em', lineHeight: 1, color: '#c5d000' }}>365</span>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.4rem', marginBottom: '0.75rem' }}>
+              <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '2.75rem', letterSpacing: '0.04em', lineHeight: 1, color: '#c5d000' }}>24</span>
+              <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '1.4rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }}>/</span>
+              <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '2.75rem', letterSpacing: '0.04em', lineHeight: 1, color: '#c5d000' }}>7</span>
+              <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '1.4rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }}>/</span>
+              <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '2.75rem', letterSpacing: '0.04em', lineHeight: 1, color: '#c5d000' }}>365</span>
             </div>
-            <p className="text-sm" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)', lineHeight: 1.6 }}>
+            <p className="text-sm" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)', lineHeight: 1.7 }}>
               Bez praznika i bez pauze.<br />Tu smo kad zatreba.
             </p>
           </div>
 
-          {/* ── 4. PODACI + SERTIFIKAT ──────────────── */}
+          {/* ── 4. SERTIFIKAT ─────────────────────── */}
           <div>
             <p className="text-xs uppercase tracking-widest mb-5 font-semibold" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
-              Podaci firme
+              Sertifikat
             </p>
-            <div className="flex flex-col gap-1.5 mb-6">
-              {[
-                ['MB', '20045507'],
-                ['PIB', '104025538'],
-                ['TIMOCOM', '238068'],
-              ].map(([k, v]) => (
-                <p key={k} className="text-sm" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
-                  <span style={{ color: 'var(--text)' }}>{k}:</span> {v}
-                </p>
-              ))}
-            </div>
-
-            {/* Sertifikat — manji */}
-            <div>
-              <Image
-                src="/sertifikat/sertifikat%20za%20svetle%20pozadine.jpg"
-                alt="Sertifikat"
-                width={130} height={50}
-                className="object-contain dark:hidden"
-                style={{ width: 'auto', height: 50 }}
-              />
-              <Image
-                src="/sertifikat/sertifikat%20za%20tamne%20pozadine.png"
-                alt="Sertifikat"
-                width={130} height={50}
-                className="object-contain hidden dark:block"
-                style={{ width: 'auto', height: 50 }}
-              />
-            </div>
+            <Image
+              src="/sertifikat/sertifikat%20za%20svetle%20pozadine.jpg"
+              alt="ISO 9001 sertifikat"
+              width={180} height={90}
+              className="object-contain dark:hidden"
+              style={{ width: 'auto', height: 90 }}
+            />
+            <Image
+              src="/sertifikat/sertifikat%20za%20tamne%20pozadine.png"
+              alt="ISO 9001 sertifikat"
+              width={180} height={90}
+              className="object-contain hidden dark:block"
+              style={{ width: 'auto', height: 90 }}
+            />
           </div>
         </div>
       </div>
 
       {/* Bottom bar */}
       <div style={{ background: 'var(--bg-subtle)', borderTop: '1px solid var(--border)' }}>
-        <div className="max-w-[1280px] mx-auto px-6 h-12 flex items-center justify-between">
+        <div className="max-w-[1280px] mx-auto px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+
+          {/* Copyright */}
           <p className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
             © Cargo Special Logistic d.o.o. 2026 · Sva prava zadržana
           </p>
+
+          {/* Podaci firme — inline */}
+          <p className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
+            <span style={{ color: 'var(--text)' }}>MB</span> 20045507
+            <span style={{ margin: '0 0.5rem', opacity: 0.4 }}>·</span>
+            <span style={{ color: 'var(--text)' }}>PIB</span> 104025538
+            <span style={{ margin: '0 0.5rem', opacity: 0.4 }}>·</span>
+            <span style={{ color: 'var(--text)' }}>TIMOCOM</span> 238068
+          </p>
+
+          {/* Privacy */}
           <Link href="/politika-privatnosti" className="text-xs hover:text-[#c5d000] transition-colors" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
             Politika privatnosti
           </Link>
