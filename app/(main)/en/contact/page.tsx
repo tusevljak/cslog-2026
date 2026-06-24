@@ -159,15 +159,18 @@ export default function ContactPage() {
               </a>
             </div>
             <div style={{ borderTop: '1px solid var(--border)', paddingTop: '2rem' }}>
-              <p className="text-xs uppercase tracking-widest mb-4" style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)' }}>Working hours</p>
-              <div className="flex flex-col gap-2" style={{ fontFamily: 'var(--font-inter)' }}>
-                {[['Monday – Friday', '08:00 – 17:00'], ['Saturday', 'By arrangement'], ['Sunday', 'Closed']].map(([day, hours]) => (
-                  <div key={day} className="flex justify-between text-sm">
-                    <span style={{ color: 'var(--text-muted)' }}>{day}</span>
-                    <span style={{ color: hours === 'Closed' ? 'var(--text-muted)' : 'var(--text)' }}>{hours}</span>
-                  </div>
-                ))}
+              <p className="text-xs uppercase tracking-widest mb-4" style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)' }}>Availability</p>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.6rem' }}>
+                <span style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(2.75rem, 5vw, 3.75rem)', letterSpacing: '0.04em', lineHeight: 1, color: '#c5d000' }}>24</span>
+                <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '1.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }}>/</span>
+                <span style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(2.75rem, 5vw, 3.75rem)', letterSpacing: '0.04em', lineHeight: 1, color: '#c5d000' }}>7</span>
+                <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '1.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }}>/</span>
+                <span style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(2.75rem, 5vw, 3.75rem)', letterSpacing: '0.04em', lineHeight: 1, color: '#c5d000' }}>365</span>
               </div>
+              <p style={{ fontFamily: 'var(--font-inter)', fontSize: '0.82rem', lineHeight: 1.7, color: 'var(--text-muted)' }}>
+                We&apos;re available 24 hours a day, seven days a week, 365 days a year —
+                no holidays, no downtime.
+              </p>
             </div>
           </div>
         </div>
