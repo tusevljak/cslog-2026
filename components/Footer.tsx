@@ -23,8 +23,8 @@ export default function Footer() {
               className="dark:invert"
               style={{ width: 'auto', height: 100 }}
             />
-            <p style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)', fontSize: '0.78rem', letterSpacing: '0.05em', lineHeight: 1.6 }}>
-              Specijalni transport<br />od 2005. godine.
+            <p style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)', fontSize: '0.78rem', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>
+              Specijalni transport od 2005. godine.
             </p>
           </div>
 
