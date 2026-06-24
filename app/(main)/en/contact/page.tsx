@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import PageHero from '@/components/PageHero'
+import QuoteBanner from '@/components/QuoteBanner'
 
 const team = [
   { name: 'Boban Bićanin', role: 'CEO', phone: '+381 63 209 675', phoneHref: 'tel:+38163209675', email: 'boban.bicanin@cslog.rs', sigDark: '/potpisi/Boban-Bićanin-email-potpis.png', sigLight: '/potpisi/Boban-Bićanin-email-potpis-beli.png' },
@@ -172,20 +173,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Quote */}
-      <section style={{ background: '#c5d000' }}>
-        <div className="h-10" style={{ background: 'repeating-linear-gradient(-45deg, #0d0d0d 0px, #0d0d0d 14px, #c5d000 14px, #c5d000 28px, #ffffff 28px, #ffffff 42px, #c5d000 42px, #c5d000 56px)' }} />
-        <div className="max-w-[1280px] mx-auto px-6 py-16 flex flex-col items-center text-center gap-6">
-          <blockquote style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(2rem, 4vw, 3.5rem)', letterSpacing: '0.02em', color: '#0d0d0d' }}>
-            &ldquo;From the moment of loading, transport is no longer the client&rsquo;s concern&rdquo;
-          </blockquote>
-          <div>
-            <p className="font-semibold text-[#0d0d0d] text-lg italic" style={{ fontFamily: 'Georgia, serif' }}>Boban Bićanin</p>
-            <p className="text-[#0d0d0d]/60 text-xs uppercase tracking-widest mt-1" style={{ fontFamily: 'var(--font-inter)' }}>CEO</p>
-          </div>
-        </div>
-        <div className="h-10" style={{ background: 'repeating-linear-gradient(-45deg, #0d0d0d 0px, #0d0d0d 14px, #c5d000 14px, #c5d000 28px, #ffffff 28px, #ffffff 42px, #c5d000 42px, #c5d000 56px)' }} />
-      </section>
+      <QuoteBanner lang="en" />
     </>
   )
 }
