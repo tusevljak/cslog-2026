@@ -15,7 +15,14 @@ export const sql = postgres(process.env.DATABASE_URL!, {
   idle_timeout: 30,   // seconds
 })
 
-export async function initDb() {
+/**
+ * Cached init — DDL statements run only ONCE per process, no matter how many
+ * routes call initDb() in parallel. Prevents CREATE TABLE + ALTER TABLE race
+ * conditions during Next.js parallel static-page generation.
+ */
+let _initPromise: Promise<void> | null = null
+
+async function doInit() {
   await sql`
     CREATE TABLE IF NOT EXISTS blog_posts (
       id SERIAL PRIMARY KEY,
@@ -33,7 +40,6 @@ export async function initDb() {
       updated_at TIMESTAMPTZ DEFAULT NOW()
     )
   `
-  // Migration: add lang column if it doesn't exist yet
   await sql`ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS lang TEXT DEFAULT 'sr'`
   await sql`
     CREATE TABLE IF NOT EXISTS gallery_images (
@@ -44,4 +50,9 @@ export async function initDb() {
       created_at TIMESTAMPTZ DEFAULT NOW()
     )
   `
+}
+
+export function initDb(): Promise<void> {
+  if (!_initPromise) _initPromise = doInit()
+  return _initPromise
 }
