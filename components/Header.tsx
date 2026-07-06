@@ -26,6 +26,36 @@ const navEn = [
   { href: '/en/contact', label: 'Contact' },
 ]
 
+// Bijekcijsko mapiranje SR ↔ EN putanja (za flag switcher)
+const routePairs: Array<[string, string]> = [
+  ['/',            '/en'],
+  ['/nase-usluge', '/en/services'],
+  ['/prikolice',   '/en/trailers'],
+  ['/galerija',    '/en/gallery'],
+  ['/blog',        '/en/blog'],
+  ['/o-nama',      '/en/about'],
+  ['/kontakt',     '/en/contact'],
+]
+const srToEn = new Map(routePairs)
+const enToSr = new Map(routePairs.map(([a, b]) => [b, a] as [string, string]))
+
+function translatePath(pathname: string, toLang: 'sr' | 'en'): string {
+  // Precizan meč za statičke stranice
+  if (toLang === 'sr') {
+    const mapped = enToSr.get(pathname)
+    if (mapped) return mapped
+    // Blog post ide bez /en prefiksa (koristi isti slug u obe jezičke verzije)
+    if (pathname.startsWith('/en/blog/')) return pathname.replace('/en/blog/', '/blog/')
+    // Fallback — skini /en
+    return pathname.replace(/^\/en/, '') || '/'
+  } else {
+    const mapped = srToEn.get(pathname)
+    if (mapped) return mapped
+    if (pathname.startsWith('/blog/')) return `/en/blog/${pathname.slice('/blog/'.length)}`
+    return `/en${pathname === '/' ? '' : pathname}`
+  }
+}
+
 // Left half: diagonals lean right (-45deg)
 const TAPE_LEFT = `repeating-linear-gradient(
   -45deg,
@@ -258,11 +288,11 @@ export default function Header() {
               </a>
             </div>
             <div className="flex items-center gap-3 flex-shrink-0">
-              <Link href={isEn ? pathname.replace(/^\/en/, '') || '/' : pathname}
+              <Link href={translatePath(pathname, 'sr')}
                 title="Srpski" className={`w-6 h-6 rounded-sm overflow-hidden transition-opacity block ${isEn ? 'opacity-60 hover:opacity-100' : 'opacity-90'}`}>
                 <Image src="/flags/sr.svg" alt="Srpski" width={24} height={24} />
               </Link>
-              <Link href={isEn ? pathname : `/en${pathname === '/' ? '' : pathname}`}
+              <Link href={translatePath(pathname, 'en')}
                 title="English" className={`w-6 h-6 rounded-sm overflow-hidden transition-opacity block ${isEn ? 'opacity-90' : 'opacity-60 hover:opacity-100'}`}>
                 <Image src="/flags/en.svg" alt="English" width={24} height={24} />
               </Link>
