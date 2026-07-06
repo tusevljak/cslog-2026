@@ -13,9 +13,9 @@
   },
   "dependencies": {
     "@eslint/eslintrc": "^3.3.5",
-    "@neondatabase/serverless": "^0.10.4",
     "marked": "^15.0.12",
     "next": "^15.4.11",
+    "postgres": "^3.4.9",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "sharp": "^0.34.5"

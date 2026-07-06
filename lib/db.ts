@@ -1,6 +1,19 @@
-import { neon } from '@neondatabase/serverless'
+import postgres from 'postgres'
 
-export const sql = neon(process.env.DATABASE_URL!)
+/**
+ * Postgres client — works with any PostgreSQL server (Coolify, Neon, RDS, local).
+ * postgres.js supports the same tagged-template API as @neondatabase/serverless,
+ * so query call-sites don't need to change.
+ *
+ * SSL is auto-detected from the connection string (sslmode= param). For Coolify
+ * internal Postgres over the private network SSL is not required and connection
+ * string should NOT contain sslmode=.
+ */
+export const sql = postgres(process.env.DATABASE_URL!, {
+  prepare: false,     // safer with connection poolers (pgbouncer)
+  max: 10,            // reasonable pool size for a small VPS
+  idle_timeout: 30,   // seconds
+})
 
 export async function initDb() {
   await sql`

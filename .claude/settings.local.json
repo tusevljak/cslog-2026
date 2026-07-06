@@ -73,7 +73,8 @@
       "WebFetch(domain:www.youtube.com)",
       "Bash(git commit *)",
       "Bash(node scripts/build-team-svg.mjs)",
-      "Bash(node scripts/build-gallery.mjs)"
+      "Bash(node scripts/build-gallery.mjs)",
+      "Bash(npm uninstall *)"
     ]
   }
 }

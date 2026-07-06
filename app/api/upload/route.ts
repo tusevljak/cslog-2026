@@ -24,22 +24,17 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(bytes)
 
     const webpBuffer = await sharp(buffer)
+      .rotate() // respect EXIF orientation
       .resize(maxWidth, undefined, { fit: 'inside', withoutEnlargement: true })
       .webp({ quality: 82 })
       .toBuffer()
 
-    // Try filesystem first (works on Hetzner/local dev)
-    try {
-      const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.webp`
-      const dir = join(process.cwd(), 'public', 'uploads')
-      await mkdir(dir, { recursive: true })
-      await writeFile(join(dir, filename), webpBuffer)
-      return NextResponse.json({ url: `/uploads/${filename}` })
-    } catch {
-      // Vercel: filesystem read-only — return base64 data URL stored in DB
-      const base64 = webpBuffer.toString('base64')
-      return NextResponse.json({ url: `data:image/webp;base64,${base64}` })
-    }
+    // Filesystem write — REQUIRES persistent volume on Coolify at /app/public/uploads
+    const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.webp`
+    const dir = join(process.cwd(), 'public', 'uploads')
+    await mkdir(dir, { recursive: true })
+    await writeFile(join(dir, filename), webpBuffer)
+    return NextResponse.json({ url: `/uploads/${filename}` })
   } catch (err) {
     console.error('Upload error:', err)
     return NextResponse.json({ error: String(err) }, { status: 500 })
