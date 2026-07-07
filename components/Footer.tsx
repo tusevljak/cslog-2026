@@ -1,7 +1,39 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+const copy = {
+  sr: {
+    tagline: 'Specijalni transport od 2005. godine.',
+    contact: 'Kontakt',
+    address: <>Jurija Gagarina 21 R, lokal DL4<br />11070 Beograd, Srbija</>,
+    availability: 'Dostupnost',
+    availabilityText: <>Bez praznika i bez pauze.<br />Tu smo kad zatreba.</>,
+    certificate: 'Sertifikat',
+    rights: '© Cargo Special Logistic d.o.o. 2026 · Sva prava zadržana',
+    privacy: 'Politika privatnosti',
+    privacyHref: '/politika-privatnosti',
+  },
+  en: {
+    tagline: 'Special transport since 2005.',
+    contact: 'Contact',
+    address: <>Jurija Gagarina 21 R, unit DL4<br />11070 Belgrade, Serbia</>,
+    availability: 'Availability',
+    availabilityText: <>No holidays, no downtime.<br />Here when you need us.</>,
+    certificate: 'Certificate',
+    rights: '© Cargo Special Logistic d.o.o. 2026 · All rights reserved',
+    privacy: 'Privacy Policy',
+    privacyHref: '/politika-privatnosti',
+  },
+}
 
 export default function Footer() {
+  const pathname = usePathname()
+  const isEn = pathname.startsWith('/en')
+  const tx = isEn ? copy.en : copy.sr
+
   return (
     <footer>
       {/* Hazard tape divider */}
@@ -24,14 +56,14 @@ export default function Footer() {
               style={{ width: 'auto', height: 100 }}
             />
             <p style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)', fontSize: '0.78rem', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>
-              Specijalni transport od 2005. godine.
+              {tx.tagline}
             </p>
           </div>
 
-          {/* ── 2. KONTAKT + SOCIAL ───────────────── */}
+          {/* ── 2. CONTACT + SOCIAL ───────────────── */}
           <div>
             <p className="text-xs uppercase tracking-widest mb-5 font-semibold" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
-              Kontakt
+              {tx.contact}
             </p>
             <div className="flex flex-col gap-3">
               <a href="https://maps.google.com/?q=Jurija+Gagarina+21R+Novi+Beograd" target="_blank" rel="noopener noreferrer"
@@ -40,7 +72,7 @@ export default function Footer() {
                 <svg className="mt-0.5 flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
                 </svg>
-                Jurija Gagarina 21 R, lokal DL4<br />11070 Beograd, Srbija
+                <span>{tx.address}</span>
               </a>
               <a href="mailto:office@cslog.rs"
                 className="flex items-center gap-2 text-sm hover:text-[#c5d000] transition-colors"
@@ -79,10 +111,10 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* ── 3. DOSTUPNOST ─────────────────────── */}
+          {/* ── 3. AVAILABILITY ───────────────────── */}
           <div>
             <p className="text-xs uppercase tracking-widest mb-5 font-semibold" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
-              Dostupnost
+              {tx.availability}
             </p>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.4rem', marginBottom: '0.75rem' }}>
               <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '2.75rem', letterSpacing: '0.04em', lineHeight: 1, color: '#c5d000' }}>24</span>
@@ -92,25 +124,25 @@ export default function Footer() {
               <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '2.75rem', letterSpacing: '0.04em', lineHeight: 1, color: '#c5d000' }}>365</span>
             </div>
             <p className="text-sm" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)', lineHeight: 1.7 }}>
-              Bez praznika i bez pauze.<br />Tu smo kad zatreba.
+              {tx.availabilityText}
             </p>
           </div>
 
-          {/* ── 4. SERTIFIKAT ─────────────────────── */}
+          {/* ── 4. CERTIFICATE ────────────────────── */}
           <div>
             <p className="text-xs uppercase tracking-widest mb-5 font-semibold" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
-              Sertifikat
+              {tx.certificate}
             </p>
             <Image
               src="/sertifikat/sertifikat%20za%20svetle%20pozadine.jpg"
-              alt="ISO 9001 sertifikat"
+              alt="ISO 9001 certificate"
               width={180} height={90}
               className="object-contain dark:hidden"
               style={{ width: 'auto', height: 90 }}
             />
             <Image
               src="/sertifikat/sertifikat%20za%20tamne%20pozadine.png"
-              alt="ISO 9001 sertifikat"
+              alt="ISO 9001 certificate"
               width={180} height={90}
               className="object-contain hidden dark:block"
               style={{ width: 'auto', height: 90 }}
@@ -125,10 +157,10 @@ export default function Footer() {
 
           {/* Copyright */}
           <p className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
-            © Cargo Special Logistic d.o.o. 2026 · Sva prava zadržana
+            {tx.rights}
           </p>
 
-          {/* Podaci firme — inline */}
+          {/* Company data — inline (registration numbers, no translation needed) */}
           <p className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
             <span style={{ color: 'var(--text)' }}>MB</span> 20045507
             <span style={{ margin: '0 0.5rem', opacity: 0.4 }}>·</span>
@@ -138,8 +170,8 @@ export default function Footer() {
           </p>
 
           {/* Privacy */}
-          <Link href="/politika-privatnosti" className="text-xs hover:text-[#c5d000] transition-colors" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
-            Politika privatnosti
+          <Link href={tx.privacyHref} className="text-xs hover:text-[#c5d000] transition-colors" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
+            {tx.privacy}
           </Link>
         </div>
       </div>
