@@ -1,9 +1,69 @@
 'use client'
 
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 const borderStyle = 'rgba(255,255,255,0.12)'
 const borderFocus = '#c5d000'
+
+const copy = {
+  sr: {
+    eyebrow: 'Besplatan upit',
+    h2a: 'Pošaljite nam',
+    h2b: 'detalje transporta',
+    body: 'U roku od 24 sata stižete odgovor sa besplatnom ponudom. Specijalizovani smo za vangabaritne i teške terete — bez obzira na dimenzije i destinaciju.',
+    okTitle: 'Upit primljen!',
+    okText: 'Javićemo vam se u roku od 24 sata sa besplatnom ponudom.',
+    errText: 'Greška pri slanju. Pokušajte ponovo ili nas kontaktirajte direktno.',
+    submit: 'Pošalji upit →',
+    submitting: 'Slanje...',
+    fields: {
+      name: 'Ime i kompanija',
+      phone: 'Telefon',
+      email: 'Email',
+      route: 'Ruta (od → do)',
+      cargo: 'Opis tereta (dimenzije, masa)',
+      notes: 'Dodatne napomene',
+    },
+    placeholders: {
+      name: 'Petar / ABC d.o.o.',
+      phone: '+381 ...',
+      email: 'vas@email.com',
+      route: 'Beograd → München',
+      cargo: '5m × 3m × 2.5m, 20t',
+      notes: 'Sve što smatrate važnim za procenu...',
+    },
+    address: 'Jurija Gagarina 21 R, lokal DL4, Novi Beograd',
+  },
+  en: {
+    eyebrow: 'Free Quote',
+    h2a: 'Send us the',
+    h2b: 'transport details',
+    body: 'You will receive a response with a free quote within 24 hours. We specialise in oversized and heavy loads — regardless of dimensions or destination.',
+    okTitle: 'Enquiry received!',
+    okText: 'We will get back to you with a free quote within 24 hours.',
+    errText: 'Error sending. Please try again or contact us directly.',
+    submit: 'Send enquiry →',
+    submitting: 'Sending...',
+    fields: {
+      name: 'Name & company',
+      phone: 'Phone',
+      email: 'Email',
+      route: 'Route (from → to)',
+      cargo: 'Cargo description (dimensions, weight)',
+      notes: 'Additional notes',
+    },
+    placeholders: {
+      name: 'Peter / ABC Ltd.',
+      phone: '+381 ...',
+      email: 'you@email.com',
+      route: 'Belgrade → Munich',
+      cargo: '5m × 3m × 2.5m, 20t',
+      notes: 'Anything you think is relevant for the estimate...',
+    },
+    address: 'Jurija Gagarina 21 R, unit DL4, Novi Beograd',
+  },
+}
 
 function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (
@@ -24,6 +84,10 @@ const inputStyle = {
 }
 
 export default function QuoteForm() {
+  const pathname = usePathname()
+  const isEn = pathname.startsWith('/en')
+  const tx = isEn ? copy.en : copy.sr
+
   const [form, setForm] = useState({ ime: '', email: '', telefon: '', ruta: '', teret: '', poruka: '', website: '' })
   const [status, setStatus] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
 
@@ -65,18 +129,18 @@ export default function QuoteForm() {
           {/* Left: copy */}
           <div>
             <p style={{ fontFamily: 'var(--font-inter)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.25em', color: '#c5d000', marginBottom: '1rem' }}>
-              Besplatan upit
+              {tx.eyebrow}
             </p>
             <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(2.5rem, 5vw, 4rem)', letterSpacing: '0.04em', color: '#f5f5f5', lineHeight: 1.05, marginBottom: '1.5rem' }}>
-              Pošaljite nam<br />detalje transporta
+              {tx.h2a}<br />{tx.h2b}
             </h2>
             <p style={{ fontFamily: 'var(--font-inter)', fontSize: '0.95rem', lineHeight: 1.8, color: '#666', marginBottom: '2.5rem', maxWidth: 380 }}>
-              U roku od 24 sata stižete odgovor sa besplatnom ponudom. Specijalizovani smo za vangabaritne i teške terete — bez obzira na dimenzije i destinaciju.
+              {tx.body}
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {[
-                { href: 'https://maps.google.com/?q=Jurija+Gagarina+21R+Novi+Beograd', text: 'Jurija Gagarina 21 R, lokal DL4, Novi Beograd' },
+                { href: 'https://maps.google.com/?q=Jurija+Gagarina+21R+Novi+Beograd', text: tx.address },
                 { href: 'mailto:office@cslog.rs', text: 'office@cslog.rs' },
                 { href: 'tel:+38163209675', text: '+381 63 209 675' },
               ].map(({ href, text }) => (
@@ -97,15 +161,15 @@ export default function QuoteForm() {
               <div style={{ border: '1px solid rgba(197,208,0,0.25)', padding: '3rem 2rem', textAlign: 'center' }}>
                 <p style={{ fontSize: '3rem', marginBottom: '1rem' }}>✓</p>
                 <h3 style={{ fontFamily: 'var(--font-bebas)', fontSize: '2.25rem', color: '#c5d000', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>
-                  Upit primljen!
+                  {tx.okTitle}
                 </h3>
                 <p style={{ fontFamily: 'var(--font-inter)', color: '#666', fontSize: '0.9rem', lineHeight: 1.7 }}>
-                  Javićemo vam se u roku od 24 sata sa besplatnom ponudom.
+                  {tx.okText}
                 </p>
               </div>
             ) : (
               <form onSubmit={submit}>
-                {/* Honeypot — nevidljivo za ljude, botovi popunjavaju */}
+                {/* Honeypot */}
                 <input
                   type="text" name="website" value={form.website}
                   onChange={field('website')} tabIndex={-1} autoComplete="off"
@@ -113,33 +177,33 @@ export default function QuoteForm() {
                   aria-hidden="true"
                 />
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 2rem' }}>
-                  <Field label="Ime i kompanija" required>
-                    <input type="text" required value={form.ime} onChange={field('ime')} placeholder="Petar / ABC d.o.o." style={inputStyle} onFocus={focus} onBlur={blur} />
+                  <Field label={tx.fields.name} required>
+                    <input type="text" required value={form.ime} onChange={field('ime')} placeholder={tx.placeholders.name} style={inputStyle} onFocus={focus} onBlur={blur} />
                   </Field>
-                  <Field label="Telefon">
-                    <input type="tel" value={form.telefon} onChange={field('telefon')} placeholder="+381 ..." style={inputStyle} onFocus={focus} onBlur={blur} />
+                  <Field label={tx.fields.phone}>
+                    <input type="tel" value={form.telefon} onChange={field('telefon')} placeholder={tx.placeholders.phone} style={inputStyle} onFocus={focus} onBlur={blur} />
                   </Field>
                 </div>
 
-                <Field label="Email" required>
-                  <input type="email" required value={form.email} onChange={field('email')} placeholder="vas@email.com" style={inputStyle} onFocus={focus} onBlur={blur} />
+                <Field label={tx.fields.email} required>
+                  <input type="email" required value={form.email} onChange={field('email')} placeholder={tx.placeholders.email} style={inputStyle} onFocus={focus} onBlur={blur} />
                 </Field>
 
-                <Field label="Ruta (od → do)">
-                  <input type="text" value={form.ruta} onChange={field('ruta')} placeholder="Beograd → München" style={inputStyle} onFocus={focus} onBlur={blur} />
+                <Field label={tx.fields.route}>
+                  <input type="text" value={form.ruta} onChange={field('ruta')} placeholder={tx.placeholders.route} style={inputStyle} onFocus={focus} onBlur={blur} />
                 </Field>
 
-                <Field label="Opis tereta (dimenzije, masa)">
-                  <input type="text" value={form.teret} onChange={field('teret')} placeholder="5m × 3m × 2.5m, 20t" style={inputStyle} onFocus={focus} onBlur={blur} />
+                <Field label={tx.fields.cargo}>
+                  <input type="text" value={form.teret} onChange={field('teret')} placeholder={tx.placeholders.cargo} style={inputStyle} onFocus={focus} onBlur={blur} />
                 </Field>
 
-                <Field label="Dodatne napomene">
-                  <textarea rows={4} value={form.poruka} onChange={field('poruka')} placeholder="Sve što smatrate važnim za procenu..." style={{ ...inputStyle, resize: 'none' }} onFocus={focus} onBlur={blur} />
+                <Field label={tx.fields.notes}>
+                  <textarea rows={4} value={form.poruka} onChange={field('poruka')} placeholder={tx.placeholders.notes} style={{ ...inputStyle, resize: 'none' }} onFocus={focus} onBlur={blur} />
                 </Field>
 
                 {status === 'err' && (
                   <p style={{ fontFamily: 'var(--font-inter)', fontSize: '0.8rem', color: '#f55', marginBottom: '1rem' }}>
-                    Greška pri slanju. Pokušajte ponovo ili nas kontaktirajte direktno.
+                    {tx.errText}
                   </p>
                 )}
 
@@ -150,7 +214,7 @@ export default function QuoteForm() {
                   onMouseEnter={e => { e.currentTarget.style.background = '#f5f5f5' }}
                   onMouseLeave={e => { e.currentTarget.style.background = '#c5d000' }}
                 >
-                  {status === 'sending' ? 'Slanje...' : 'Pošalji upit →'}
+                  {status === 'sending' ? tx.submitting : tx.submit}
                 </button>
               </form>
             )}
