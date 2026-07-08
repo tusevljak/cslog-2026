@@ -22,6 +22,12 @@ function getTransport() {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASSWORD,
       },
+      // Neki self-hosted mail serveri imaju self-signed sertifikate;
+      // ova opcija dozvoljava konekciju ako je SMTP_TLS_INSECURE=1
+      tls: process.env.SMTP_TLS_INSECURE === '1'
+        ? { rejectUnauthorized: false }
+        : undefined,
+      logger: false,
     })
   }
   return _transport
@@ -37,22 +43,34 @@ export async function sendMail(opts: {
   html: string
   replyTo?: string
 }): Promise<boolean> {
-  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
-    console.warn('[mail] SMTP not configured — skipping send')
+  const host = process.env.SMTP_HOST
+  const user = process.env.SMTP_USER
+  const pass = process.env.SMTP_PASSWORD
+
+  if (!host || !user || !pass) {
+    console.warn('[mail] SMTP env not fully configured. HOST=%s USER=%s PASS=%s',
+      host ? '✓' : '✗missing',
+      user ? '✓' : '✗missing',
+      pass ? '✓' : '✗missing',
+    )
     return false
   }
 
+  console.log('[mail] sending to=%s subject="%s" via %s:%s user=%s',
+    opts.to, opts.subject, host, process.env.SMTP_PORT ?? 587, user)
+
   try {
-    await getTransport().sendMail({
-      from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
+    const info = await getTransport().sendMail({
+      from: process.env.SMTP_FROM ?? user,
       to: opts.to,
       subject: opts.subject,
       html: opts.html,
       replyTo: opts.replyTo,
     })
+    console.log('[mail] SENT OK  messageId=%s response=%s', info.messageId, info.response)
     return true
   } catch (err) {
-    console.error('[mail] send failed:', err)
+    console.error('[mail] SEND FAILED:', err)
     return false
   }
 }
