@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
 type GalleryImage = {
   id: number
@@ -8,8 +8,31 @@ type GalleryImage = {
   caption: string
 }
 
+const BATCH_SIZE = 24
+
 export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
   const [lightbox, setLightbox] = useState<number | null>(null)
+  const [visibleCount, setVisibleCount] = useState(BATCH_SIZE)
+  const sentinelRef = useRef<HTMLDivElement>(null)
+
+  // Infinite scroll — kad se sentinel pojavi u viewport-u, dodaj sledećih 24
+  useEffect(() => {
+    if (visibleCount >= images.length) return
+    const el = sentinelRef.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount((c) => Math.min(c + BATCH_SIZE, images.length))
+        }
+      },
+      { rootMargin: '800px' } // počni učitavanje 800px pre nego što stigne
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [visibleCount, images.length])
 
   const close = useCallback(() => setLightbox(null), [])
 
@@ -62,7 +85,7 @@ export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
         columnCount: 3,
         columnGap: '0.75rem',
       }}>
-        {images.map((img, idx) => (
+        {images.slice(0, visibleCount).map((img, idx) => (
           <div
             key={img.id}
             onClick={() => setLightbox(idx)}
@@ -82,6 +105,8 @@ export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
             <img
               src={img.url}
               alt={img.caption || 'CSLOG transport'}
+              loading="lazy"
+              decoding="async"
               style={{ width: '100%', display: 'block', transition: 'transform 0.4s ease' }}
               className="group-hover:scale-105"
             />
@@ -113,6 +138,27 @@ export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
           </div>
         ))}
       </div>
+
+      {/* Sentinel + count indicator */}
+      <div ref={sentinelRef} style={{ padding: '3rem 0 1rem', textAlign: 'center' }}>
+        {visibleCount < images.length ? (
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem' }}>
+            <span style={{
+              width: 20, height: 20, border: '2px solid #c5d000',
+              borderTopColor: 'transparent', borderRadius: '50%',
+              display: 'inline-block', animation: 'spin 0.8s linear infinite',
+            }} />
+            <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+              {visibleCount} / {images.length}
+            </span>
+          </div>
+        ) : images.length > BATCH_SIZE ? (
+          <p style={{ fontFamily: 'var(--font-inter)', fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
+            {images.length} fotografija
+          </p>
+        ) : null}
+      </div>
+      <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
 
       {/* Lightbox */}
       {current && (
