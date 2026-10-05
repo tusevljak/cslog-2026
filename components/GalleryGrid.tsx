@@ -81,10 +81,7 @@ export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
   return (
     <>
       {/* Masonry grid — CSS columns, explicit properties (shorthand unreliable in React inline styles) */}
-      <div style={{
-        columnCount: 3,
-        columnGap: '0.75rem',
-      }}>
+      <div className="columns-2 md:columns-3" style={{ columnGap: '0.75rem' }}>
         {images.slice(0, visibleCount).map((img, idx) => (
           <div
             key={img.id}

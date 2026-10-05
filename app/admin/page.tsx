@@ -108,7 +108,7 @@ function toSlug(title: string) {
 
 function formatDate(iso: string | null) {
   if (!iso) return '—'
-  return new Date(iso).toLocaleDateString('sr-RS', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  return new Date(iso).toLocaleDateString('sr-Latn-RS', { day: '2-digit', month: '2-digit', year: 'numeric' })
 }
 
 function mdInsert(ref: React.RefObject<HTMLTextAreaElement | null>, before: string, after = '', setValue: (v: string) => void) {
@@ -788,7 +788,7 @@ export default function AdminPage() {
                           {inq.ruta && <p style={{ margin: '0.15rem 0 0', color: ACCENT, fontSize: '0.72rem' }}>→ {inq.ruta}</p>}
                         </div>
                         <span style={{ color: '#333', fontSize: '0.68rem', flexShrink: 0, whiteSpace: 'nowrap' }}>
-                          {new Date(inq.created_at).toLocaleDateString('sr-RS', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                          {new Date(inq.created_at).toLocaleDateString('sr-Latn-RS', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                         </span>
                       </div>
                     </div>

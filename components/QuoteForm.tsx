@@ -176,7 +176,7 @@ export default function QuoteForm() {
                   style={{ position: 'absolute', opacity: 0, height: 0, pointerEvents: 'none' }}
                   aria-hidden="true"
                 />
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 2rem' }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: '0 2rem' }}>
                   <Field label={tx.fields.name} required>
                     <input type="text" required value={form.ime} onChange={field('ime')} placeholder={tx.placeholders.name} style={inputStyle} onFocus={focus} onBlur={blur} />
                   </Field>

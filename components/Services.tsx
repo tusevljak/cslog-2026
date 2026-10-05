@@ -59,7 +59,7 @@ export default function Services({ lang = 'sr' }: { lang?: 'sr' | 'en' }) {
         </h2>
         <div className="grid md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x" style={{ borderColor: 'var(--border)' }}>
           {tx.items.map((service) => (
-            <div key={service.title} className="px-8 py-6 first:pl-0 last:pr-0 flex flex-col gap-4">
+            <div key={service.title} className="py-8 md:px-8 md:py-6 md:first:pl-0 md:last:pr-0 flex flex-col gap-4">
               <div className="w-8 h-0.5 bg-[#c5d000]" />
               <h3 style={{ fontFamily: 'var(--font-inter)', color: 'var(--text)' }} className="font-semibold text-base leading-snug">
                 {service.title}

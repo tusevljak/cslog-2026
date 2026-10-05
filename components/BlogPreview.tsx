@@ -12,9 +12,10 @@ type Post = {
 
 import { snippet } from '@/lib/utils'
 
-function formatDate(iso: string | null) {
+function formatDate(iso: string | null, lang: 'sr' | 'en') {
   if (!iso) return null
-  return new Date(iso).toLocaleDateString('sr-RS', { day: '2-digit', month: 'long', year: 'numeric' })
+  // 'sr-RS' daje ćirilicu — sajt je na latinici
+  return new Date(iso).toLocaleDateString(lang === 'en' ? 'en-GB' : 'sr-Latn-RS', { day: '2-digit', month: 'long', year: 'numeric' })
 }
 
 const copy = {
@@ -116,7 +117,7 @@ export default async function BlogPreview({ lang = 'sr' }: { lang?: 'sr' | 'en' 
                 <div style={{ padding: '1.5rem', borderTop: '2px solid #c5d000', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   {post.published_at && (
                     <p style={{ fontFamily: 'var(--font-inter)', fontSize: '0.68rem', color: '#c5d000', letterSpacing: '0.12em', textTransform: 'uppercase', margin: 0 }}>
-                      {formatDate(post.published_at)}
+                      {formatDate(post.published_at, lang)}
                     </p>
                   )}
                   <h3 style={{ fontFamily: 'var(--font-inter)', fontWeight: 700, fontSize: '1rem', color: '#f0f0f0', lineHeight: 1.45, margin: 0 }}>
