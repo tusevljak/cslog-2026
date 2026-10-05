@@ -21,7 +21,6 @@ const navEn = [
   { href: '/en/services', label: 'Services' },
   { href: '/en/trailers', label: 'Trailers' },
   { href: '/en/gallery', label: 'Gallery' },
-  { href: '/en/blog', label: 'Blog' },
   { href: '/en/about', label: 'About' },
   { href: '/en/contact', label: 'Contact' },
 ]
@@ -32,7 +31,6 @@ const routePairs: Array<[string, string]> = [
   ['/nase-usluge', '/en/services'],
   ['/prikolice',   '/en/trailers'],
   ['/galerija',    '/en/gallery'],
-  ['/blog',        '/en/blog'],
   ['/o-nama',      '/en/about'],
   ['/kontakt',     '/en/contact'],
 ]
@@ -48,9 +46,7 @@ function translatePath(pathname: string, toLang: 'sr' | 'en'): string {
   const mapped = toLang === 'en' ? srToEn.get(pathname) : enToSr.get(pathname)
   if (mapped) return mapped
 
-  // Stranice bez para (blog postovi imaju različit slug po jeziku, politika
-  // privatnosti postoji samo na SR) → lista blogova ili početna tog jezika
-  if (pathname.startsWith('/blog/')) return toLang === 'en' ? '/en/blog' : '/blog'
+  // Stranice bez para (blog, politika privatnosti — samo na SR) → početna tog jezika
   return toLang === 'en' ? '/en' : '/'
 }
 

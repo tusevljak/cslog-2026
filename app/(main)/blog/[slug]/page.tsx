@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params
   const rows = await sql`
     SELECT title, excerpt, meta_title, meta_description, cover_image
-    FROM blog_posts WHERE slug = ${slug} AND status = 'published'
+    FROM blog_posts WHERE slug = ${slug} AND status = 'published' AND (lang = 'sr' OR lang IS NULL)
   ` as Post[]
   const post = rows[0]
   if (!post) return {}
@@ -51,7 +51,7 @@ function formatDate(dateStr: string | null) {
 export default async function BlogPostPage({ params }: Params) {
   const { slug } = await params
   const rows = await sql`
-    SELECT * FROM blog_posts WHERE slug = ${slug} AND status = 'published'
+    SELECT * FROM blog_posts WHERE slug = ${slug} AND status = 'published' AND (lang = 'sr' OR lang IS NULL)
   ` as Post[]
   const post = rows[0]
   if (!post) notFound()
@@ -139,14 +139,14 @@ export default async function BlogPostPage({ params }: Params) {
         {/* Back link */}
         <div className="mt-16 pt-10 border-t border-white/10">
           <Link
-            href={post.lang === 'en' ? '/en/blog' : '/blog'}
+            href="/blog"
             className="inline-flex items-center gap-2 text-[#c5d000] text-sm uppercase tracking-widest hover:underline"
             style={{ fontFamily: 'var(--font-inter)' }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12,19 5,12 12,5" />
             </svg>
-            {post.lang === 'en' ? 'All stories' : 'Sve priče'}
+            Sve priče
           </Link>
         </div>
       </article>

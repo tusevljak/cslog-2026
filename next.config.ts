@@ -8,6 +8,14 @@ const nextConfig: NextConfig = {
   // Statične slike su se služile sa max-age=0 → browser ih je proveravao pri
   // svakoj poseti. 7 dana keš + 30 dana stale-while-revalidate: brzo, a ako
   // se fajl zameni pod istim imenom (npr. pratnja.jpg), osveži se u roku od nedelju.
+  // EN blog je ugašen — stari linkovi idu na EN početnu
+  async redirects() {
+    return [
+      { source: '/en/blog', destination: '/en', permanent: true },
+      { source: '/en/blog/:path*', destination: '/en', permanent: true },
+    ]
+  },
+
   async headers() {
     const week = 'public, max-age=604800, stale-while-revalidate=2592000'
     return [

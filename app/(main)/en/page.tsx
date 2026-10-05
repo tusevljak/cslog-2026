@@ -5,7 +5,6 @@ import Services from '@/components/Services'
 import QuoteBanner from '@/components/QuoteBanner'
 import TrailersBanner from '@/components/TrailersBanner'
 import About from '@/components/About'
-import BlogPreview from '@/components/BlogPreview'
 
 export const metadata: Metadata = {
   title: 'Cargo Special Logistic — Oversized & Special Cargo Transport',
@@ -22,7 +21,6 @@ export default function HomeEn() {
       <QuoteBanner lang="en" />
       <TrailersBanner lang="en" />
       <About lang="en" />
-      <BlogPreview lang="en" />
     </>
   )
 }
