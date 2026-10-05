@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { sql, initDb } from '@/lib/db'
 import GalleryGrid from '@/components/GalleryGrid'
 import PageHero from '@/components/PageHero'
+import { pluralSr } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Galerija | CSLOG',
@@ -25,7 +26,7 @@ export default async function GalerijaPage() {
       <PageHero
         eyebrow="CSLOG Galerija"
         title="Fotografije"
-        subtitle={`${images.length} fotografija sa najzanimljivijih transporta — od redovnih ruta do najizazovnijih vangabaritnih projekata.`}
+        subtitle={`${images.length} ${pluralSr(images.length, "fotografija", "fotografije", "fotografija")} sa najzanimljivijih transporta — od redovnih ruta do najizazovnijih vangabaritnih projekata.`}
         bgImage={images[0]?.url}
       />
 

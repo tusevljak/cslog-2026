@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { pluralSr } from '@/lib/utils'
 
 type GalleryImage = {
   id: number
@@ -10,7 +11,7 @@ type GalleryImage = {
 
 const BATCH_SIZE = 24
 
-export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
+export default function GalleryGrid({ images, lang = 'sr' }: { images: GalleryImage[]; lang?: 'sr' | 'en' }) {
   const [lightbox, setLightbox] = useState<number | null>(null)
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE)
   const sentinelRef = useRef<HTMLDivElement>(null)
@@ -71,7 +72,7 @@ export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
     return (
       <p style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)', textAlign: 'center' }}
         className="py-20">
-        Galerija se puni — uskoro.
+        {lang === 'en' ? 'Gallery coming soon.' : 'Galerija se puni — uskoro.'}
       </p>
     )
   }
@@ -151,7 +152,7 @@ export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
           </div>
         ) : images.length > BATCH_SIZE ? (
           <p style={{ fontFamily: 'var(--font-inter)', fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
-            {images.length} fotografija
+            {images.length} {lang === 'en' ? 'photos' : pluralSr(images.length, 'fotografija', 'fotografije', 'fotografija')}
           </p>
         ) : null}
       </div>

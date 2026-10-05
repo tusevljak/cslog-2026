@@ -30,7 +30,7 @@ export default function TrailersBanner({ lang = 'sr' }: { lang?: 'sr' | 'en' }) 
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: "url('/slike/viber_image_2025-03-11_18-06-05-454.jpg')",
+          backgroundImage: "url('/slike/viber_image_2025-03-11_18-06-05-454.webp')",
           opacity: 0.22,
         }}
       />

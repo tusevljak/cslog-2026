@@ -37,21 +37,22 @@ export default function ServicesPage() {
         eyebrow="What we do"
         title="CSLOG Services"
         subtitle="Special and oversized cargo transport, technical escort, coordination and international haulage — all under one roof."
-        bgImage="/usluge/pratnja.jpg"
+        bgImage="/usluge/pratnja.webp"
       />
 
       {/* Anchor nav — sticky */}
       <nav style={{ background: 'var(--bg-subtle)', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, zIndex: 30 }}>
-        <div className="max-w-[1280px] mx-auto px-6 flex gap-8 overflow-x-auto">
+        <div className="max-w-[1280px] mx-auto px-6 flex justify-between sm:justify-start gap-4 sm:gap-8">
           {[
-            ['transport', 'Oversized Cargo Transport'],
-            ['escort', 'Technical Escort & Coordination'],
-            ['international', 'Domestic & International Transport'],
-          ].map(([id, label]) => (
+            ['transport', 'Transport', 'Oversized Cargo Transport'],
+            ['escort', 'Escort', 'Technical Escort & Coordination'],
+            ['international', 'International', 'Domestic & International Transport'],
+          ].map(([id, short, label]) => (
             <a key={id} href={`#${id}`}
-              className="py-4 text-sm uppercase tracking-widest whitespace-nowrap border-b-2 border-transparent hover:border-[#c5d000] hover:text-[#c5d000] transition-colors flex-shrink-0"
+              className="py-4 text-xs sm:text-sm uppercase tracking-widest whitespace-nowrap border-b-2 border-transparent hover:border-[#c5d000] hover:text-[#c5d000] transition-colors"
               style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)' }}>
-              {label}
+              <span className="sm:hidden">{short}</span>
+              <span className="hidden sm:inline">{label}</span>
             </a>
           ))}
         </div>
@@ -91,7 +92,7 @@ export default function ServicesPage() {
       <section id="escort" className="py-24" style={{ background: 'var(--bg-subtle)', scrollMarginTop: '60px' }}>
         <div className="max-w-[1280px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
           <div className="overflow-hidden order-2 lg:order-1">
-            <Image src="/usluge/pratnja.jpg" alt="Technical escort" width={700} height={480}
+            <Image src="/usluge/pratnja.webp" alt="Technical escort" width={700} height={480}
               className="w-full object-cover hover:scale-105 transition-transform duration-500" style={{ height: '400px' }} />
           </div>
           <div className="order-1 lg:order-2">
@@ -135,7 +136,7 @@ export default function ServicesPage() {
             </Link>
           </div>
           <div className="overflow-hidden">
-            <Image src="/slike/viber_image_2026-04-24_10-27-03-123.jpg" alt="International transport" width={700} height={480}
+            <Image src="/slike/viber_image_2026-04-24_10-27-03-123.webp" alt="International transport" width={700} height={480}
               className="w-full object-cover hover:scale-105 transition-transform duration-500" style={{ height: '400px' }} />
           </div>
         </div>

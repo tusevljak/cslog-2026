@@ -26,7 +26,7 @@ export default async function GalleryPage() {
       />
       <section className="py-16">
         <div className="max-w-[1280px] mx-auto px-6">
-          <GalleryGrid images={images} />
+          <GalleryGrid images={images} lang="en" />
         </div>
       </section>
     </div>

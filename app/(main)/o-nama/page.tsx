@@ -98,7 +98,7 @@ export default function ONamaPage() {
           </div>
           <div className="overflow-hidden">
             <Image
-              src="/slike/viber_image_2026-03-17_10-41-20-622.jpg"
+              src="/slike/viber_image_2026-03-17_10-41-20-622.webp"
               alt="CSLOG kamion na putu"
               width={700}
               height={500}
@@ -182,7 +182,7 @@ export default function ONamaPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href="/nase-prikolice"
+                href="/prikolice"
                 className="inline-flex items-center gap-3 bg-[#c5d000] text-[#0d0d0d] font-semibold uppercase tracking-widest text-sm px-6 py-3 hover:bg-[#a8b200] transition-colors"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >

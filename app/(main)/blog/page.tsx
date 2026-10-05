@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { sql, initDb } from '@/lib/db'
-import { snippet } from '@/lib/utils'
+import { snippet, pluralSr } from '@/lib/utils'
 import BlogHero from '@/components/BlogHero'
 
 export const dynamic = 'force-dynamic'
@@ -59,7 +59,7 @@ export default async function BlogPage() {
                 Sve priče
               </h2>
               <span style={{ fontFamily: 'var(--font-inter)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                {posts.length} {posts.length === 1 ? 'priča' : posts.length < 5 ? 'priče' : 'priča'}
+                {posts.length} {pluralSr(posts.length, 'priča', 'priče', 'priča')}
               </span>
             </div>
 

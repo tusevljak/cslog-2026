@@ -37,24 +37,25 @@ export default function UslugeKPage() {
         eyebrow="Šta radimo"
         title="CSLOG usluge"
         subtitle="Prevoz specijalnih i vangabaritnih tereta, tehnička pratnja, koordinacija i međunarodni transport — sve pod jednim krovom."
-        bgImage="/usluge/pratnja.jpg"
+        bgImage="/usluge/pratnja.webp"
       />
 
       {/* Anchor nav — sticky pod headerom */}
       <nav style={{ background: 'var(--bg-subtle)', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, zIndex: 30 }}>
-        <div className="max-w-[1280px] mx-auto px-6 flex gap-8 overflow-x-auto">
+        <div className="max-w-[1280px] mx-auto px-6 flex justify-between sm:justify-start gap-4 sm:gap-8">
           {[
-            ['prevoz', 'Prevoz vangabaritnih tereta'],
-            ['pratnja', 'Tehnička pratnja i koordinacija'],
-            ['transport', 'Unutrašnji i međunarodni transport'],
-          ].map(([id, label]) => (
+            ['prevoz', 'Prevoz', 'Prevoz vangabaritnih tereta'],
+            ['pratnja', 'Pratnja', 'Tehnička pratnja i koordinacija'],
+            ['transport', 'Transport', 'Unutrašnji i međunarodni transport'],
+          ].map(([id, short, label]) => (
             <a
               key={id}
               href={`#${id}`}
-              className="py-4 text-sm uppercase tracking-widest whitespace-nowrap border-b-2 border-transparent hover:border-[#c5d000] hover:text-[#c5d000] transition-colors flex-shrink-0"
+              className="py-4 text-xs sm:text-sm uppercase tracking-widest whitespace-nowrap border-b-2 border-transparent hover:border-[#c5d000] hover:text-[#c5d000] transition-colors"
               style={{ fontFamily: 'var(--font-inter)', color: 'var(--text-muted)' }}
             >
-              {label}
+              <span className="sm:hidden">{short}</span>
+              <span className="hidden sm:inline">{label}</span>
             </a>
           ))}
         </div>
@@ -104,7 +105,7 @@ export default function UslugeKPage() {
         <div className="max-w-[1280px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
           <div className="overflow-hidden order-2 lg:order-1">
             <Image
-              src="/usluge/pratnja.jpg"
+              src="/usluge/pratnja.webp"
               alt="Tehnička pratnja i koordinacija"
               width={700}
               height={480}
@@ -164,7 +165,7 @@ export default function UslugeKPage() {
           </div>
           <div className="overflow-hidden">
             <Image
-              src="/slike/viber_image_2026-04-24_10-27-03-123.jpg"
+              src="/slike/viber_image_2026-04-24_10-27-03-123.webp"
               alt="Međunarodni transport"
               width={700}
               height={480}

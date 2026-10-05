@@ -83,7 +83,7 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="overflow-hidden">
-            <Image src="/slike/viber_image_2026-03-17_10-41-20-622.jpg" alt="CSLOG truck on the road"
+            <Image src="/slike/viber_image_2026-03-17_10-41-20-622.webp" alt="CSLOG truck on the road"
               width={700} height={500} className="w-full object-cover" style={{ height: '500px' }} />
           </div>
         </div>

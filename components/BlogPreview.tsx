@@ -33,20 +33,27 @@ const copy = {
     body: 'The CSLOG double-crew system delivers exceptional efficiency in meeting deadlines. Travelling at a maximum speed of 90 km/h — and often slower — gives the people and places you pass a perspective entirely their own.',
     cta: 'All CSLOG stories',
     read: 'Read',
-    href: '/blog',
+    href: '/en/blog',
   },
 }
 
 export default async function BlogPreview({ lang = 'sr' }: { lang?: 'sr' | 'en' }) {
   const tx = copy[lang]
   await initDb()
-  const posts = await sql`
-    SELECT id, title, slug, content, cover_image, published_at
-    FROM blog_posts
-    WHERE status = 'published' AND (lang = 'sr' OR lang IS NULL)
-    ORDER BY published_at DESC NULLS LAST
-    LIMIT 3
-  ` as Post[]
+  const posts = (lang === 'en'
+    ? await sql`
+        SELECT id, title, slug, content, cover_image, published_at
+        FROM blog_posts
+        WHERE status = 'published' AND lang = 'en'
+        ORDER BY published_at DESC NULLS LAST
+        LIMIT 3`
+    : await sql`
+        SELECT id, title, slug, content, cover_image, published_at
+        FROM blog_posts
+        WHERE status = 'published' AND (lang = 'sr' OR lang IS NULL)
+        ORDER BY published_at DESC NULLS LAST
+        LIMIT 3`
+  ) as Post[]
 
   return (
     <section style={{ background: '#0d0d0d' }} className="py-20">

@@ -40,20 +40,18 @@ const srToEn = new Map(routePairs)
 const enToSr = new Map(routePairs.map(([a, b]) => [b, a] as [string, string]))
 
 function translatePath(pathname: string, toLang: 'sr' | 'en'): string {
-  // Precizan meč za statičke stranice
-  if (toLang === 'sr') {
-    const mapped = enToSr.get(pathname)
-    if (mapped) return mapped
-    // Blog post ide bez /en prefiksa (koristi isti slug u obe jezičke verzije)
-    if (pathname.startsWith('/en/blog/')) return pathname.replace('/en/blog/', '/blog/')
-    // Fallback — skini /en
-    return pathname.replace(/^\/en/, '') || '/'
-  } else {
-    const mapped = srToEn.get(pathname)
-    if (mapped) return mapped
-    if (pathname.startsWith('/blog/')) return `/en/blog/${pathname.slice('/blog/'.length)}`
-    return `/en${pathname === '/' ? '' : pathname}`
-  }
+  const onEn = pathname === '/en' || pathname.startsWith('/en/')
+
+  // Već si na traženom jeziku — ostani na istoj stranici
+  if ((toLang === 'en') === onEn) return pathname
+
+  const mapped = toLang === 'en' ? srToEn.get(pathname) : enToSr.get(pathname)
+  if (mapped) return mapped
+
+  // Stranice bez para (blog postovi imaju različit slug po jeziku, politika
+  // privatnosti postoji samo na SR) → lista blogova ili početna tog jezika
+  if (pathname.startsWith('/blog/')) return toLang === 'en' ? '/en/blog' : '/blog'
+  return toLang === 'en' ? '/en' : '/'
 }
 
 // Left half: diagonals lean right (-45deg)

@@ -8,7 +8,7 @@ const t = {
     h1a: 'Nema veze', h1b: 'koliko je', h1c: 'teško i veliko.',
     sub: 'Prevoz i pratnja specijalnih i vangabaritnih tereta — od Beograda do Bliskog istoka.',
     cta: 'Besplatan upit', ctaHref: '/kontakt',
-    link: 'Naše usluge', linkHref: '/usluge',
+    link: 'Naše usluge', linkHref: '/nase-usluge',
   },
   en: {
     label: 'Cargo Special Logistic · since 2005',
