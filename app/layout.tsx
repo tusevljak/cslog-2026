@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Bebas_Neue, Inter } from 'next/font/google'
 import { headers } from 'next/headers'
+import { themeInitScript } from '@/lib/theme'
 import './globals.css'
 
 const bebas = Bebas_Neue({
@@ -31,7 +32,10 @@ export default async function RootLayout({
   const lang = pathname.startsWith('/en') ? 'en' : 'sr'
 
   return (
-    <html lang={lang} suppressHydrationWarning className={`${bebas.variable} ${inter.variable}`}>
+    <html lang={lang} data-scroll-behavior="smooth" suppressHydrationWarning className={`${bebas.variable} ${inter.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body suppressHydrationWarning className="min-h-screen flex flex-col">
         {children}
       </body>

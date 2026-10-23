@@ -6,6 +6,9 @@ const BASE = 'https://cslog.rs'
 const staticSr = ['/', '/nase-usluge', '/prikolice', '/galerija', '/blog', '/o-nama', '/kontakt']
 const staticEn = ['/en', '/en/services', '/en/trailers', '/en/gallery', '/en/about', '/en/contact']
 
+// Osvežava se svakih sat vremena — novi blog postovi ulaze u sitemap bez redeploy-a
+export const revalidate = 3600
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   await initDb()
 

@@ -12,24 +12,23 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@eslint/eslintrc": "^3.3.5",
     "marked": "^15.0.12",
-    "next": "^15.4.11",
-    "nodemailer": "^9.0.3",
+    "next": "^16.4.3",
+    "nodemailer": "^10.2.1",
     "postgres": "^3.4.9",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "sharp": "^0.34.5"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "sharp": "^0.35.5"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/nodemailer": "^8.0.1",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^24.19.2",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "eslint": "^9",
-    "eslint-config-next": "^15.5.18",
-    "tailwindcss": "^4",
+    "eslint-config-next": "^16.4.3",
+    "tailwindcss": "^4.3.3",
     "typescript": "^5"
   }
 }
